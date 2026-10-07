@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>ChatBook - Vidéos</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            overflow: hidden;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+        }
+
+        .video-container {
+            width: 100%;
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scrollbar-width: none;
+        }
+
+        .video-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .video-player-box {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            scroll-snap-align: start;
+            background-color: #111;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .video-element {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .top-nav {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            z-index: 10;
+        }
+
+        .top-nav .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #1877f2;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
+        }
+
+        .top-nav .tabs {
+            display: flex;
+            gap: 15px;
+        }
+
+        .top-nav .tabs span {
+            font-size: 1rem;
+            font-weight: bold;
+            opacity: 0.6;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+        }
+
+        .top-nav .tabs .active {
+            opacity: 1;
+            border-bottom: 2px solid #ffffff;
+            padding-bottom: 2px;
+        }
+
+        .video-sidebar-left {
+            position: absolute;
+            bottom: 40px;
+            left: 15px;
+            z-index: 10;
+            max-width: 75%;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+        }
+
+        .video-sidebar-left .username {
+            font-weight: bold;
+            font-size: 1.05rem;
+            margin-bottom: 8px;
+        }
+
+        .video-sidebar-left .description {
+            font-size: 0.95rem;
+            line-height: 1.3;
+        }
+
+        .video-sidebar-right {
+            position: absolute;
+            bottom: 60px;
+            right: 15px;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .action-icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .icon-button {
+            width: 45px;
+            height: 45px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .action-icon span {
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-nav">
+        <div class="logo">ChatBook</div>
+        <div class="tabs">
+            <span>Abonnements</span>
+            <span class="active">Pour vous</span>
+        </div>
+    </div>
+
+    <div class="video-container">
+
+        <!-- VIDÉO 1 -->
+        <div class="video-player-box">
+            <video class="video-element" loop src="https://mixkit.co" autoplay muted playsinline></video>
+            <div class="video-sidebar-left">
+                <div class="username">@NagnoumaDeveloper</div>
+                <div class="description">Lancement officiel mondial de l'interface vidéo ChatBook ! 🚀🔥 #tech #futur</div>
+            </div>
+            <div class="video-sidebar-right">
+                <div class="action-icon">
+                    <div class="icon-button">❤️</div>
+                    <span>12.5K</span>
+                </div>
+                <div class="action-icon">
+                    <div class="icon-button">💬</div>
+                    <span>845</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIDÉO 2 -->
+        <div class="video-player-box">
+            <video class="video-element" loop src="https://mixkit.co" playsinline></video>
+            <div class="video-sidebar-left">
+                <div class="username">@GuineeTech</div>
+                <div class="description">Créer une application de classe mondiale depuis sa chambre. Tout est possible. 🌐💡</div>
+            </div>
+            <div class="video-sidebar-right">
+                <div class="action-icon">
+                    <div class="icon-button">❤️</div>
+                    <span>45.2K</span>
+                </div>
+                <div class="action-icon">
+                    <div class="icon-button">💬</div>
+                    <span>2.1K</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const container = document.querySelector('.video-container');
+        const videos = document.querySelectorAll('.video-element');
+
+        container.addEventListener('scroll', () => {
+            videos.forEach(video => {
+                const rect = video.getBoundingClientRect();
+                if (rect.top >= 0 && rect.bottom <= window.innerHeight) {
+                    video.play().catch(() => {});
+                } else {
+                    video.pause();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
