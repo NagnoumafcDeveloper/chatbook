@@ -97,6 +97,23 @@
             text-decoration: none;
             font-size: 0.9rem;
         }
+
+        .btn-register {
+            display: inline-block;
+            margin-top: 15px;
+            background-color: #42b72a;
+            color: white;
+            padding: 10px 20px;
+            font-weight: bold;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: background-color 0.2s;
+        }
+
+        .btn-register:active {
+            background-color: #36a420;
+        }
     </style>
 </head>
 <body>
@@ -119,6 +136,9 @@
 
         <div class="footer-links">
             <a href="#">Mot de passe oublié ?</a>
+            <br>
+            <!-- ICI : Le bouton vert pointe maintenant directement vers ta page inscription.html -->
+            <a href="inscription.html" class="btn-register">Créer un nouveau compte</a>
         </div>
     </div>
 
