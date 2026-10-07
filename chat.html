@@ -45,6 +45,7 @@
             justify-content: center;
         }
 
+        /* L'image animée prend tout l'écran comme une vidéo */
         .video-element {
             width: 100%;
             height: 100%;
@@ -163,10 +164,10 @@
 
     <div class="video-container">
 
-        <!-- VIDÉO 1 -->
+        <!-- FLUX 1 -->
         <div class="video-player-box">
-            <!-- Remplacement par un lien vidéo très stable (Serveur de test W3Schools) -->
-            <video class="video-element" loop src="https://w3schools.com" autoplay muted playsinline></video>
+            <!-- Remplacement par une image animée fluide (GIF) -->
+            <img class="video-element" src="https://giphy.com" alt="Contenu ChatBook">
             <div class="video-sidebar-left">
                 <div class="username">@NagnoumaDeveloper</div>
                 <div class="description">Lancement officiel mondial de l'interface vidéo ChatBook ! 🚀🔥 #tech #futur</div>
@@ -183,10 +184,10 @@
             </div>
         </div>
 
-        <!-- VIDÉO 2 -->
+        <!-- FLUX 2 -->
         <div class="video-player-box">
-            <!-- Deuxième lien vidéo stable -->
-            <video class="video-element" loop src="https://w3schools.com" playsinline></video>
+            <!-- Deuxième image animée fluide -->
+            <img class="video-element" src="https://giphy.com" alt="Contenu ChatBook">
             <div class="video-sidebar-left">
                 <div class="username">@GuineeTech</div>
                 <div class="description">Créer une application de classe mondiale depuis sa chambre. Tout est possible. 🌐💡</div>
@@ -206,20 +207,6 @@
     </div>
 
     <script>
-        const container = document.querySelector('.video-container');
-        const videos = document.querySelectorAll('.video-element');
-
-        container.addEventListener('scroll', () => {
-            videos.forEach(video => {
-                const rect = video.getBoundingClientRect();
-                if (rect.top >= 0 && rect.bottom <= window.innerHeight) {
-                    video.play().catch(() => {});
-                } else {
-                    video.pause();
-                }
-            });
-        });
-
         function toggleLike(element) {
             const iconDiv = element.querySelector('.icon-button');
             const countSpan = element.querySelector('span');
@@ -235,12 +222,6 @@
                 countSpan.innerText = currentCount + 1;
             }
         }
-        
-        // Ce bout de code force le lancement au premier clic de l'utilisateur sur l'iPhone
-        document.body.addEventListener('click', () => {
-            const firstVideo = document.querySelector('.video-element');
-            if(firstVideo) firstVideo.play().catch(() => {});
-        }, { once: true });
     </script>
 </body>
 </html>
