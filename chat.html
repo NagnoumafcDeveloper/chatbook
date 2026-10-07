@@ -140,7 +140,6 @@
             transition: transform 0.1s;
         }
 
-        /* Effet visuel quand le cœur est aimé */
         .icon-button.liked {
             background-color: rgba(254, 44, 85, 0.2);
             border-color: #fe2c55;
@@ -166,7 +165,8 @@
 
         <!-- VIDÉO 1 -->
         <div class="video-player-box">
-            <video class="video-element" loop src="https://mixkit.co" autoplay muted playsinline></video>
+            <!-- Remplacement par un lien vidéo très stable (Serveur de test W3Schools) -->
+            <video class="video-element" loop src="https://w3schools.com" autoplay muted playsinline></video>
             <div class="video-sidebar-left">
                 <div class="username">@NagnoumaDeveloper</div>
                 <div class="description">Lancement officiel mondial de l'interface vidéo ChatBook ! 🚀🔥 #tech #futur</div>
@@ -185,7 +185,8 @@
 
         <!-- VIDÉO 2 -->
         <div class="video-player-box">
-            <video class="video-element" loop src="https://mixkit.co" playsinline></video>
+            <!-- Deuxième lien vidéo stable -->
+            <video class="video-element" loop src="https://w3schools.com" playsinline></video>
             <div class="video-sidebar-left">
                 <div class="username">@GuineeTech</div>
                 <div class="description">Créer une application de classe mondiale depuis sa chambre. Tout est possible. 🌐💡</div>
@@ -208,7 +209,6 @@
         const container = document.querySelector('.video-container');
         const videos = document.querySelectorAll('.video-element');
 
-        // Gestion du défilement des vidéos
         container.addEventListener('scroll', () => {
             videos.forEach(video => {
                 const rect = video.getBoundingClientRect();
@@ -220,24 +220,27 @@
             });
         });
 
-        // Fonction magique pour activer le bouton Like
         function toggleLike(element) {
             const iconDiv = element.querySelector('.icon-button');
             const countSpan = element.querySelector('span');
             let currentCount = parseInt(countSpan.innerText);
 
             if (iconDiv.classList.contains('liked')) {
-                // Si déjà aimé, on retire le like
                 iconDiv.classList.remove('liked');
                 iconDiv.innerText = '🤍';
                 countSpan.innerText = currentCount - 1;
             } else {
-                // Si pas encore aimé, on ajoute le like rouge
                 iconDiv.classList.add('liked');
                 iconDiv.innerText = '❤️';
                 countSpan.innerText = currentCount + 1;
             }
         }
+        
+        // Ce bout de code force le lancement au premier clic de l'utilisateur sur l'iPhone
+        document.body.addEventListener('click', () => {
+            const firstVideo = document.querySelector('.video-element');
+            if(firstVideo) firstVideo.play().catch(() => {});
+        }, { once: true });
     </script>
 </body>
 </html>
