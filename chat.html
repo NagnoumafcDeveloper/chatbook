@@ -45,11 +45,12 @@
             justify-content: center;
         }
 
-        /* L'image animée prend tout l'écran comme une vidéo */
+        /* L'image de couverture prend tout l'écran */
         .video-element {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            opacity: 0.8;
         }
 
         .top-nav {
@@ -79,11 +80,13 @@
         .top-nav .tabs span {
             font-size: 1rem;
             font-weight: bold;
-            opacity: 0.6;
+            opacity: 0.5;
+            cursor: pointer;
             text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+            transition: opacity 0.2s;
         }
 
-        .top-nav .tabs .active {
+        .top-nav .tabs span.active {
             opacity: 1;
             border-bottom: 2px solid #ffffff;
             padding-bottom: 2px;
@@ -138,7 +141,6 @@
             font-size: 1.4rem;
             margin-bottom: 5px;
             border: 1px solid rgba(255, 255, 255, 0.2);
-            transition: transform 0.1s;
         }
 
         .icon-button.liked {
@@ -154,11 +156,12 @@
 </head>
 <body>
 
+    <!-- Barre supérieure -->
     <div class="top-nav">
         <div class="logo">ChatBook</div>
         <div class="tabs">
-            <span>Abonnements</span>
-            <span class="active">Pour vous</span>
+            <span id="tab-abonnement" onclick="switchTab('abonnement')">Abonnements</span>
+            <span id="tab-pourvous" class="active" onclick="switchTab('pourvous')">Pour vous</span>
         </div>
     </div>
 
@@ -166,8 +169,8 @@
 
         <!-- FLUX 1 -->
         <div class="video-player-box">
-            <!-- Remplacement par une image animée fluide (GIF) -->
-            <img class="video-element" src="https://giphy.com" alt="Contenu ChatBook">
+            <!-- Utilisation d'une image fixe stable et colorée pour le test -->
+            <img class="video-element" src="https://picsum.photos" alt="ChatBook Post">
             <div class="video-sidebar-left">
                 <div class="username">@NagnoumaDeveloper</div>
                 <div class="description">Lancement officiel mondial de l'interface vidéo ChatBook ! 🚀🔥 #tech #futur</div>
@@ -186,8 +189,8 @@
 
         <!-- FLUX 2 -->
         <div class="video-player-box">
-            <!-- Deuxième image animée fluide -->
-            <img class="video-element" src="https://giphy.com" alt="Contenu ChatBook">
+            <!-- Deuxième image fixe stable -->
+            <img class="video-element" src="https://picsum.photos" alt="ChatBook Post">
             <div class="video-sidebar-left">
                 <div class="username">@GuineeTech</div>
                 <div class="description">Créer une application de classe mondiale depuis sa chambre. Tout est possible. 🌐💡</div>
@@ -207,6 +210,22 @@
     </div>
 
     <script>
+        // Gestion interactive du clic sur les onglets "Abonnements" et "Pour vous"
+        function switchTab(tabName) {
+            const tabAbonnement = document.getElementById('tab-abonnement');
+            const tabPourvous = document.getElementById('tab-pourvous');
+            
+            if (tabName === 'abonnement') {
+                tabAbonnement.classList.add('active');
+                tabPourvous.classList.remove('active');
+                alert("Flux d'abonnements en cours de chargement... Restez connecté !");
+            } else {
+                tabPourvous.classList.add('active');
+                tabAbonnement.classList.remove('active');
+            }
+        }
+
+        // Gestion du bouton Like
         function toggleLike(element) {
             const iconDiv = element.querySelector('.icon-button');
             const countSpan = element.querySelector('span');
