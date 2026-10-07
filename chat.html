@@ -123,6 +123,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            cursor: pointer;
         }
 
         .icon-button {
@@ -136,6 +137,13 @@
             font-size: 1.4rem;
             margin-bottom: 5px;
             border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.1s;
+        }
+
+        /* Effet visuel quand le cœur est aimé */
+        .icon-button.liked {
+            background-color: rgba(254, 44, 85, 0.2);
+            border-color: #fe2c55;
         }
 
         .action-icon span {
@@ -164,9 +172,9 @@
                 <div class="description">Lancement officiel mondial de l'interface vidéo ChatBook ! 🚀🔥 #tech #futur</div>
             </div>
             <div class="video-sidebar-right">
-                <div class="action-icon">
-                    <div class="icon-button">❤️</div>
-                    <span>12.5K</span>
+                <div class="action-icon" onclick="toggleLike(this)">
+                    <div class="icon-button">🤍</div>
+                    <span>12500</span>
                 </div>
                 <div class="action-icon">
                     <div class="icon-button">💬</div>
@@ -183,9 +191,9 @@
                 <div class="description">Créer une application de classe mondiale depuis sa chambre. Tout est possible. 🌐💡</div>
             </div>
             <div class="video-sidebar-right">
-                <div class="action-icon">
-                    <div class="icon-button">❤️</div>
-                    <span>45.2K</span>
+                <div class="action-icon" onclick="toggleLike(this)">
+                    <div class="icon-button">🤍</div>
+                    <span>45200</span>
                 </div>
                 <div class="action-icon">
                     <div class="icon-button">💬</div>
@@ -200,6 +208,7 @@
         const container = document.querySelector('.video-container');
         const videos = document.querySelectorAll('.video-element');
 
+        // Gestion du défilement des vidéos
         container.addEventListener('scroll', () => {
             videos.forEach(video => {
                 const rect = video.getBoundingClientRect();
@@ -210,6 +219,25 @@
                 }
             });
         });
+
+        // Fonction magique pour activer le bouton Like
+        function toggleLike(element) {
+            const iconDiv = element.querySelector('.icon-button');
+            const countSpan = element.querySelector('span');
+            let currentCount = parseInt(countSpan.innerText);
+
+            if (iconDiv.classList.contains('liked')) {
+                // Si déjà aimé, on retire le like
+                iconDiv.classList.remove('liked');
+                iconDiv.innerText = '🤍';
+                countSpan.innerText = currentCount - 1;
+            } else {
+                // Si pas encore aimé, on ajoute le like rouge
+                iconDiv.classList.add('liked');
+                iconDiv.innerText = '❤️';
+                countSpan.innerText = currentCount + 1;
+            }
+        }
     </script>
 </body>
 </html>
