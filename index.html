@@ -1,177 +1,185 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>ChatBook - Vidéos & Partage</title>
-<style>
-* {box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
-body {background-color: #000000; color: #ffffff; overflow: hidden; position: fixed; width: 100%; height: 100%; }
-.main-screen {display: none; width: 100%; height: 100vh; }
-.main-screen.active-screen {display: block; }
-.video-container {width: 100%; height: calc(100vh - 60px); overflow-y: scroll; scroll-snap-type: y mandatory; scrollbar-width: none; }
-.video-container::-webkit-scrollbar {display: none; }
-.video-player-box {position: relative; width: 100%; height: calc(100vh - 60px); scroll-snap-align: start; background-color: #000; display: flex; align-items: center; justify-content: center; }
-.video-element {width: 100%; height: 100%; border: none; object-fit: cover; }
-.top-nav {position: fixed; top: 0; left: 0; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 25px 20px 10px 20px; z-index: 50; background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent); }
-.top-nav .logo {font-size: 1.5rem; font-weight: 800; color: #1877f2; text-shadow: 1px 1px 4px rgba(0,0,0,0.6); }
-.top-nav .tabs {display: flex; gap: 20px; }
-.top-nav .tabs span {font-size: 1.05rem; font-weight: bold; opacity: 0.4; cursor: pointer; text-shadow: 1px 1px 3px rgba(0,0,0,0.8); padding-bottom: 5px; }
-.top-nav .tabs span.active {opacity: 1; border-bottom: 3px solid #ffffff; }
-.video-sidebar-left {position: absolute; bottom: 40px; left: 15px; z-index: 10; max-width: 75%; text-shadow: 1px 1px 4px rgba(0,0,0,0.9); }
-.video-sidebar-left .username { font-weight: bold; font-size: 1.05rem; margin-bottom: 5px; }
-.video-sidebar-left .description { font-size: 0.95rem; line-height: 1.3; }
-.video-sidebar-right {position: absolute; bottom: 80px; right: 25px; z-index: 80; display: flex; flex-direction: column; align-items: center; gap: 20px; }
-.action-button-touch {background: none; border: none; color: #ffffff; display: flex; flex-direction: column; align-items: center; cursor: pointer; outline: none; padding: 5px; }
-.icon-circle {width: 52px; height: 52px; background-color: rgba(0, 0, 0, 0.7); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; margin-bottom: 4px; border: 2px solid rgba(255, 255, 255, 0.4); }
-.icon-circle.liked {background-color: rgba(254, 44, 85, 0.5); border-color: #fe2c55; color: #fe2c55; }
-.action-button-touch span {font-size: 0.85rem; font-weight: bold; text-shadow: 1px 1px 3px rgba(0,0,0,0.8); }
-.comment-sheet {position: fixed; bottom: -100%; left: 0; width: 100%; height: 65vh; background-color: #ffffff; color: #000000; border-top-left-radius: 20px; border-top-right-radius: 20px; z-index: 150; transition: bottom 0.3s ease; display: flex; flex-direction: column; padding: 15px; }
-.comment-sheet.open { bottom: 0; }
-.comment-header { display: flex; justify-content: space-between; align-items: center; font-weight: bold; border-bottom: 1px solid #e4e6eb; padding-bottom: 10px;}
-.comment-close { font-size: 1.6rem; cursor: pointer; color: #606770; }
-.comment-body-scroll { flex: 1; overflow-y: auto; padding: 15px 0; }
-.comment-box-item { margin-bottom: 14px; font-size: 0.95rem; text-align: left; }
-.comment-author { font-weight: bold; color: #1877f2; }
-.comment-footer-input { display: flex; gap: 10px; padding: 10px 0; border-top: 1px solid #e4e6eb; }
-.comment-footer-input input { flex: 1; padding: 14px; border: 1px solid #ccd0d5; border-radius: 25px; font-size: 1rem; background-color: #f0f2f5; outline: none; }
-.comment-btn-send { background-color: #1877f2; color: #ffffff; border: none; padding: 0 20px; border-radius: 25px; font-weight: bold; }
-.admob-banner-placement {position: fixed; bottom: 0; left: 0; width: 100%; height: 60px; background-color: #222222; border-top: 1px solid #333333; z-index: 70; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-.admob-label { font-size: 0.65rem; color: #888888; font-weight: bold; }
-.admob-mock-content { font-size: 0.9rem; color: #00ffcc; font-weight: bold; }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChatBook - Vidéos & Partage</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+    body {
+      background-color: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+    }
+    .feed-container {
+      width: 100%;
+      max-width: 450px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+    .header {
+      padding: 15px;
+      border-bottom: 1px solid #e4e6eb;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header h1 {
+      font-size: 1.2rem;
+      color: #1877f2;
+    }
+    .video-card {
+      position: relative;
+      width: 100%;
+      background: #000;
+    }
+    .video-wrapper {
+      position: relative;
+      padding-bottom: 177.78%; /* Ratio 9:16 pour le format Short/Reel */
+      height: 0;
+      overflow: hidden;
+    }
+    .video-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+    .video-overlay {
+      padding: 15px;
+      background: #fff;
+    }
+    .author {
+      font-weight: bold;
+      color: #1c1e21;
+      margin-bottom: 5px;
+    }
+    .description {
+      font-size: 0.9rem;
+      color: #050505;
+      margin-bottom: 10px;
+    }
+    .actions {
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      border-top: 1px solid #e4e6eb;
+      border-bottom: 1px solid #e4e6eb;
+    }
+    .action-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 0.9rem;
+      color: #65676b;
+      font-weight: 600;
+    }
+    .comments-section {
+      padding: 15px;
+    }
+    .comment {
+      font-size: 0.85rem;
+      margin-bottom: 8px;
+    }
+    .comment-author {
+      font-weight: bold;
+    }
+    .add-comment {
+      display: flex;
+      margin-top: 10px;
+      gap: 8px;
+    }
+    .add-comment input {
+      flex: 1;
+      padding: 8px 12px;
+      border: 1px solid #ccd0d5;
+      border-radius: 20px;
+      outline: none;
+    }
+    .add-comment button {
+      background: #1877f2;
+      color: #fff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .ad-banner {
+      background: #e4e6eb;
+      text-align: center;
+      padding: 12px;
+      font-size: 0.8rem;
+      color: #65676b;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+  </style>
 </head>
 <body>
 
-<div class="top-nav">
-  <div class="logo">ChatBook</div>
-  <div class="tabs">
-    <span id="btn-tab-abonnement" onclick="navigateTo('abonnement')">Abonnements</span>
-    <span id="btn-tab-pourvous" class="active" onclick="navigateTo('pourvous')">Pour vous</span>
-  </div>
-</div>
-
-<!-- FLUX POUR VOUS -->
-<div id="screen-pourvous" class="main-screen active-screen">
-  <div class="video-container">
-    <div class="video-player-box">
-      <iframe class="video-element" src="https://www.youtube.com/embed/dQw4w9WgXcQ" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-      <div class="video-sidebar-left">
-        <div class="username">@NagnoumaDeveloper</div>
-        <div class="description">Bienvenue sur le flux vidéo officiel de ChatBook ! 🚀🔥 #tech</div>
-      </div>
-      <div class="video-sidebar-right">
-        <button class="action-button-touch" onclick="handleLikeInteraction(this)">
-          <div class="icon-circle">🤍</div>
-          <span>12.5K</span>
-        </button>
-        <button class="action-button-touch" onclick="triggerCommentSheet()">
-          <div class="icon-circle">💬</div>
-          <span>345</span>
-        </button>
-        <button class="action-button-touch" onclick="shareOnWhatsApp()">
-          <div class="icon-circle">🔗</div>
-          <span>Partager</span>
-        </button>
+  <div class="feed-container">
+    <div class="header">
+      <h1>ChatBook</h1>
+      <div>
+        <small>Abonnements | <strong>Pour vous</strong></small>
       </div>
     </div>
-  </div>
-</div>
 
-<!-- FLUX ABONNEMENTS -->
-<div id="screen-abonnement" class="main-screen">
-  <div class="video-container">
-    <div class="video-player-box">
-      <iframe class="video-element" src="https://www.youtube.com/embed/3JZ_D3ELwOQ" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-      <div class="video-sidebar-left">
-        <div class="username">@GuineeTech</div>
-        <div class="description">Créer une multinationale depuis sa chambre. Tout est possible ! 🇬🇳🌐</div>
-      </div>
-      <div class="video-sidebar-right">
-        <button class="action-button-touch" onclick="handleLikeInteraction(this)">
-          <div class="icon-circle">🤍</div>
-          <span>45K</span>
-        </button>
-        <button class="action-button-touch" onclick="triggerCommentSheet()">
-          <div class="icon-circle">💬</div>
-          <span>1.2K</span>
-        </button>
-        <button class="action-button-touch" onclick="shareOnWhatsApp()">
-          <div class="icon-circle">🔗</div>
-          <span>Partager</span>
-        </button>
+    <!-- Carte Vidéo -->
+    <div class="video-card">
+      <div class="video-wrapper">
+        <iframe 
+          src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=0&rel=0" 
+          title="Lecteur Vidéo ChatBook"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+          referrerpolicy="no-referrer-when-downgrade"
+          allowfullscreen>
+        </iframe>
       </div>
     </div>
+
+    <div class="video-overlay">
+      <div class="author">@NagnoumaDeveloper</div>
+      <div class="description">Bienvenue sur le flux vidéo officiel de ChatBook ! 🚀🔥 #tech</div>
+      
+      <div class="actions">
+        <button class="action-btn">🤍 12.5K</button>
+        <button class="action-btn">💬 345</button>
+        <button class="action-btn">🔗 Partager</button>
+      </div>
+    </div>
+
+    <!-- Section Commentaires -->
+    <div class="comments-section">
+      <p style="font-weight: bold; margin-bottom: 10px; font-size: 0.9rem;">Commentaires</p>
+      <div class="comment">
+        <span class="comment-author">@Utilisateur1:</span> Super application !
+      </div>
+      <div class="comment">
+        <span class="comment-author">@Utilisateur2:</span> J'aime beaucoup le concept.
+      </div>
+      <div class="add-comment">
+        <input type="text" placeholder="Ajouter un commentaire...">
+        <button type="button">Publier</button>
+      </div>
+    </div>
+
+    <!-- Espace Pub -->
+    <div class="ad-banner">
+      Annonce publicitaire • Espace AdMob / Facebook Ads
+    </div>
   </div>
-</div>
-
-<!-- COMMENTAIRES -->
-<div id="bottomCommentSheet" class="comment-sheet">
-  <div class="comment-header">
-    <span>Commentaires</span>
-    <span class="comment-close" onclick="dismissCommentSheet()">✕</span>
-  </div>
-  <div class="comment-body-scroll">
-    <div class="comment-box-item"><span class="comment-author">@Utilisateur1:</span> Super application !</div>
-    <div class="comment-box-item"><span class="comment-author">@Utilisateur2:</span> J'aime beaucoup le concept.</div>
-  </div>
-  <div class="comment-footer-input">
-    <input type="text" placeholder="Ajouter un commentaire...">
-    <button class="comment-btn-send">Publier</button>
-  </div>
-</div>
-
-<!-- BANNIÈRE PUBLICITAIRE -->
-<div class="admob-banner-placement">
-  <span class="admob-label">ANNONCE PUBLICITAIRE</span>
-  <span class="admob-mock-content">Espace AdMob / Facebook Ads</span>
-</div>
-
-<script>
-function navigateTo(tabId) {
-    const tabs = document.querySelectorAll('.top-nav .tabs span');
-    tabs.forEach(tab => tab.classList.remove('active'));
-    
-    if (tabId === 'abonnement') {
-        document.getElementById('btn-tab-abonnement').classList.add('active');
-        document.getElementById('screen-pourvous').classList.remove('active-screen');
-        document.getElementById('screen-abonnement').classList.add('active-screen');
-    } else {
-        document.getElementById('btn-tab-pourvous').classList.add('active');
-        document.getElementById('screen-abonnement').classList.remove('active-screen');
-        document.getElementById('screen-pourvous').classList.add('active-screen');
-    }
-}
-
-function handleLikeInteraction(button) {
-    const iconCircle = button.querySelector('.icon-circle');
-    const spanCount = button.querySelector('span');
-    let count = parseFloat(spanCount.textContent);
-    
-    iconCircle.classList.toggle('liked');
-    
-    if (iconCircle.classList.contains('liked')) {<iframe class="video-element" src="VOTRE_LIEN_YOUTUBE" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`. Assurez-vous de remplacer "VOTRE_LIEN_YOUTUBE"
-        spanCount.textContent = (count + 0.1).toFixed(1) + 'K';
-    } else {
-        spanCount.textContent = (count - 0.1).toFixed(1) + 'K';
-    }
-}
-
-function triggerCommentSheet() {
-    document.getElementById('bottomCommentSheet').classList.add('open');
-}
-
-function dismissCommentSheet() {
-    document.getElementById('bottomCommentSheet').classList.remove('open');
-}
-
-function shareOnWhatsApp() {
-    const videoUrl = encodeURIComponent(window.location.href);
-    const message = encodeURIComponent("Regarde cette vidéo sur ChatBook !");
-    window.open(`https://wa.me/?text=${message}%20${videoUrl}`, '_blank');
-}
-</script>
 
 </body>
 </html>
-```
