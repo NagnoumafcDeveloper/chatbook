@@ -1,129 +1,304 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mon Projet Clone TikTok</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mon Projet Clone TikTok</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
 
-        body, html {
-            width: 100%;
-            height: 100%;
-            background-color: #000;
-            overflow: hidden;
-            font-family: sans-serif;
-        }
+    .tiktok-container {
+      position: relative;
+      width: 100%;
+      max-width: 400px;
+      height: 90vh;
+      background-color: #111;
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
 
-        .video-container {
-            position: relative;
-            width: 100%;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+    /* Emplacement Vidéo */
+    .video-placeholder {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 1;
+    }
 
-        .video-player {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+    /* Barre d'actions latérale (Likes, Comms, Partage) */
+    .actions-bar {
+      position: absolute;
+      right: 15px;
+      bottom: 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      z-index: 10;
+    }
 
-        .sidebar {
-            position: absolute;
-            right: 15px;
-            bottom: 150px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-            z-index: 10;
-        }
+    .action-btn {
+      background: rgba(0, 0, 0, 0.4);
+      border: none;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px;
+      border-radius: 50%;
+      transition: transform 0.2s;
+    }
 
-        .action-btn {
-            background: transparent;
-            border: none;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
+    .action-btn:active {
+      transform: scale(1.2);
+    }
 
-        .action-btn:hover {
-            transform: scale(1.1);
-        }
+    .btn-label {
+      font-size: 12px;
+      margin-top: 4px;
+    }
 
-        .action-btn .icon {
-            font-size: 32px;
-            margin-bottom: 5px;
-        }
+    /* Style du cœur de Like */
+    .heart-icon {
+      color: white; /* Blanc par défaut */
+      transition: color 0.2s;
+    }
 
-        .action-btn .count {
-            font-size: 12px;
-            font-weight: bold;
-        }
-    </style>
+    .heart-icon.liked {
+      color: #ff2c55; /* Rouge TikTok quand liké */
+    }
+
+    /* Section des commentaires */
+    .comments-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      max-height: 60%;
+      background: rgba(20, 20, 20, 0.95);
+      border-top-left-radius: 16px;
+      border-top-right-radius: 16px;
+      z-index: 20;
+      display: none; /* Masqué par défaut */
+      flex-direction: column;
+      box-sizing: border-box;
+      padding: 15px;
+    }
+
+    .comments-overlay.active {
+      display: flex;
+    }
+
+    .comments-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .comments-list {
+      flex: 1;
+      overflow-y: auto;
+      margin-bottom: 10px;
+      max-height: 200px;
+    }
+
+    .comment-item {
+      font-size: 14px;
+      margin-bottom: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 8px 12px;
+      border-radius: 8px;
+    }
+
+    .comment-input-area {
+      display: flex;
+      gap: 8px;
+    }
+
+    .comment-input-area input {
+      flex: 1;
+      padding: 10px;
+      border-radius: 20px;
+      border: none;
+      outline: none;
+      background: #333;
+      color: white;
+    }
+
+    .comment-input-area button {
+      background: #ff2c55;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    /* Toast / Notification pour le partage */
+    .toast {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-size: 14px;
+      display: none;
+      z-index: 30;
+    }
+  </style>
 </head>
 <body>
 
-    <div class="video-container">
-        <video class="video-player" src="https://www.w3schools.com/html/mov_bbb.mp4" loop playsinline></video>
-        <div class="sidebar">
-            <button id="like-btn" class="action-btn">
-                <span class="icon">❤️</span>
-                <span class="count">0</span>
-            </button>
-            <button id="comment-btn" class="action-btn">
-                <span class="icon">💬</span>
-                <span class="count">Commenter</span>
-            </button>
-            <button id="share-btn" class="action-btn">
-                <span class="icon">↗️</span>
-                <span class="count">Partager</span>
-            </button>
-        </div>
+  <div class="tiktok-container">
+    <!-- Message de notification -->
+    <div id="toast" class="toast">Lien copié dans le presse-papier !</div>
+
+    <!-- Boutons d'action -->
+    <div class="actions-bar">
+      <button class="action-btn" id="likeBtn">
+        <span id="heartIcon" class="heart-icon">❤️</span>
+        <span class="btn-label" id="likeCount">0</span>
+      </button>
+
+      <button class="action-btn" id="commentBtn">
+        💬
+        <span class="btn-label" id="commentCount">0</span>
+      </button>
+
+      <button class="action-btn" id="shareBtn">
+        ↗️
+        <span class="btn-label">Partager</span>
+      </button>
     </div>
 
-    <script>
-        const video = document.querySelector('.video-player');
-        const container = document.querySelector('.video-container');
-        const likeBtn = document.getElementById('like-btn');
-        const likeCount = likeBtn.querySelector('.count');
-        const commentBtn = document.getElementById('comment-btn');
+    <!-- Fenêtre de commentaires -->
+    <div class="comments-overlay" id="commentsOverlay">
+      <div class="comments-header">
+        <span>Commentaires</span>
+        <button class="close-btn" id="closeComments">✕</button>
+      </div>
+      <div class="comments-list" id="commentsList">
+        <!-- Les commentaires s'afficheront ici -->
+      </div>
+      <div class="comment-input-area">
+        <input type="text" id="commentInput" placeholder="Ajouter un commentaire..." />
+        <button id="sendCommentBtn">Envoyer</button>
+      </div>
+    </div>
+  </div>
 
-        container.addEventListener('click', () => {
-            if (video.paused) {
-                video.play();
-            } else {
-                video.pause();
-            }
-        });
+  <script>
+    // --- GESTION DES LIKES ---
+    const likeBtn = document.getElementById('likeBtn');
+    const heartIcon = document.getElementById('heartIcon');
+    const likeCount = document.getElementById('likeCount');
 
-        let liked = false;
-        likeBtn.addEventListener('click', (e) => {
-            e.stopPropagation(); 
-            liked = !liked;
-            if (liked) {
-                likeBtn.style.color = 'red';
-                likeCount.textContent = '1';
-            } else {
-                likeBtn.style.color = 'white';
-                likeCount.textContent = '0';
-            }
-        });
+    let isLiked = false;
+    let likes = 0;
 
-        commentBtn.addEventListener('click', (e) => {
-            e.stopPropagation(); 
-            alert("La section des commentaires sera bientôt disponible !");
-        });
-    </script>
+    likeBtn.addEventListener('click', () => {
+      isLiked = !isLiked;
+
+      if (isLiked) {
+        likes++;
+        heartIcon.classList.add('liked'); // Devient rouge
+      } else {
+        likes--;
+        heartIcon.classList.remove('liked'); // Repasse en blanc
+      }
+      likeCount.textContent = likes;
+    });
+
+    // --- GESTION DES COMMENTAIRES ---
+    const commentBtn = document.getElementById('commentBtn');
+    const commentsOverlay = document.getElementById('commentsOverlay');
+    const closeComments = document.getElementById('closeComments');
+    const commentInput = document.getElementById('commentInput');
+    const sendCommentBtn = document.getElementById('sendCommentBtn');
+    const commentsList = document.getElementById('commentsList');
+    const commentCount = document.getElementById('commentCount');
+
+    let totalComments = 0;
+
+    // Ouvrir / Fermer les commentaires
+    commentBtn.addEventListener('click', () => {
+      commentsOverlay.classList.add('active');
+    });
+
+    closeComments.addEventListener('click', () => {
+      commentsOverlay.classList.remove('active');
+    });
+
+    // Envoyer un commentaire
+    function addComment() {
+      const text = commentInput.value.trim();
+      if (text !== "") {
+        const commentDiv = document.createElement('div');
+        commentDiv.classList.add('comment-item');
+        commentDiv.textContent = text;
+        commentsList.appendChild(commentDiv);
+
+        totalComments++;
+        commentCount.textContent = totalComments;
+
+        commentInput.value = "";
+        commentsList.scrollTop = commentsList.scrollHeight; // Scroll vers le bas
+      }
+    }
+
+    sendCommentBtn.addEventListener('click', addComment);
+
+    commentInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        addComment();
+      }
+    });
+
+    // --- GESTION DU PARTAGE ---
+    const shareBtn = document.getElementById('shareBtn');
+    const toast = document.getElementById('toast');
+
+    shareBtn.addEventListener('click', () => {
+      // Copier l'URL actuelle
+      navigator.clipboard.writeText(window.location.href).then(() => {
+        toast.style.display = 'block';
+        setTimeout(() => {
+          toast.style.display = 'none';
+        }, 2000);
+      });
+    });
+  </script>
 </body>
 </html>
-```
