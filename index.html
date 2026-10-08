@@ -49,16 +49,17 @@
             width: 100%;
             height: calc(100vh - 60px);
             scroll-snap-align: start;
-            background-color: #111;
+            background-color: #000;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        /* Les vraies vidéos prennent tout l'écran */
+        /* Lecteur universel blindé pour tout écran */
         .video-element {
             width: 100%;
             height: 100%;
+            border: none;
             object-fit: cover;
         }
 
@@ -220,9 +221,9 @@
     <div id="screen-pourvous" class="main-screen active-screen">
         <div class="video-container">
             
-            <!-- VRAIE VIDÉO 1 -->
+            <!-- POST 1 AVEC INTÉGRATION STREAM SECURE -->
             <div class="video-player-box">
-                <video class="video-element" loop src="https://w3schools.com" autoplay muted playsinline></video>
+                <iframe class="video-element" src="https://youtube.com" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                 <div class="video-sidebar-left">
                     <div class="username">@NagnoumaDeveloper</div>
                     <div class="description">Bienvenue sur le flux vidéo officiel de ChatBook ! 🚀🔥 #tech</div>
@@ -236,7 +237,6 @@
                         <div class="icon-circle">💬</div>
                         <span>345</span>
                     </button>
-                    <!-- BOUTON PARTAGE WHATSAPP -->
                     <button class="action-button-touch" onclick="shareOnWhatsApp()">
                         <div class="icon-circle">🔗</div>
                         <span>Partager</span>
@@ -251,7 +251,7 @@
     <div id="screen-abonnement" class="main-screen">
         <div class="video-container">
             <div class="video-player-box">
-                <video class="video-element" loop src="https://w3schools.com" playsinline></video>
+                <iframe class="video-element" src="https://youtube.com" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                 <div class="video-sidebar-left">
                     <div class="username">@GuineeTech</div>
                     <div class="description">Créer une multinationale depuis sa chambre. Tout est possible ! 🇬🇳🌐</div>
@@ -280,5 +280,3 @@
             <span>Commentaires</span>
             <span class="comment-close" onclick="dismissCommentSheet()">✕</span>
         </div>
-        <div class="comment-body-scroll" id="boxMessagesContainer">
-            <div class="comment-box-item"><span class="comment-author">@Alpha_Tech :</span> Incroyable projet ! 🇬🇳</div>
