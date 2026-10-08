@@ -1,173 +1,66 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChatBook - Mon Réseau Social</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #e7ebf0; /* Fond gris style Telegram */
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-        }
-        /* Barre supérieure type Facebook/TikTok */
-        .header {
-            background-color: #2481cc; /* Bleu Telegram */
-            color: white;
-            padding: 15px;
-            font-size: 18px;
-            font-weight: bold;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        /* Écran des discussions */
-        .chat-container {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        /* Les bulles de messages */
-        .message {
-            background-color: white;
-            padding: 12px 16px;
-            border-radius: 12px;
-            max-width: 70%;
-            align-self: flex-start;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-            position: relative;
-        }
-        /* Messages envoyés par Moi (en vert à droite) */
-        .message.sent {
-            background-color: #effdde;
-            align-self: flex-end;
-        }
-        /* Section des boutons J'aime sous les bulles */
-        .like-section {
-            text-align: right;
-            margin-top: 5px;
-            font-size: 13px;
-        }
-        .btn-like {
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 0;
-            font-size: 14px;
-            transition: transform 0.1s ease;
-        }
-        .btn-like:active {
-            transform: scale(1.3);
-        }
-        .like-count {
-            color: #65676b;
-            margin-left: 3px;
-            font-weight: bold;
-        }
-        /* Barre de saisie en bas */
-        .input-area {
-            background-color: white;
-            padding: 12px;
-            display: flex;
-            gap: 10px;
-            border-top: 1px solid #ddd;
-        }
-        .input-area input {
-            flex: 1;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 25px;
-            outline: none;
-            font-size: 15px;
-        }
-        .input-area button {
-            background-color: #2481cc;
-            color: white;
-            border: none;
-            padding: 0 22px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 15px;
-        }
-        .input-area button:hover {
-            background-color: #1c71b5;
-        }
-    </style>
-</head>
-<body>
+```css
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-    <div class="header">ChatBook</div>
+body, html {
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    overflow: hidden;
+    font-family: sans-serif;
+}
 
-    <div class="chat-container" id="chatContainer">
-        <!-- Message reçu par défaut -->
-        <div class="message">
-            <strong>Al :</strong> Salut Condé ! Prêt à tester ton application ChatBook aujourd'hui ?
-        </div>
-    </div>
+.video-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-    <!-- Formulaire d'envoi -->
-    <div class="input-area">
-        <input type="text" id="messageInput" placeholder="Écrire un message...">
-        <button id="sendButton">Envoyer</button>
-    </div>
+.video-player {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
 
-    <script>
-        // Sélection des éléments HTML
-        const boutonEnvoyer = document.getElementById('sendButton');
-        const champTexte = document.getElementById('messageInput');
-        const zoneMessages = document.getElementById('chatContainer');
+.sidebar {
+    position: absolute;
+    right: 15px;
+    bottom: 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    z-index: 10;
+}
 
-        // Fonction principale pour ajouter un message
-        function envoyerMessage() {
-            const texte = champTexte.value.trim();
-            
-            if (texte !== "") {
-                // 1. Création de la bulle de message
-                const nouvelleBulle = document.createElement('div');
-                nouvelleBulle.className = 'message sent';
-                
-                // 2. Ajout du texte et du bouton de mention J'aime (Cœur)
-                nouvelleBulle.innerHTML = `
-                    <strong>Moi :</strong> ${texte}
-                    <div class="like-section">
-                        <button class="btn-like">❤️</button>
-                        <span class="like-count">0</span>
-                    </div>
-                `;
-                
-                // 3. Gestionnaire d'événement pour le bouton Like cliquable
-                const boutonLike = nouvelleBulle.querySelector('.btn-like');
-                const compteurSpan = nouvelleBulle.querySelector('.like-count');
-                let nombreLikes = 0;
-                
-                boutonLike.addEventListener('click', function() {
-                    nombreLikes++;
-                    compteurSpan.textContent = nombreLikes;
-                });
-                
-                // 4. Insertion dans l'écran et réinitialisation
-                zoneMessages.appendChild(nouvelleBulle);
-                champTexte.value = "";
-                zoneMessages.scrollTop = zoneMessages.scrollHeight;
-            }
-        }
+.action-btn {
+    background: transparent;
+    border: none;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
 
-        // Écouteur de clic sur le bouton Envoyer
-        boutonEnvoyer.addEventListener('click', envoyerMessage);
+.action-btn:hover {
+    transform: scale(1.1);
+}
 
-        // Écouteur de touche Entrée sur le clavier
-        champTexte.addEventListener('keypress', function(evenement) {
-            if (evenement.key === 'Enter') {
-                envoyerMessage();
-            }
-        });
-    </script>
+.action-btn .icon {
+    font-size: 32px;
+    margin-bottom: 5px;
+}
 
-</body>
-</html>
+.action-btn .count {
+    font-size: 12px;
+    font-weight: bold;
+}
+```
