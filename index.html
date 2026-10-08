@@ -96,6 +96,7 @@
         const container = document.querySelector('.video-container');
         const likeBtn = document.getElementById('like-btn');
         const likeCount = likeBtn.querySelector('.count');
+        const commentBtn = document.getElementById('comment-btn');
 
         container.addEventListener('click', () => {
             if (video.paused) {
@@ -116,6 +117,11 @@
                 likeBtn.style.color = 'white';
                 likeCount.textContent = '0';
             }
+        });
+
+        commentBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); 
+            alert("La section des commentaires sera bientôt disponible !");
         });
     </script>
 </body>
