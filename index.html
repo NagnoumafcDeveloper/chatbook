@@ -1,185 +1,115 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ChatBook - Vidéos & Partage</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
-    body {
-      background-color: #f0f2f5;
-      display: flex;
-      justify-content: center;
-      padding: 20px;
-    }
-    .feed-container {
-      width: 100%;
-      max-width: 450px;
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      overflow: hidden;
-    }
-    .header {
-      padding: 15px;
-      border-bottom: 1px solid #e4e6eb;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .header h1 {
-      font-size: 1.2rem;
-      color: #1877f2;
-    }
-    .video-card {
-      position: relative;
-      width: 100%;
-      background: #000;
-    }
-    .video-wrapper {
-      position: relative;
-      padding-bottom: 177.78%; /* Ratio 9:16 pour le format Short/Reel */
-      height: 0;
-      overflow: hidden;
-    }
-    .video-wrapper iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      border: 0;
-    }
-    .video-overlay {
-      padding: 15px;
-      background: #fff;
-    }
-    .author {
-      font-weight: bold;
-      color: #1c1e21;
-      margin-bottom: 5px;
-    }
-    .description {
-      font-size: 0.9rem;
-      color: #050505;
-      margin-bottom: 10px;
-    }
-    .actions {
-      display: flex;
-      justify-content: space-around;
-      padding: 10px 0;
-      border-top: 1px solid #e4e6eb;
-      border-bottom: 1px solid #e4e6eb;
-    }
-    .action-btn {
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-size: 0.9rem;
-      color: #65676b;
-      font-weight: 600;
-    }
-    .comments-section {
-      padding: 15px;
-    }
-    .comment {
-      font-size: 0.85rem;
-      margin-bottom: 8px;
-    }
-    .comment-author {
-      font-weight: bold;
-    }
-    .add-comment {
-      display: flex;
-      margin-top: 10px;
-      gap: 8px;
-    }
-    .add-comment input {
-      flex: 1;
-      padding: 8px 12px;
-      border: 1px solid #ccd0d5;
-      border-radius: 20px;
-      outline: none;
-    }
-    .add-comment button {
-      background: #1877f2;
-      color: #fff;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 20px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    .ad-banner {
-      background: #e4e6eb;
-      text-align: center;
-      padding: 12px;
-      font-size: 0.8rem;
-      color: #65676b;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatBook - Vidéos & Partage</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body, html {
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            overflow: hidden;
+            font-family: sans-serif;
+            color: #fff;
+        }
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .video-player {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .sidebar {
+            position: absolute;
+            right: 15px;
+            bottom: 150px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            z-index: 10;
+        }
+        .action-btn {
+            background: transparent;
+            border: none;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .action-btn:hover {
+            transform: scale(1.1);
+        }
+        .action-btn .icon {
+            font-size: 32px;
+            margin-bottom: 5px;
+        }
+        .action-btn .count {
+            font-size: 12px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-
-  <div class="feed-container">
-    <div class="header">
-      <h1>ChatBook</h1>
-      <div>
-        <small>Abonnements | <strong>Pour vous</strong></small>
-      </div>
+    <div class="video-container">
+        <video class="video-player" src="https://www.w3schools.com/html/mov_bbb.mp4" loop playsinline muted autoplay></video>
+        <div class="sidebar">
+            <button id="like-btn" class="action-btn">
+                <span class="icon">🤍</span>
+                <span class="count">12.5K</span>
+            </button>
+            <button id="comment-btn" class="action-btn">
+                <span class="icon">💬</span>
+                <span class="count">345</span>
+            </button>
+            <button id="share-btn" class="action-btn">
+                <span class="icon">🔗</span>
+                <span class="count">Partager</span>
+            </button>
+        </div>
     </div>
 
-    <!-- Carte Vidéo -->
-    <div class="video-card">
-      <div class="video-wrapper">
-        <iframe 
-          src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=0&rel=0" 
-          title="Lecteur Vidéo ChatBook"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-          referrerpolicy="no-referrer-when-downgrade"
-          allowfullscreen>
-        </iframe>
-      </div>
-    </div>
+    <script>
+        const video = document.querySelector('.video-player');
+        const container = document.querySelector('.video-container');
+        const likeBtn = document.getElementById('like-btn');
+        const likeCount = likeBtn.querySelector('.count');
 
-    <div class="video-overlay">
-      <div class="author">@NagnoumaDeveloper</div>
-      <div class="description">Bienvenue sur le flux vidéo officiel de ChatBook ! 🚀🔥 #tech</div>
-      
-      <div class="actions">
-        <button class="action-btn">🤍 12.5K</button>
-        <button class="action-btn">💬 345</button>
-        <button class="action-btn">🔗 Partager</button>
-      </div>
-    </div>
+        // Gestion de la lecture et de la mise en pause au clic
+        container.addEventListener('click', () => {
+            if (video.paused) {
+                video.play();
+            } else {
+                video.pause();
+            }
+        });
 
-    <!-- Section Commentaires -->
-    <div class="comments-section">
-      <p style="font-weight: bold; margin-bottom: 10px; font-size: 0.9rem;">Commentaires</p>
-      <div class="comment">
-        <span class="comment-author">@Utilisateur1:</span> Super application !
-      </div>
-      <div class="comment">
-        <span class="comment-author">@Utilisateur2:</span> J'aime beaucoup le concept.
-      </div>
-      <div class="add-comment">
-        <input type="text" placeholder="Ajouter un commentaire...">
-        <button type="button">Publier</button>
-      </div>
-    </div>
-
-    <!-- Espace Pub -->
-    <div class="ad-banner">
-      Annonce publicitaire • Espace AdMob / Facebook Ads
-    </div>
-  </div>
-
+        // Gestion du like
+        let liked = false;
+        likeBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); 
+            liked = !liked;
+            if (liked) {
+                likeBtn.style.color = 'red';
+            } else {
+                likeBtn.style.color = 'white';
+            }
+        });
+    </script>
 </body>
 </html>
+```
