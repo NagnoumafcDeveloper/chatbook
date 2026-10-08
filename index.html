@@ -1,66 +1,123 @@
-```css
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Projet Clone TikTok</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-body, html {
-    width: 100%;
-    height: 100%;
-    background-color: #000;
-    overflow: hidden;
-    font-family: sans-serif;
-}
+        body, html {
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            overflow: hidden;
+            font-family: sans-serif;
+        }
 
-.video-container {
-    position: relative;
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-.video-player {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
+        .video-player {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 
-.sidebar {
-    position: absolute;
-    right: 15px;
-    bottom: 150px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    z-index: 10;
-}
+        .sidebar {
+            position: absolute;
+            right: 15px;
+            bottom: 150px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            z-index: 10;
+        }
 
-.action-btn {
-    background: transparent;
-    border: none;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    cursor: pointer;
-    transition: transform 0.2s;
-}
+        .action-btn {
+            background: transparent;
+            border: none;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
 
-.action-btn:hover {
-    transform: scale(1.1);
-}
+        .action-btn:hover {
+            transform: scale(1.1);
+        }
 
-.action-btn .icon {
-    font-size: 32px;
-    margin-bottom: 5px;
-}
+        .action-btn .icon {
+            font-size: 32px;
+            margin-bottom: 5px;
+        }
 
-.action-btn .count {
-    font-size: 12px;
-    font-weight: bold;
-}
+        .action-btn .count {
+            font-size: 12px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="video-container">
+        <video class="video-player" src="https://www.w3schools.com/html/mov_bbb.mp4" loop playsinline></video>
+        <div class="sidebar">
+            <button id="like-btn" class="action-btn">
+                <span class="icon">❤️</span>
+                <span class="count">0</span>
+            </button>
+            <button id="comment-btn" class="action-btn">
+                <span class="icon">💬</span>
+                <span class="count">Commenter</span>
+            </button>
+            <button id="share-btn" class="action-btn">
+                <span class="icon">↗️</span>
+                <span class="count">Partager</span>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const video = document.querySelector('.video-player');
+        const container = document.querySelector('.video-container');
+        const likeBtn = document.getElementById('like-btn');
+        const likeCount = likeBtn.querySelector('.count');
+
+        container.addEventListener('click', () => {
+            if (video.paused) {
+                video.play();
+            } else {
+                video.pause();
+            }
+        });
+
+        let liked = false;
+        likeBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); 
+            liked = !liked;
+            if (liked) {
+                likeBtn.style.color = 'red';
+                likeCount.textContent = '1';
+            } else {
+                likeBtn.style.color = 'white';
+                likeCount.textContent = '0';
+            }
+        });
+    </script>
+</body>
+</html>
 ```
