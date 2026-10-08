@@ -1,48 +1,326 @@
-<script>
-  // Navigation entre les onglets
-  function navigateTo(target) {
-    // Masquer tous les écrans
-    document.querySelectorAll('.main-screen').forEach(screen => {
-      screen.classList.remove('active-screen');
-    });
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>ChatBook - Vidéos & Communauté</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-    // Réinitialiser les onglets
-    document.getElementById('btn-tab-pourvous').classList.remove('active');
-    document.getElementById('btn-tab-abonnement').classList.remove('active');
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            overflow: hidden;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+        }
 
-    // Activer l'écran et l'onglet sélectionnés
-    if (target === 'pourvous') {
-      document.getElementById('screen-pourvous').classList.add('active-screen');
-      document.getElementById('btn-tab-pourvous').classList.add('active');
-    } else if (target === 'abonnement') {
-      document.getElementById('screen-abonnement').classList.add('active-screen');
-      document.getElementById('btn-tab-abonnement').classList.add('active');
-    }
-  }
+        .main-screen {
+            display: none;
+            width: 100%;
+            height: 100vh;
+        }
 
-  // Gestion des Likes
-  function handleLikeInteraction(btn) {
-    const icon = btn.querySelector('.icon-circle');
-    const countSpan = btn.querySelector('span');
-    let count = parseInt(countSpan.textContent, 10);
+        .main-screen.active-screen {
+            display: block;
+        }
 
-    if (icon.classList.contains('liked')) {
-      icon.classList.remove('liked');
-      icon.textContent = '🤍';
-      countSpan.textContent = count - 1;
-    } else {
-      icon.classList.add('liked');
-      icon.textContent = '❤️';
-      countSpan.textContent = count + 1;
-    }
-  }
+        .video-container {
+            width: 100%;
+            height: calc(100vh - 60px);
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scrollbar-width: none;
+        }
 
-  // Ouverture et fermeture du volet de commentaires
-  function triggerCommentSheet() {
-    document.getElementById('bottomCommentSheet').classList.add('open');
-  }
+        .video-container::-webkit-scrollbar {
+            display: none;
+        }
 
-  function dismissCommentSheet() {
-    document.getElementById('bottomCommentSheet').classList.remove('open');
-  }
-</script>
+        .video-player-box {
+            position: relative;
+            width: 100%;
+            height: calc(100vh - 60px);
+            scroll-snap-align: start;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .bg-pourvous-1 { background: linear-gradient(45deg, #ff007f, #7f00ff, #0000ff); width:100%; height:100%; position:absolute; opacity:0.5; }
+        .bg-pourvous-2 { background: linear-gradient(135deg, #00f2fe, #4facfe, #000000); width:100%; height:100%; position:absolute; opacity:0.5; }
+        .bg-abo-1 { background: linear-gradient(225deg, #1877f2, #f53b57, #1e272e); width:100%; height:100%; position:absolute; opacity:0.5; }
+
+        .media-placeholder-text {
+            font-size: 1.4rem;
+            font-weight: bold;
+            z-index: 2;
+            opacity: 0.9;
+            text-align: center;
+            padding: 15px;
+            border: 2px dashed rgba(255,255,255,0.2);
+            border-radius: 12px;
+            background: rgba(0,0,0,0.5);
+        }
+
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 20px 10px 20px;
+            z-index: 50;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.7), transparent);
+        }
+
+        .top-nav .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #1877f2;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
+        }
+
+        .top-nav .tabs {
+            display: flex;
+            gap: 20px;
+        }
+
+        .top-nav .tabs span {
+            font-size: 1.05rem;
+            font-weight: bold;
+            opacity: 0.4;
+            cursor: pointer;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+            padding-bottom: 5px;
+        }
+
+        .top-nav .tabs span.active {
+            opacity: 1;
+            border-bottom: 3px solid #ffffff;
+        }
+
+        .video-sidebar-left {
+            position: absolute;
+            bottom: 40px;
+            left: 15px;
+            z-index: 10;
+            max-width: 75%;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.9);
+        }
+
+        .video-sidebar-left .username { font-weight: bold; font-size: 1.05rem; margin-bottom: 5px; }
+        .video-sidebar-left .description { font-size: 0.95rem; line-height: 1.3; }
+
+        .video-sidebar-right {
+            position: absolute;
+            bottom: 60px;
+            right: 15px;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .action-button-touch {
+            background: none;
+            border: none;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            outline: none;
+            padding: 5px;
+        }
+
+        .icon-circle {
+            width: 48px;
+            height: 48px;
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            transition: transform 0.1s;
+        }
+
+        .icon-circle.liked {
+            background-color: rgba(254, 44, 85, 0.3);
+            border-color: #fe2c55;
+            color: #fe2c55;
+        }
+
+        .action-button-touch span {
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .comment-sheet {
+            position: fixed;
+            bottom: -100%;
+            left: 0;
+            width: 100%;
+            height: 65vh;
+            background-color: #ffffff;
+            color: #000000;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            z-index: 100;
+            transition: bottom 0.3s cubic-bezier(0.15, 0.85, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            padding: 15px;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.4);
+        }
+
+        .comment-sheet.open {
+            bottom: 0;
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #e4e6eb;
+        }
+
+        .comment-close {
+            font-size: 1.6rem;
+            cursor: pointer;
+            color: #606770;
+            padding: 0 5px;
+        }
+
+        .comment-body-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px 0;
+        }
+
+        .comment-box-item {
+            margin-bottom: 14px;
+            font-size: 0.95rem;
+            text-align: left;
+        }
+
+        .comment-author { font-weight: bold; color: #1877f2; }
+
+        .comment-footer-input {
+            display: flex;
+            gap: 10px;
+            padding: 10px 0;
+            border-top: 1px solid #e4e6eb;
+        }
+
+        .comment-footer-input input {
+            flex: 1;
+            padding: 14px;
+            border: 1px solid #ccd0d5;
+            border-radius: 25px;
+            outline: none;
+            font-size: 1rem;
+            background-color: #f0f2f5;
+        }
+
+        .comment-btn-send {
+            background-color: #1877f2;
+            color: #ffffff;
+            border: none;
+            padding: 0 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 0.95rem;
+        }
+
+        .admob-banner-placement {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background-color: #222222;
+            border-top: 1px solid #333333;
+            z-index: 90;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .admob-label {
+            font-size: 0.65rem;
+            color: #888888;
+            text-transform: uppercase;
+            font-weight: bold;
+            margin-bottom: 2px;
+        }
+
+        .admob-mock-content {
+            font-size: 0.9rem;
+            color: #00ffcc;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+    </style>
+    <script async src="https://googlesyndication.com" crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <div class="top-nav">
+        <div class="logo">ChatBook</div>
+        <div class="tabs">
+            <span id="btn-tab-abonnement" onclick="navigateTo('abonnement')">Abonnements</span>
+            <span id="btn-tab-pourvous" class="active" onclick="navigateTo('pourvous')">Pour vous</span>
+        </div>
+    </div>
+
+    <div id="screen-pourvous" class="main-screen active-screen">
+        <div class="video-container">
+            <div class="video-player-box">
+                <div class="bg-pourvous-1"></div>
+                <div class="media-placeholder-text">Lambeaux de code nettoyés ! ✨ Appli active</div>
+                <div class="video-sidebar-left">
+                    <div class="username">@NagnoumaDeveloper</div>
+                    <div class="description">Interface officielle ChatBook en ligne ! 🚀🔥</div>
+                </div>
+                <div class="video-sidebar-right">
+                    <button class="action-button-touch" onclick="handleLikeInteraction(this)">
+                        <div class="icon-circle">🤍</div>
+                        <span>12500</span>
+                    </button>
+                    <button class="action-button-touch" onclick="triggerCommentSheet()">
+                        <div class="icon-circle">💬</div>
+                        <span>3</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="screen-abonnement" class="main-screen">
+        <div class="video-container">
+            <div class="video-player-box">
+                <div class="bg-abo-1"></div>
+                <div class="media-placeholder-text">👥 Vos Abonnements Style Facebook</div>
+                <div class="video-sidebar-left">
+                    <div class="username">@MesAbonnements</div>
+                    <div class="description">Flux exclusif en Guinée et dans le monde. 📈</div>
+                </div>
+                <div class="video-sidebar-right">
