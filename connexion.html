@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+[11:22, 09/10/2026] Le Bon: https://nagnoumafcdeveloper.github.io/chatbook/connexion.html?v=11
+[12:26, 09/10/2026] Le Bon: <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ChatBook - Connexion</title>
-    
     <style>
         * {
             box-sizing: border-box;
@@ -82,10 +82,6 @@
             -webkit-appearance: none;
         }
 
-        .btn-login:active {
-            background-color: #166fe5;
-        }
-
         .footer-links {
             margin-top: 20px;
             border-top: 1px solid #e4e6eb;
@@ -110,11 +106,9 @@
             font-size: 0.95rem;
             transition: background-color 0.2s;
         }
-
-        .btn-register:active {
-            background-color: #36a420;
-        }
     </style>
+    <!-- Script de connexion officiel Supabase -->
+    <script src="https://jsdelivr.net"></script>
 </head>
 <body>
 
@@ -122,25 +116,62 @@
         <h1>ChatBook</h1>
         <p>Connectez-vous pour voir les messages et vidéos de vos proches.</p>
         
-        <form action="chat.html" method="GET">
+        <form id="formConnexion">
             <div class="input-group">
-                <input type="email" placeholder="Ex: monadresse@gmail.com" required autocomplete="username">
+                <input type="email" id="loginEmail" placeholder="Ex: monadresse@gmail.com" required autocomplete="username">
             </div>
-            
             <div class="input-group">
-                <input type="password" placeholder="Votre mot de passe" required autocomplete="current-password">
+                <input type="password" id="loginPassword" placeholder="Votre mot de passe" required autocomplete="current-password">
             </div>
-            
-            <button type="submit" class="btn-login">Se connecter</button>
+            <button type="submit" class="btn-login" id="submitBtn">Se connecter</button>
         </form>
 
         <div class="footer-links">
             <a href="#">Mot de passe oublié ?</a>
             <br>
-            <!-- ICI : Le bouton vert pointe maintenant directement vers ta page inscription.html -->
-            <a href="inscription.html" class="btn-register">Créer un nouveau compte</a>
+            <a href="inscription.html?v=12" class="btn-register">Créer un nouveau compte</a>
         </div>
     </div>
 
+    <script>
+        // Configuration de tes accès Supabase personnels
+        const SUPABASE_URL = "https://supabase.co";
+        const SUPABASE_KEY = "sb_publishable_DucLDxgJL-poE8KrN_9bnA_K-D0aGOS";
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        // SYSTÈME DE VÉRIFICATION EN DIRECT DANS LA BASE DE DONNÉES
+        document.getElementById('formConnexion').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const emailField = document.getElementById('loginEmail').value.trim();
+            const passwordField = document.getElementById('loginPassword').value;
+            const btn = document.getElementById('submitBtn');
+
+            btn.innerText = "Vérification en cours...";
+            btn.disabled = true;
+
+            // Requête SQL automatique pour chercher si l'utilisateur existe
+            const { data, error } = await supabase
+                .from('utilisateurs')
+                .select('*')
+                .eq('email', emailField)
+                .eq('mot_de_passe', passwordField);
+
+            if (error) {
+                alert("Erreur serveur : " + error.message);
+                btn.innerText = "Se connecter";
+                btn.disabled = false;
+            } else if (data.length === 0) {
+                // Si la base de données ne trouve aucune correspondance
+                alert("❌ Aucun compte trouvé avec ces identifiants. Vérifiez votre e-mail ou mot de passe !");
+                btn.innerText = "Se connecter";
+                btn.disabled = false;
+            } else {
+                // Si la personne est bien inscrite dans ton tableau noir Supabase
+                alert("✅ Connexion réussie ! Bienvenue sur ChatBook, " + data[0].prenom + " !");
+                window.location.href = "index.html?v=12";
+            }
+        });
+    </script>
 </body>
 </html>
