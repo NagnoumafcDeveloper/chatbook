@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ChatBook - Inscription</title>
-    
     <style>
         * {
             box-sizing: border-box;
@@ -82,10 +81,6 @@
             -webkit-appearance: none;
         }
 
-        .btn-register:active {
-            background-color: #36a420;
-        }
-
         .footer-links {
             margin-top: 20px;
             border-top: 1px solid #e4e6eb;
@@ -98,11 +93,8 @@
             font-size: 0.95rem;
             font-weight: 600;
         }
-
-        .footer-links a:hover {
-            text-decoration: underline;
-        }
     </style>
+    <script src="https://jsdelivr.net"></script>
 </head>
 <body>
 
@@ -110,23 +102,19 @@
         <h1>ChatBook</h1>
         <p>C'est rapide et facile.</p>
         
-        <form action="connexion.html" method="GET">
+        <form id="formInscription">
             <div class="input-group">
-                <input type="text" placeholder="Prénom" required>
+                <input type="text" id="regPrenom" placeholder="Prénom" required>
             </div>
-            
             <div class="input-group">
-                <input type="text" placeholder="Nom de famille" required>
+                <input type="text" id="regNom" placeholder="Nom de famille" required>
             </div>
-
             <div class="input-group">
-                <input type="email" placeholder="Numéro de mobile ou e-mail" required>
+                <input type="email" id="regEmail" placeholder="Numéro de mobile ou e-mail" required>
             </div>
-            
             <div class="input-group">
-                <input type="password" placeholder="Nouveau mot de passe" required>
+                <input type="password" id="regPassword" placeholder="Nouveau mot de passe" required>
             </div>
-            
             <button type="submit" class="btn-register">S'inscrire</button>
         </form>
 
@@ -135,5 +123,30 @@
         </div>
     </div>
 
+    <script>
+        const SUPABASE_URL = "https://supabase.co";
+        const SUPABASE_KEY = "sb_publishable_DucLDxgJL-poE8KrN_9bnA_K-D0aGOS";
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        document.getElementById('formInscription').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const prenom = document.getElementById('regPrenom').value;
+            const name = document.getElementById('regNom').value;
+            const email = document.getElementById('regEmail').value;
+            const mot_de_passe = document.getElementById('regPassword').value;
+
+            const { data, error } = await supabase
+                .from('utilisateurs')
+                .insert([{ prenom, nom: name, email, mot_de_passe }]);
+
+            if (error) {
+                alert("Erreur technique : " + error.message);
+            } else {
+                alert("Félicitations Chef ! Compte enregistré en direct dans Supabase ! 🎉");
+                window.location.href = "connexion.html?v=11";
+            }
+        });
+    </script>
 </body>
 </html>
