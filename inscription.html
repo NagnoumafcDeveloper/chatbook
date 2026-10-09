@@ -48,6 +48,7 @@
         .input-group {
             margin-bottom: 14px;
             text-align: left;
+            position: relative;
         }
 
         .input-group input {
@@ -64,6 +65,18 @@
         .input-group input:focus {
             border-color: #1877f2;
             box-shadow: 0 0 0 2px rgba(24, 119, 242, 0.2);
+        }
+
+        /* STYLE POUR L'ŒIL DU MOT DE PASSE */
+        .password-toggle-eye {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 1.2rem;
+            user-select: none;
+            color: #606770;
         }
 
         .btn-register {
@@ -112,8 +125,10 @@
             <div class="input-group">
                 <input type="email" id="regEmail" placeholder="Numéro de mobile ou e-mail" required>
             </div>
+            <!-- APPORT DE LA CASE DU MOT DE PASSE INTERACTIVE -->
             <div class="input-group">
                 <input type="password" id="regPassword" placeholder="Nouveau mot de passe" required>
+                <span class="password-toggle-eye" id="togglePasswordBtn" onclick="togglePasswordVisibility()">👁️</span>
             </div>
             <button type="submit" class="btn-register">S'inscrire</button>
         </form>
@@ -127,6 +142,20 @@
         const SUPABASE_URL = "https://supabase.co";
         const SUPABASE_KEY = "sb_publishable_DucLDxgJL-poE8KrN_9bnA_K-D0aGOS";
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        // SYSTÈME DE L'ŒIL MAGIQUE (AFFICHER / MASQUER)
+        function togglePasswordVisibility() {
+            const passwordField = document.getElementById('regPassword');
+            const eyeIcon = document.getElementById('togglePasswordBtn');
+            
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                eyeIcon.innerText = "🔒"; // Change l'icône quand c'est visible
+            } else {
+                passwordField.type = "password";
+                eyeIcon.innerText = "👁️"; // Remet l'œil quand c'est masqué
+            }
+        }
 
         document.getElementById('formInscription').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -144,7 +173,7 @@
                 alert("Erreur technique : " + error.message);
             } else {
                 alert("Félicitations Chef ! Compte enregistré en direct dans Supabase ! 🎉");
-                window.location.href = "connexion.html?v=11";
+                window.location.href = "connexion.html?v=12";
             }
         });
     </script>
