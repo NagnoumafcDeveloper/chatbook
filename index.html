@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>ChatBook - Flux Vidéos</title>
+    <title>ChatBook - Interactif Pro</title>
     <style>
         * {
             box-sizing: border-box;
@@ -11,6 +11,7 @@
             padding: 0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
             -webkit-tap-highlight-color: transparent;
+            user-select: none; /* Bloque le menu Copier/Chercher d'Apple */
         }
 
         body {
@@ -55,11 +56,11 @@
             justify-content: center;
         }
 
-        /* Lecteur vidéo plein écran ultra-fluide pour iPhone */
         .video-element {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            pointer-events: auto;
         }
 
         .top-nav {
@@ -108,6 +109,7 @@
             z-index: 10;
             max-width: 75%;
             text-shadow: 1px 1px 4px rgba(0,0,0,0.9);
+            pointer-events: none;
         }
 
         .video-sidebar-left .username { font-weight: bold; font-size: 1.05rem; margin-bottom: 5px; }
@@ -133,21 +135,21 @@
             align-items: center;
             cursor: pointer;
             outline: none;
-            padding: 5px;
+            padding: 10px; /* Agrandit la zone tactile */
         }
 
         .icon-circle {
-            width: 54px;
-            height: 54px;
+            width: 56px;
+            height: 56px;
             background-color: rgba(0, 0, 0, 0.7);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.7rem;
+            font-size: 1.8rem;
             margin-bottom: 4px;
             border: 2px solid rgba(255, 255, 255, 0.5);
-            transition: transform 0.1s ease;
+            pointer-events: none; /* Force le clic sur le bouton parent */
         }
 
         .icon-circle.liked {
@@ -160,6 +162,7 @@
             font-size: 0.85rem;
             font-weight: bold;
             text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+            pointer-events: none;
         }
 
         .comment-sheet {
@@ -173,7 +176,7 @@
             border-top-left-radius: 20px;
             border-top-right-radius: 20px;
             z-index: 150;
-            transition: bottom 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: bottom 0.3s ease-out;
             display: flex;
             flex-direction: column;
             padding: 15px;
@@ -186,7 +189,7 @@
         .comment-box-item { margin-bottom: 14px; font-size: 0.95rem; text-align: left; }
         .comment-author { font-weight: bold; color: #1877f2; }
         .comment-footer-input { display: flex; gap: 10px; padding: 10px 0; border-top: 1px solid #e4e6eb; }
-        .comment-footer-input input { flex: 1; padding: 14px; border: 1px solid #ccd0d5; border-radius: 25px; font-size: 1rem; background-color: #f0f2f5; outline: none; color: #000000; }
+        .comment-footer-input input { flex: 1; padding: 14px; border: 1px solid #ccd0d5; border-radius: 25px; font-size: 1rem; background-color: #f0f2f5; outline: none; color: #000000; user-select: text; }
         .comment-btn-send { background-color: #1877f2; color: #ffffff; border: none; padding: 0 20px; border-radius: 25px; font-weight: bold; cursor: pointer; }
 
         .admob-banner-placement {
@@ -221,22 +224,21 @@
     <div id="screen-pourvous" class="main-screen active-screen">
         <div class="video-container">
             <div class="video-player-box">
-                <!-- Flux vidéo direct MP4 haute fluidité -->
-                <video class="video-element" loop src="https://mixkit.co" autoplay muted playsinline></video>
+                <video class="video-element" id="mainVideoPlayer" loop src="https://mixkit.co" autoplay muted playsinline></video>
                 <div class="video-sidebar-left">
                     <div class="username">@NagnoumaDeveloper</div>
                     <div class="description">Bienvenue sur le flux vidéo officiel de ChatBook ! 🚀🔥 #tech</div>
                 </div>
                 <div class="video-sidebar-right">
-                    <button class="action-button-touch" onclick="handleLikeInteraction(this)">
+                    <button type="button" class="action-button-touch" onclick="handleLikeInteraction(this)">
                         <div class="icon-circle">🤍</div>
                         <span>12.5K</span>
                     </button>
-                    <button class="action-button-touch" onclick="triggerCommentSheet()">
+                    <button type="button" class="action-button-touch" onclick="triggerCommentSheet()">
                         <div class="icon-circle">💬</div>
                         <span id="comment-counter">2</span>
                     </button>
-                    <button class="action-button-touch" onclick="shareOnWhatsApp()">
+                    <button type="button" class="action-button-touch" onclick="shareOnWhatsApp()">
                         <div class="icon-circle">🔗</div>
                         <span>Partager</span>
                     </button>
@@ -255,15 +257,15 @@
                     <div class="description">Créer une multinationale depuis sa chambre. Tout est possible ! 🇬🇳🌐</div>
                 </div>
                 <div class="video-sidebar-right">
-                    <button class="action-button-touch" onclick="handleLikeInteraction(this)">
+                    <button type="button" class="action-button-touch" onclick="handleLikeInteraction(this)">
                         <div class="icon-circle">🤍</div>
                         <span>45K</span>
                     </button>
-                    <button class="action-button-touch" onclick="triggerCommentSheet()">
+                    <button type="button" class="action-button-touch" onclick="triggerCommentSheet()">
                         <div class="icon-circle">💬</div>
                         <span>0</span>
                     </button>
-                    <button class="action-button-touch" onclick="shareOnWhatsApp()">
+                    <button type="button" class="action-button-touch" onclick="shareOnWhatsApp()">
                         <div class="icon-circle">🔗</div>
                         <span>Partager</span>
                     </button>
@@ -273,8 +275,3 @@
     </div>
 
     <!-- COMMENTAIRES -->
-    <div id="bottomCommentSheet" class="comment-sheet">
-        <div class="comment-header">
-            <span>Commentaires</span>
-            <span class="comment-close" onclick="dismissCommentSheet()">✕</span>
-        </div>
