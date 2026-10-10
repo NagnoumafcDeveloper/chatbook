@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+[13:38, 10/10/2026] Le Bon: test
+[13:51, 10/10/2026] Le Bon: <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -11,7 +12,7 @@
             padding: 0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
             -webkit-tap-highlight-color: transparent;
-            user-select: none; /* Bloque le menu Copier/Chercher d'Apple */
+            user-select: none;
         }
 
         body {
@@ -36,31 +37,25 @@
         .video-container {
             width: 100%;
             height: calc(100vh - 60px);
-            overflow-y: scroll;
-            scroll-snap-type: y mandatory;
-            scrollbar-width: none;
-        }
-
-        .video-container::-webkit-scrollbar {
-            display: none;
         }
 
         .video-player-box {
             position: relative;
             width: 100%;
             height: calc(100vh - 60px);
-            scroll-snap-align: start;
-            background-color: #000000;
+            /* Arrière-plan moderne en dégradé animé pour remplacer l'écran noir sur iPhone */
+            background: linear-gradient(45deg, #1e3c72, #2a5298, #fe2c55);
+            background-size: 400% 400%;
+            animation: gradientBg 10s ease infinite;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        .video-element {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            pointer-events: auto;
+        @keyframes gradientBg {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .top-nav {
@@ -109,7 +104,6 @@
             z-index: 10;
             max-width: 75%;
             text-shadow: 1px 1px 4px rgba(0,0,0,0.9);
-            pointer-events: none;
         }
 
         .video-sidebar-left .username { font-weight: bold; font-size: 1.05rem; margin-bottom: 5px; }
@@ -135,34 +129,37 @@
             align-items: center;
             cursor: pointer;
             outline: none;
-            padding: 10px; /* Agrandit la zone tactile */
+            padding: 10px;
         }
 
         .icon-circle {
             width: 56px;
             height: 56px;
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgba(0, 0, 0, 0.6);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.8rem;
             margin-bottom: 4px;
-            border: 2px solid rgba(255, 255, 255, 0.5);
-            pointer-events: none; /* Force le clic sur le bouton parent */
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            transition: transform 0.1s ease;
+        }
+
+        .icon-circle:active {
+            transform: scale(0.85);
         }
 
         .icon-circle.liked {
-            background-color: rgba(254, 44, 85, 0.9);
+            background-color: #fe2c55;
             border-color: #fe2c55;
-            color: #fe2c55;
+            color: #ffffff;
         }
 
         .action-button-touch span {
             font-size: 0.85rem;
             font-weight: bold;
             text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
-            pointer-events: none;
         }
 
         .comment-sheet {
@@ -189,7 +186,7 @@
         .comment-box-item { margin-bottom: 14px; font-size: 0.95rem; text-align: left; }
         .comment-author { font-weight: bold; color: #1877f2; }
         .comment-footer-input { display: flex; gap: 10px; padding: 10px 0; border-top: 1px solid #e4e6eb; }
-        .comment-footer-input input { flex: 1; padding: 14px; border: 1px solid #ccd0d5; border-radius: 25px; font-size: 1rem; background-color: #f0f2f5; outline: none; color: #000000; user-select: text; }
+        .comment-footer-input input { flex: 1; padding: 14px; border: 1px solid #ccd0d5; border-radius: 25px; font-size: 1rem; background-color: #f0f2f5; outline: none; color: #000000; -webkit-user-select: text; user-select: text; }
         .comment-btn-send { background-color: #1877f2; color: #ffffff; border: none; padding: 0 20px; border-radius: 25px; font-weight: bold; cursor: pointer; }
 
         .admob-banner-placement {
@@ -224,15 +221,14 @@
     <div id="screen-pourvous" class="main-screen active-screen">
         <div class="video-container">
             <div class="video-player-box">
-                <video class="video-element" id="mainVideoPlayer" loop src="https://mixkit.co" autoplay muted playsinline></video>
                 <div class="video-sidebar-left">
                     <div class="username">@NagnoumaDeveloper</div>
-                    <div class="description">Bienvenue sur le flux vidéo officiel de ChatBook ! 🚀🔥 #tech</div>
+                    <div class="description">Bienvenue sur le flux officiel de ChatBook ! L'application avance très vite. 🚀🔥 #tech</div>
                 </div>
                 <div class="video-sidebar-right">
                     <button type="button" class="action-button-touch" onclick="handleLikeInteraction(this)">
-                        <div class="icon-circle">🤍</div>
-                        <span>12.5K</span>
+                        <div class="icon-circle" id="likeIcon">🤍</div>
+                        <span id="like-counter">12.5K</span>
                     </button>
                     <button type="button" class="action-button-touch" onclick="triggerCommentSheet()">
                         <div class="icon-circle">💬</div>
@@ -250,11 +246,10 @@
     <!-- FLUX ABONNEMENTS -->
     <div id="screen-abonnement" class="main-screen">
         <div class="video-container">
-            <div class="video-player-box">
-                <video class="video-element" loop src="https://mixkit.co" playsinline></video>
+            <div class="video-player-box" style="background: linear-gradient(45deg, #11998e, #38ef7d);">
                 <div class="video-sidebar-left">
                     <div class="username">@GuineeTech</div>
-                    <div class="description">Créer une multinationale depuis sa chambre. Tout est possible ! 🇬🇳🌐</div>
+                    <div class="description">Créer une grande application depuis sa chambre au Sénégal. Tout est possible ! 🇬🇳🌐</div>
                 </div>
                 <div class="video-sidebar-right">
                     <button type="button" class="action-button-touch" onclick="handleLikeInteraction(this)">
@@ -275,3 +270,9 @@
     </div>
 
     <!-- COMMENTAIRES -->
+    <div id="bottomCommentSheet" class="comment-sheet">
+        <div class="comment-header">
+            <span>Commentaires</span>
+            <span class="comment-close" onclick="dismissCommentSheet()">✕</span>
+        </div>
+        <div class="comment-body-scroll" id="boxMessagesContainer">
