@@ -1,10 +1,9 @@
-[13:38, 10/10/2026] Le Bon: test
-[13:51, 10/10/2026] Le Bon: <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>ChatBook - Interactif Pro</title>
+    <title>ChatBook - École Numérique</title>
     <style>
         * {
             box-sizing: border-box;
@@ -24,32 +23,17 @@
             height: 100%;
         }
 
-        .main-screen {
-            display: none;
-            width: 100%;
-            height: 100vh;
-        }
-
-        .main-screen.active-screen {
-            display: block;
-        }
-
-        .video-container {
-            width: 100%;
-            height: calc(100vh - 60px);
-        }
-
         .video-player-box {
             position: relative;
             width: 100%;
             height: calc(100vh - 60px);
-            /* Arrière-plan moderne en dégradé animé pour remplacer l'écran noir sur iPhone */
             background: linear-gradient(45deg, #1e3c72, #2a5298, #fe2c55);
             background-size: 400% 400%;
             animation: gradientBg 10s ease infinite;
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: background 0.5s ease;
         }
 
         @keyframes gradientBg {
@@ -64,37 +48,45 @@
             left: 0;
             width: 100%;
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
-            padding: 25px 20px 10px 20px;
+            padding: 20px 20px 10px 20px;
             z-index: 50;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+            background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
+            gap: 12px;
         }
 
         .top-nav .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
+            font-size: 1.6rem;
+            font-weight: 900;
             color: #1877f2;
             text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
+            letter-spacing: -0.5px;
         }
 
-        .top-nav .tabs {
+        .tabs-categories {
             display: flex;
-            gap: 20px;
+            gap: 12px;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 6px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
         }
 
-        .top-nav .tabs span {
-            font-size: 1.05rem;
+        .tabs-categories span {
+            font-size: 0.9rem;
             font-weight: bold;
-            opacity: 0.4;
+            opacity: 0.5;
             cursor: pointer;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
-            padding-bottom: 5px;
+            padding: 6px 12px;
+            border-radius: 15px;
+            transition: all 0.2s ease;
         }
 
-        .top-nav .tabs span.active {
+        .tabs-categories span.active {
             opacity: 1;
-            border-bottom: 3px solid #ffffff;
+            background-color: #ffffff;
+            color: #000000;
         }
 
         .video-sidebar-left {
@@ -106,7 +98,7 @@
             text-shadow: 1px 1px 4px rgba(0,0,0,0.9);
         }
 
-        .video-sidebar-left .username { font-weight: bold; font-size: 1.05rem; margin-bottom: 5px; }
+        .video-sidebar-left .username { font-weight: bold; font-size: 1.05rem; margin-bottom: 5px; color: #00ffcc; }
         .video-sidebar-left .description { font-size: 0.95rem; line-height: 1.3; }
 
         .video-sidebar-right {
@@ -146,15 +138,8 @@
             transition: transform 0.1s ease;
         }
 
-        .icon-circle:active {
-            transform: scale(0.85);
-        }
-
-        .icon-circle.liked {
-            background-color: #fe2c55;
-            border-color: #fe2c55;
-            color: #ffffff;
-        }
+        .icon-circle:active { transform: scale(0.85); }
+        .icon-circle.liked { background-color: #fe2c55; border-color: #fe2c55; }
 
         .action-button-touch span {
             font-size: 0.85rem;
@@ -186,87 +171,89 @@
         .comment-box-item { margin-bottom: 14px; font-size: 0.95rem; text-align: left; }
         .comment-author { font-weight: bold; color: #1877f2; }
         .comment-footer-input { display: flex; gap: 10px; padding: 10px 0; border-top: 1px solid #e4e6eb; }
-        .comment-footer-input input { flex: 1; padding: 14px; border: 1px solid #ccd0d5; border-radius: 25px; font-size: 1rem; background-color: #f0f2f5; outline: none; color: #000000; -webkit-user-select: text; user-select: text; }
+        .comment-footer-input input { flex: 1; padding: 14px; border: 1px solid #ccd0d5; border-radius: 25px; font-size: 1rem; background-color: #f0f2f5; outline: none; color: #000000; user-select: text; }
         .comment-btn-send { background-color: #1877f2; color: #ffffff; border: none; padding: 0 20px; border-radius: 25px; font-weight: bold; cursor: pointer; }
 
-        .admob-banner-placement {
+        /* FENÊTRE DE FÉLICITATIONS SAGE POUR ENFANTS */
+        .congrats-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            background-color: #ffffff;
+            color: #000000;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            z-index: 200;
+            text-align: center;
+            width: 85%;
+            max-width: 320px;
+            display: none;
+            transition: all 0.3s ease;
+        }
+        .congrats-modal.show { display: block; transform: translate(-50%, -50%) scale(1); }
+        .congrats-modal h2 { color: #42b72a; font-size: 1.5rem; margin-bottom: 10px; }
+        .congrats-modal p { font-size: 1rem; color: #4b4f56; margin-bottom: 20px; line-height: 1.4; }
+        .congrats-btn { background-color: #42b72a; color: #ffffff; border: none; padding: 12px 25px; border-radius: 20px; font-weight: bold; cursor: pointer; font-size: 1rem; }
+
+        .bottom-bar-placement {
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
             height: 60px;
-            background-color: #222222;
-            border-top: 1px solid #333333;
+            background-color: #111111;
+            border-top: 1px solid #222222;
             z-index: 70;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
+            font-size: 0.8rem;
+            color: #888888;
+            font-weight: bold;
         }
-        .admob-label { font-size: 0.65rem; color: #888888; font-weight: bold; }
-        .admob-mock-content { font-size: 0.9rem; color: #00ffcc; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <div class="top-nav">
         <div class="logo">ChatBook</div>
-        <div class="tabs">
-            <span id="btn-tab-abonnement" onclick="navigateTo('abonnement')">Abonnements</span>
-            <span id="btn-tab-pourvous" class="active" onclick="navigateTo('pourvous')">Pour vous</span>
+        <div class="tabs-categories">
+            <span id="tab-humour" class="active" onclick="switchCategory('humour')">🤣 Humour</span>
+            <span id="tab-motivation" onclick="switchCategory('motivation')">💪 Motivation</span>
+            <span id="tab-enfants" onclick="switchCategory('enfants')">👶 Enfants</span>
         </div>
     </div>
 
-    <!-- FLUX POUR VOUS -->
-    <div id="screen-pourvous" class="main-screen active-screen">
-        <div class="video-container">
-            <div class="video-player-box">
-                <div class="video-sidebar-left">
-                    <div class="username">@NagnoumaDeveloper</div>
-                    <div class="description">Bienvenue sur le flux officiel de ChatBook ! L'application avance très vite. 🚀🔥 #tech</div>
-                </div>
-                <div class="video-sidebar-right">
-                    <button type="button" class="action-button-touch" onclick="handleLikeInteraction(this)">
-                        <div class="icon-circle" id="likeIcon">🤍</div>
-                        <span id="like-counter">12.5K</span>
-                    </button>
-                    <button type="button" class="action-button-touch" onclick="triggerCommentSheet()">
-                        <div class="icon-circle">💬</div>
-                        <span id="comment-counter">2</span>
-                    </button>
-                    <button type="button" class="action-button-touch" onclick="shareOnWhatsApp()">
-                        <div class="icon-circle">🔗</div>
-                        <span>Partager</span>
-                    </button>
-                </div>
+    <div class="video-container">
+        <div class="video-player-box" id="mainAppBox">
+            <div class="video-sidebar-left">
+                <div class="username" id="videoUser">@NagnoumaDeveloper</div>
+                <div class="description" id="videoDesc">Préparez-vous à rire ! Les meilleures vidéos d'humour positives sont ici. 🤣✨ #détente</div>
+            </div>
+            <div class="video-sidebar-right">
+                <button type="button" class="action-button-touch" onclick="handleLikeInteraction(this)">
+                    <div class="icon-circle" id="likeIcon">🤍</div>
+                    <span id="like-counter">12.5K</span>
+                </button>
+                <button type="button" class="action-button-touch" onclick="triggerCommentSheet()">
+                    <div class="icon-circle">💬</div>
+                    <span id="comment-counter">2</span>
+                </button>
+                <button type="button" class="action-button-touch" onclick="shareOnWhatsApp()">
+                    <div class="icon-circle">🔗</div>
+                    <span>Partager</span>
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- FLUX ABONNEMENTS -->
-    <div id="screen-abonnement" class="main-screen">
-        <div class="video-container">
-            <div class="video-player-box" style="background: linear-gradient(45deg, #11998e, #38ef7d);">
-                <div class="video-sidebar-left">
-                    <div class="username">@GuineeTech</div>
-                    <div class="description">Créer une grande application depuis sa chambre au Sénégal. Tout est possible ! 🇬🇳🌐</div>
-                </div>
-                <div class="video-sidebar-right">
-                    <button type="button" class="action-button-touch" onclick="handleLikeInteraction(this)">
-                        <div class="icon-circle">🤍</div>
-                        <span>45K</span>
-                    </button>
-                    <button type="button" class="action-button-touch" onclick="triggerCommentSheet()">
-                        <div class="icon-circle">💬</div>
-                        <span>0</span>
-                    </button>
-                    <button type="button" class="action-button-touch" onclick="shareOnWhatsApp()">
-                        <div class="icon-circle">🔗</div>
-                        <span>Partager</span>
-                    </button>
-                </div>
-            </div>
-        </div>
+    <!-- BOX DE FÉLICITATIONS SAGES -->
+    <div class="congrats-modal" id="congratsBox">
+        <h2>🎉 Bravo Champion !</h2>
+        <p>Tu es un enfant très sage et très concentré. L'étude te donnera de grands super-pouvoirs dans la vie ! 📚✏️</p>
+        <button class="congrats-btn" onclick="closeCongrats()">Continuer à apprendre 🧠</button>
     </div>
 
     <!-- COMMENTAIRES -->
@@ -276,3 +263,5 @@
             <span class="comment-close" onclick="dismissCommentSheet()">✕</span>
         </div>
         <div class="comment-body-scroll" id="boxMessagesContainer">
+            <div class="comment-box-item"><span class="comment-author">@Alpha_Tech :</span> Ce concept anti-stress est génial Lamine ! 🇬🇳</div>
+            <div class="comment-box-item"><span class="comment-author">@Mariama_Dev :</span> Enfin une appli saine pour mes enfants ! 😍</div>
