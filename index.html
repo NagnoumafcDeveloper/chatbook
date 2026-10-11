@@ -1,4 +1,4 @@
-HTML
+```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -20,20 +20,18 @@ HTML
             overflow: hidden;
         }
 
-        /* Conteneur principal du flux avec défilement vertical */
         .video-container {
             width: 100%;
             height: 100vh;
             overflow-y: scroll;
             scroll-snap-type: y mandatory;
-            scrollbar-width: none; /* Masquer la barre de défilement sur Firefox */
+            scrollbar-width: none; 
         }
 
         .video-container::-webkit-scrollbar {
-            display: none; /* Masquer la barre de défilement sur Chrome/Safari */
+            display: none; 
         }
 
-        /* Chaque section vidéo en plein écran */
         .video-card {
             width: 100%;
             height: 100vh;
@@ -45,7 +43,6 @@ HTML
             align-items: center;
         }
 
-        /* Style de la vidéo */
         .video-card video {
             width: 100%;
             height: 100%;
@@ -53,7 +50,6 @@ HTML
             cursor: pointer;
         }
 
-        /* Boutons d'interaction sur le côté (Like, Commentaire, Partage) */
         .sidebar {
             position: absolute;
             right: 15px;
@@ -84,7 +80,6 @@ HTML
             transform: scale(0.9);
         }
 
-        /* Informations sur la vidéo en bas */
         .video-info {
             position: absolute;
             left: 15px;
@@ -110,7 +105,7 @@ HTML
     <div class="video-container" id="videoContainer">
         <!-- Vidéo 1 -->
         <div class="video-card">
-            <video src="VOTRE_LIEN_OU_FICHIER_1.mp4" loop playsinline></video>
+            <video src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" loop playsinline></video>
             <div class="video-info">
                 <h3>Dessin animé de motivation</h3>
                 <p>Conseils pour bien réussir sa rentrée à l'école 🎒</p>
@@ -124,7 +119,7 @@ HTML
 
         <!-- Vidéo 2 -->
         <div class="video-card">
-            <video src="VOTRE_LIEN_OU_FICHIER_2.mp4" loop playsinline></video>
+            <video src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4" loop playsinline></video>
             <div class="video-info">
                 <h3>Vidéo humoristique</h3>
                 <p>Un moment de rire pour bien commencer la journée 😄</p>
@@ -138,12 +133,11 @@ HTML
     </div>
 
     <script>
-        // Gestion de la lecture automatique de la vidéo visible à l'écran
         const videos = document.querySelectorAll('video');
 
         const observerOptions = {
             root: document.getElementById('videoContainer'),
-            threshold: 0.6 // La vidéo se lance si elle est visible à 60% minimum
+            threshold: 0.6
         };
 
         const observer = new IntersectionObserver((entries) => {
@@ -161,8 +155,6 @@ HTML
 
         videos.forEach(video => {
             observer.observe(video);
-
-            // Permettre de mettre en pause / lecture en cliquant directement sur la vidéo
             video.addEventListener('click', () => {
                 if (video.paused) {
                     video.play();
@@ -172,10 +164,10 @@ HTML
             });
         });
 
-        // Fonction basique pour changer la couleur du bouton Like
         function toggleLike(btn) {
             btn.style.color = btn.style.color === 'red' ? 'white' : 'red';
         }
     </script>
 </body>
 </html>
+```
