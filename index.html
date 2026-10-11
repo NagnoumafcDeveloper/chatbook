@@ -1,315 +1,105 @@
-```html
+HTML
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>ChatBook - École Numérique</title>
-  <style>
-    * {
-      box-sizing: border-box; 
-      margin: 0; 
-      padding: 0; 
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; 
-      -webkit-tap-highlight-color: transparent; 
-      user-select: none;
-    }
-    body {
-      background-color: #000000; 
-      color: #ffffff; 
-      overflow: hidden; 
-      position: fixed; 
-      width: 100%; 
-      height: 100%;
-    }
-    .video-container {
-      position: relative;
-      width: 100%;
-      height: calc(100vh - 60px);
-    }
-    .video-player-box {
-      position: relative; 
-      width: 100%; 
-      height: 100%; 
-      background: #000;
-      display: flex; 
-      align-items: center; 
-      justify-content: center;
-    }
-    .video-player-box video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .top-nav {
-      position: fixed; 
-      top: 0; 
-      left: 0; 
-      width: 100%; 
-      display: flex; 
-      flex-direction: column; 
-      align-items: center; 
-      padding: 20px 20px 10px 20px; 
-      z-index: 50; 
-      background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent); 
-      gap: 12px;
-    }
-    .top-nav .logo {
-      font-size: 1.6rem; 
-      font-weight: 900; 
-      color: #1877f2; 
-      text-shadow: 1px 1px 4px rgba(0,0,0,0.6); 
-      letter-spacing: -0.5px;
-    }
-    .tabs-categories {
-      display: flex; 
-      gap: 12px; 
-      background-color: rgba(255, 255, 255, 0.1); 
-      padding: 6px 12px; 
-      border-radius: 20px; 
-      border: 1px solid rgba(255, 255, 255, 0.15);
-    }
-    .tabs-categories span {
-      font-size: 0.9rem; 
-      font-weight: bold; 
-      opacity: 0.5; 
-      cursor: pointer; 
-      padding: 6px 12px; 
-      border-radius: 15px; 
-      transition: all 0.2s ease;
-    }
-    .tabs-categories span.active {
-      opacity: 1; 
-      background-color: #ffffff; 
-      color: #000000;
-    }
-    .video-sidebar-left {
-      position: absolute; 
-      bottom: 40px; 
-      left: 15px; 
-      z-index: 10; 
-      max-width: 75%; 
-      text-shadow: 1px 1px 4px rgba(0,0,0,0.9);
-    }
-    .video-sidebar-left .username { 
-      font-weight: bold; 
-      font-size: 1.05rem; 
-      margin-bottom: 5px; 
-      color: #00ffcc; 
-    }
-    .video-sidebar-left .description { 
-      font-size: 0.95rem; 
-      line-height: 1.3; 
-    }
-    .video-sidebar-right {
-      position: absolute; 
-      bottom: 80px; 
-      right: 25px; 
-      z-index: 80; 
-      display: flex; 
-      flex-direction: column; 
-      align-items: center; 
-      gap: 20px;
-    }
-    .action-button-touch {
-      background: none; 
-      border: none; 
-      color: #ffffff; 
-      display: flex; 
-      flex-direction: column; 
-      align-items: center; 
-      cursor: pointer; 
-      outline: none; 
-      padding: 10px;
-    }
-    .icon-circle {
-      width: 56px; 
-      height: 56px; 
-      background-color: rgba(0, 0, 0, 0.6); 
-      border-radius: 50%; 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      font-size: 1.8rem; 
-      margin-bottom: 4px; 
-      border: 2px solid rgba(255, 255, 255, 0.4); 
-      transition: transform 0.1s ease;
-    }
-    .icon-circle:active { 
-      transform: scale(0.85); 
-    }
-    .icon-circle.liked { 
-      background-color: #fe2c55; 
-      border-color: #fe2c55; 
-    }
-    .action-button-touch span {
-      font-size: 0.85rem; 
-      font-weight: bold; 
-      text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
-    }
-    .comment-sheet {
-      position: fixed; 
-      bottom: -100%; 
-      left: 0; 
-      width: 100%; 
-      height: 65vh; 
-      background-color: #ffffff; 
-      color: #000000; 
-      border-top-left-radius: 20px; 
-      border-top-right-radius: 20px; 
-      z-index: 150; 
-      transition: bottom 0.3s ease-out; 
-      display: flex; 
-      flex-direction: column; 
-      padding: 15px;
-    }
-    .comment-sheet.open { 
-      bottom: 0; 
-    }
-    .comment-header { 
-      display: flex; 
-      justify-content: space-between; 
-      align-items: center; 
-      font-weight: bold; 
-      border-bottom: 1px solid #e4e6eb; 
-      padding-bottom: 10px;
-    }
-    .comment-close { 
-      font-size: 1.6rem; 
-      cursor: pointer; 
-      color: #606770; 
-      padding: 5px; 
-    }
-    .comment-body-scroll { 
-      flex: 1; 
-      overflow-y: auto; 
-      padding: 15px 0; 
-    }
-    .comment-box-item { 
-      margin-bottom: 14px; 
-      font-size: 0.95rem; 
-      text-align: left; 
-    }
-    .comment-author { 
-      font-weight: bold; 
-      color: #1877f2; 
-    }
-    .bottom-bar-placement {
-      position: fixed; 
-      bottom: 0; 
-      left: 0; 
-      width: 100%; 
-      height: 60px; 
-      background-color: #111111; 
-      border-top: 1px solid #222222; 
-      z-index: 70; 
-      display: flex; 
-      justify-content: center; 
-      align-items: center; 
-      font-size: 0.8rem; 
-      color: #888888; 
-      font-weight: bold;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatBook</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .video-container {
+            position: relative;
+            background: black;
+            width: 100%;
+            height: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .actions {
+            display: flex;
+            justify-content: space-around;
+            padding: 15px;
+            border-top: 1px solid #ddd;
+            background: #fff;
+        }
+        .action-btn {
+            background: none;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .action-btn:hover {
+            color: #1877f2;
+        }
+    </style>
 </head>
 <body>
 
-  <div class="top-nav">
-    <div class="logo">ChatBook</div>
-    <div class="tabs-categories">
-      <span id="tab-humour" class="active" onclick="switchCategory('humour')">🤣 Humour</span>
-      <span id="tab-motivation" onclick="switchCategory('motivation')">💪 Motivation</span>
-      <span id="tab-enfants" onclick="switchCategory('enfants')">👶 Enfants</span>
+    <div class="container">
+        <!-- Zone de la vidéo -->
+        <div class="video-container">
+            <video id="mainVideo" src="votre-video.mp4" loop playsinline autoplay controls></video>
+        </div>
+
+        <!-- Boutons d'interaction (Like, Commentaire, Partage) -->
+        <div class="actions">
+            <button class="action-btn" id="likeBtn">❤️ J'aime</button>
+            <button class="action-btn" id="commentBtn">💬 Commenter</button>
+            <button class="action-btn" id="shareBtn">↗️ Partager</button>
+        </div>
     </div>
-  </div>
 
-  <div class="video-container">
-    <div class="video-player-box" id="mainAppBox">
-      <!-- Ajout de la balise vidéo pour que la vidéo fonctionne -->
-      <video id="mainVideo" src="votre-video.mp4" loop playsinline autoplay></video>
+    <script>
+        // Gestion simple des interactions
+        const likeBtn = document.getElementById('likeBtn');
+        let liked = false;
+        likeBtn.addEventListener('click', () => {
+            liked = !liked;
+            likeBtn.style.color = liked ? '#e41e3f' : '#333';
+            likeBtn.textContent = liked ? '❤️ Aimé' : '❤️ J\'aime';
+        });
 
-      <div class="video-sidebar-left">
-        <div class="username" id="videoUser">@NagnoumaDeveloper</div>
-        <div class="description" id="videoDesc">Préparez-vous à rire ! Les meilleures vidéos d'humour positives sont ici. 🤣✨ #détente</div>
-      </div>
-      <div class="video-sidebar-right">
-        <button type="button" class="action-button-touch" onclick="handleLikeInteraction(this)">
-          <div class="icon-circle" id="likeIcon">🤍</div>
-          <span id="like-counter">12.5K</span>
-        </button>
-        <button type="button" class="action-button-touch" onclick="triggerCommentSheet()">
-          <div class="icon-circle">💬</div>
-          <span id="comment-counter">2</span>
-        </button>
-        <button type="button" class="action-button-touch" onclick="shareOnWhatsApp()">
-          <div class="icon-circle">🔗</div>
-          <span>Partager</span>
-        </button>
-      </div>
-    </div>
-  </div>
+        const shareBtn = document.getElementById('shareBtn');
+        shareBtn.addEventListener('click', () => {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'ChatBook Video',
+                    url: window.location.href
+                }).catch(console.error);
+            } else {
+                alert("Le partage n'est pas supporté par votre navigateur.");
+            }
+        });
+    </script>
 
-  <!-- COMMENTAIRES -->
-  <div id="bottomCommentSheet" class="comment-sheet">
-    <div class="comment-header">
-      <span>Commentaires</span>
-      <span class="comment-close" onclick="dismissCommentSheet()">✕</span>
-    </div>
-    <div class="comment-body-scroll" id="boxMessagesContainer">
-      <div class="comment-box-item"><span class="comment-author">@Alpha_Tech :</span> Ce concept anti-stress est génial Lamine ! 🇬🇳</div>
-      <div class="comment-box-item"><span class="comment-author">@Mariama_Dev :</span> Enfin une appli saine pour mes enfants ! 😍</div>
-    </div>
-  </div>
-
-  <script>
-    function switchCategory(category) {
-      document.querySelectorAll('.tabs-categories span').forEach(tab => tab.classList.remove('active'));
-      document.getElementById('tab-' + category).classList.add('active');
-      // Ajoutez ici la logique pour charger les vidéos de la catégorie sélectionnée
-    }
-
-    function handleLikeInteraction(button) {
-      const icon = button.querySelector('.icon-circle');
-      const counter = document.getElementById('like-counter');
-      let count = parseFloat(counter.innerText);
-      
-      icon.classList.toggle('liked');
-      
-      if (icon.classList.contains('liked')) {
-        icon.innerText = '❤️';
-        counter.innerText = (count + 0.1).toFixed(1) + 'K';
-      } else {
-        icon.innerText = '🤍';
-        counter.innerText = (count - 0.1).toFixed(1) + 'K';
-      }
-    }
-
-    function triggerCommentSheet() {
-      document.getElementById('bottomCommentSheet').classList.add('open');
-    }
-
-    function dismissCommentSheet() {
-      document.getElementById('bottomCommentSheet').classList.remove('open');
-    }
-
-    function shareOnWhatsApp() {
-      if (navigator.share) {
-        navigator.share({
-          title: 'ChatBook Video',
-          text: document.getElementById('videoDesc').innerText,
-          url: window.location.href,
-        }).catch(console.error);
-      } else {
-        alert("La fonction de partage n'est pas supportée par votre navigateur.");
-      }
-    }
-
-    // Gestion de la lecture de la vidéo
-    const video = document.getElementById('mainVideo');
-    video.play().catch(error => {
-      console.log("La lecture automatique a été bloquée par le navigateur, une interaction utilisateur est requise.", error);
-    });
-  </script>
 </body>
 </html>
-```
