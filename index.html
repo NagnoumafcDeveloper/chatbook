@@ -4,102 +4,178 @@ HTML
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChatBook</title>
+    <title>Mon Flux Vidéo</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f2f5;
+        * {
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            box-sizing: border-box;
         }
-        .container {
+
+        body, html {
             width: 100%;
-            max-width: 500px;
-            background: white;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            border-radius: 8px;
+            height: 100%;
+            background-color: #000;
+            font-family: Arial, sans-serif;
             overflow: hidden;
-            display: flex;
-            flex-direction: column;
         }
+
+        /* Conteneur principal du flux avec défilement vertical */
         .video-container {
-            position: relative;
-            background: black;
             width: 100%;
-            height: 400px;
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scrollbar-width: none; /* Masquer la barre de défilement sur Firefox */
+        }
+
+        .video-container::-webkit-scrollbar {
+            display: none; /* Masquer la barre de défilement sur Chrome/Safari */
+        }
+
+        /* Chaque section vidéo en plein écran */
+        .video-card {
+            width: 100%;
+            height: 100vh;
+            scroll-snap-align: start;
+            position: relative;
+            background: #000;
             display: flex;
             justify-content: center;
             align-items: center;
         }
-        video {
+
+        /* Style de la vidéo */
+        .video-card video {
             width: 100%;
             height: 100%;
             object-fit: cover;
-        }
-        .actions {
-            display: flex;
-            justify-content: space-around;
-            padding: 15px;
-            border-top: 1px solid #ddd;
-            background: #fff;
-        }
-        .action-btn {
-            background: none;
-            border: none;
-            font-size: 16px;
             cursor: pointer;
-            color: #333;
-            display: flex;
-            align-items: center;
-            gap: 5px;
         }
-        .action-btn:hover {
-            color: #1877f2;
+
+        /* Boutons d'interaction sur le côté (Like, Commentaire, Partage) */
+        .sidebar {
+            position: absolute;
+            right: 15px;
+            bottom: 100px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .action-btn {
+            background: rgba(0, 0, 0, 0.5);
+            border: none;
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            transition: transform 0.2s;
+        }
+
+        .action-btn:active {
+            transform: scale(0.9);
+        }
+
+        /* Informations sur la vidéo en bas */
+        .video-info {
+            position: absolute;
+            left: 15px;
+            bottom: 30px;
+            color: white;
+            z-index: 10;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+        }
+
+        .video-info h3 {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .video-info p {
+            font-size: 14px;
+            opacity: 0.8;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <!-- Zone de la vidéo -->
-        <div class="video-container">
-            <video id="mainVideo" src="votre-video.mp4" loop playsinline autoplay controls></video>
+    <div class="video-container" id="videoContainer">
+        <!-- Vidéo 1 -->
+        <div class="video-card">
+            <video src="VOTRE_LIEN_OU_FICHIER_1.mp4" loop playsinline></video>
+            <div class="video-info">
+                <h3>Dessin animé de motivation</h3>
+                <p>Conseils pour bien réussir sa rentrée à l'école 🎒</p>
+            </div>
+            <div class="sidebar">
+                <button class="action-btn" onclick="toggleLike(this)">❤️</button>
+                <button class="action-btn">💬</button>
+                <button class="action-btn">↗️</button>
+            </div>
         </div>
 
-        <!-- Boutons d'interaction (Like, Commentaire, Partage) -->
-        <div class="actions">
-            <button class="action-btn" id="likeBtn">❤️ J'aime</button>
-            <button class="action-btn" id="commentBtn">💬 Commenter</button>
-            <button class="action-btn" id="shareBtn">↗️ Partager</button>
+        <!-- Vidéo 2 -->
+        <div class="video-card">
+            <video src="VOTRE_LIEN_OU_FICHIER_2.mp4" loop playsinline></video>
+            <div class="video-info">
+                <h3>Vidéo humoristique</h3>
+                <p>Un moment de rire pour bien commencer la journée 😄</p>
+            </div>
+            <div class="sidebar">
+                <button class="action-btn" onclick="toggleLike(this)">❤️</button>
+                <button class="action-btn">💬</button>
+                <button class="action-btn">↗️</button>
+            </div>
         </div>
     </div>
 
     <script>
-        // Gestion simple des interactions
-        const likeBtn = document.getElementById('likeBtn');
-        let liked = false;
-        likeBtn.addEventListener('click', () => {
-            liked = !liked;
-            likeBtn.style.color = liked ? '#e41e3f' : '#333';
-            likeBtn.textContent = liked ? '❤️ Aimé' : '❤️ J\'aime';
+        // Gestion de la lecture automatique de la vidéo visible à l'écran
+        const videos = document.querySelectorAll('video');
+
+        const observerOptions = {
+            root: document.getElementById('videoContainer'),
+            threshold: 0.6 // La vidéo se lance si elle est visible à 60% minimum
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const video = entry.target;
+                if (entry.isIntersecting) {
+                    video.play().catch(error => {
+                        console.log("Lecture automatique bloquée par le navigateur :", error);
+                    });
+                } else {
+                    video.pause();
+                }
+            });
+        }, observerOptions);
+
+        videos.forEach(video => {
+            observer.observe(video);
+
+            // Permettre de mettre en pause / lecture en cliquant directement sur la vidéo
+            video.addEventListener('click', () => {
+                if (video.paused) {
+                    video.play();
+                } else {
+                    video.pause();
+                }
+            });
         });
 
-        const shareBtn = document.getElementById('shareBtn');
-        shareBtn.addEventListener('click', () => {
-            if (navigator.share) {
-                navigator.share({
-                    title: 'ChatBook Video',
-                    url: window.location.href
-                }).catch(console.error);
-            } else {
-                alert("Le partage n'est pas supporté par votre navigateur.");
-            }
-        });
+        // Fonction basique pour changer la couleur du bouton Like
+        function toggleLike(btn) {
+            btn.style.color = btn.style.color === 'red' ? 'white' : 'red';
+        }
     </script>
-
 </body>
 </html>
