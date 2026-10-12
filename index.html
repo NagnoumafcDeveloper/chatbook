@@ -76,7 +76,7 @@ HTML
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
             z-index: 10;
         }
         .action-btn {
@@ -91,7 +91,7 @@ HTML
             justify-content: center;
             color: white;
             cursor: pointer;
-            font-size: 24px;
+            font-size: 22px;
             text-shadow: 0 2px 5px rgba(0,0,0,0.8);
             transition: transform 0.2s;
         }
@@ -99,7 +99,7 @@ HTML
             transform: scale(1.1);
         }
         .action-btn span {
-            font-size: 12px;
+            font-size: 11px;
             margin-top: 3px;
             font-weight: bold;
             text-shadow: 0 2px 5px rgba(0,0,0,0.8);
@@ -121,19 +121,6 @@ HTML
             font-size: 13px;
             color: #eee;
             line-height: 1.4;
-        }
-
-        /* Indicateur de défilement */
-        .scroll-hint {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: rgba(0,0,0,0.6);
-            padding: 5px 10px;
-            border-radius: 10px;
-            font-size: 11px;
-            z-index: 10;
-            color: #00ffcc;
         }
 
         /* Fenêtre de commentaires (Modal) */
@@ -221,17 +208,22 @@ HTML
 
     <!-- Conteneur Vidéo Principal -->
     <div class="main-container" id="videoContainer">
-        <div class="scroll-hint">📜 Faites défiler pour la suite</div>
-        <video id="videoPlayer" src="" controls autoplay muted loop></video>
+        <video id="videoPlayer" src="" autoplay loop></video>
 
         <div class="sidebar">
-            <!-- Le cœur est forcé en blanc par défaut -->
+            <!-- Bouton Like (Blanc par défaut) -->
             <button class="action-btn" id="likeBtn" onclick="toggleLike()" style="color: white;">
                 ❤️ <span id="likeCount">0</span>
             </button>
+            <!-- Bouton Commentaires -->
             <button class="action-btn" onclick="openComments()">
                 💬 <span id="commentCount">0</span>
             </button>
+            <!-- Bouton Haut-parleur cliquable pour Activer/Couper le son -->
+            <button class="action-btn" id="soundBtn" onclick="toggleSound()">
+                🔊 <span id="soundText">Son</span>
+            </button>
+            <!-- Bouton Partager -->
             <button class="action-btn" onclick="shareVideo()">
                 🔗 <span>Partager</span>
             </button>
@@ -257,7 +249,6 @@ HTML
     </div>
 
     <script>
-        // Liste de plusieurs vidéos par catégorie pour permettre le défilement
         const database = {
             humour: [
                 {
@@ -323,9 +314,9 @@ HTML
             document.getElementById('likeCount').innerText = formatNumber(videoData.likes);
             document.getElementById('commentCount').innerText = videoData.commentsList.length;
 
-            // Réinitialisation stricte du cœur en BLANC si non liké, ROUGE si liké
+            // Gestion propre du cœur : Blanc par défaut, Rouge si liké
             const likeBtn = document.getElementById('likeBtn');
-            likeBtn.style.color = videoData.liked ? '#ff4d4d' : 'white';
+            likeBtn.style.color = videoData.liked ? '#ff4d4d' : '#ffffff';
 
             player.play().catch(e => console.log("Lecture automatique :", e));
         }
@@ -334,21 +325,19 @@ HTML
             document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
             btnElement.classList.add('active');
             currentCategory = category;
-            currentIndex = 0; // Revenir à la première vidéo de la catégorie
+            currentIndex = 0;
             loadCurrentVideo();
             closeComments();
         }
 
-        // Permet de faire défiler les vidéos avec la molette de la souris sur le conteneur
+        // Défilement fluide avec la molette de la souris
         const container = document.getElementById('videoContainer');
         container.addEventListener('wheel', (e) => {
             e.preventDefault();
             const list = database[currentCategory];
             if (e.deltaY > 0) {
-                // Défilement vers le bas -> Vidéo suivante
                 currentIndex = (currentIndex + 1) % list.length;
             } else {
-                // Défilement vers le haut -> Vidéo précédente
                 currentIndex = (currentIndex - 1 + list.length) % list.length;
             }
             loadCurrentVideo();
@@ -366,9 +355,24 @@ HTML
             } else {
                 videoData.likes--;
                 videoData.liked = false;
-                likeBtn.style.color = 'white'; // Blanc
+                likeBtn.style.color = '#ffffff'; // Blanc
             }
             document.getElementById('likeCount').innerText = formatNumber(videoData.likes);
+        }
+
+        // Fonction pour activer ou couper le son en cliquant sur le haut-parleur
+        function toggleSound() {
+            const player = document.getElementById('videoPlayer');
+            const soundBtn = document.getElementById('soundBtn');
+            const soundText = document.getElementById('soundText');
+
+            if (player.muted) {
+                player.muted = false;
+                soundBtn.innerHTML = '🔊 <span id="soundText">Son</span>';
+            } else {
+                player.muted = true;
+                soundBtn.innerHTML = '🔇 <span id="soundText">Muet</span>';
+            }
         }
 
         function openComments() {
@@ -423,5 +427,3 @@ HTML
             loadCurrentVideo();
         };
     </script>
-</body>
-</html>
