@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -83,21 +84,80 @@
             margin-bottom: 5px;
             text-shadow: 0 1px 3px rgba(0,0,0,0.8);
         }
-        #loading {
+        /* Style de la section des commentaires */
+        .comments-overlay {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60%;
+            background: rgba(0, 0, 0, 0.85);
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease-in-out;
+            transform: translateY(100%);
+            z-index: 20;
+        }
+        .comments-overlay.open {
+            transform: translateY(0);
+        }
+        .comments-header {
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+        }
+        .close-comments {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            background: none;
+            border: none;
+            color: white;
             font-size: 18px;
-            color: #ccc;
+            cursor: pointer;
+        }
+        .comments-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+        }
+        .comment-item {
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        .comment-input-container {
+            padding: 15px;
+            display: flex;
+            background: rgba(0, 0, 0, 0.5);
+        }
+        .comment-input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 20px;
+            padding: 10px 15px;
+            color: white;
+            outline: none;
+        }
+        .submit-comment {
+            background: none;
+            border: none;
+            color: #1877f2;
+            font-weight: bold;
+            margin-left: 10px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
 
-    <div class="container" id="feed-container">
-        <div id="loading">Chargement...</div>
-    </div>
+    <div class="container" id="feed-container"></div>
+
+    <!-- Les commentaires seront ajoutés dynamiquement par vidéo -->
 
     <script>
         async function loadVideos() {
@@ -109,19 +169,22 @@
                     id: 1,
                     title: "Première vidéo de test ChatBook",
                     url: "https://www.w3schools.com/html/mov_bbb.mp4",
-                    likes: 13
+                    likes: 13,
+                    comments: ["Super vidéo !", "Génial !"]
                 },
                 {
                     id: 2,
                     title: "Deuxième vidéo de test",
                     url: "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4",
-                    likes: 154
+                    likes: 154,
+                    comments: ["Incroyable", "Beau travail"]
                 }
             ];
 
             mockVideos.forEach(video => {
                 const slide = document.createElement('div');
                 slide.className = 'video-slide';
+                slide.setAttribute('data-id', video.id);
                 slide.innerHTML = `
                     <video src="${video.url}" loop playsinline></video>
                     <div class="video-info">
@@ -130,10 +193,23 @@
                     <div class="sidebar">
                         <button class="action-btn" onclick="toggleLike(this)">❤</button>
                         <span class="action-count like-count">${video.likes}</span>
-                        <button class="action-btn" onclick="toggleComments()">💬</button>
-                        <span class="action-count">0</span>
+                        <button class="action-btn" onclick="toggleComments(${video.id})">💬</button>
+                        <span class="action-count">Coms</span>
                         <button class="action-btn" onclick="shareVideo('${video.title}')">↗</button>
                         <span class="action-count">Partager</span>
+                    </div>
+                    <div class="comments-overlay" id="comments-${video.id}">
+                        <div class="comments-header">
+                            Commentaires
+                            <button class="close-comments" onclick="closeComments(${video.id})">✕</button>
+                        </div>
+                        <div class="comments-list">
+                            ${video.comments.map(c => `<div class="comment-item">${c}</div>`).join('')}
+                        </div>
+                        <div class="comment-input-container">
+                            <input type="text" class="comment-input" placeholder="Ajouter un commentaire...">
+                            <button class="submit-comment" onclick="addComment(this, ${video.id})">Envoyer</button>
+                        </div>
                     </div>
                 `;
                 container.appendChild(slide);
@@ -165,8 +241,28 @@
             countSpan.textContent = count;
         }
 
-        function toggleComments() {
-            alert("La section des commentaires s'ouvrira ici !");
+        function toggleComments(videoId) {
+            const overlay = document.getElementById(`comments-${videoId}`);
+            overlay.classList.add('open');
+        }
+
+        function closeComments(videoId) {
+            const overlay = document.getElementById(`comments-${videoId}`);
+            overlay.classList.remove('open');
+        }
+
+        function addComment(btn, videoId) {
+            const container = btn.parentElement;
+            const input = container.querySelector('.comment-input');
+            const list = btn.parentElement.parentElement.querySelector('.comments-list');
+            
+            if (input.value.trim() !== '') {
+                const newComment = document.createElement('div');
+                newComment.className = 'comment-item';
+                newComment.textContent = input.value;
+                list.appendChild(newComment);
+                input.value = '';
+            }
         }
 
         function shareVideo(title) {
@@ -177,7 +273,9 @@
                     url: window.location.href,
                 }).catch(() => {});
             } else {
-                alert("Lien copié dans le presse-papier !");
+                navigator.clipboard.writeText(window.location.href)
+                    .then(() => alert("Lien copié dans le presse-papier !"))
+                    .catch(() => alert("Impossible de copier le lien."));
             }
         }
 
@@ -185,3 +283,4 @@
     </script>
 </body>
 </html>
+```
