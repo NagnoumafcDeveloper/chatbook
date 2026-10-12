@@ -213,7 +213,6 @@
         .congrats-modal.show { display: block; transform: translate(-50%, -50%) scale(1); }
         .congrats-btn { background-color: #42b72a; color: #ffffff; border: none; padding: 12px 25px; border-radius: 20px; font-weight: bold; cursor: pointer; }
     </style>
-    <!-- CONNEXION A SUPABASE -->
     <script src="https://jsdelivr.net"></script>
 </head>
 <body>
@@ -229,7 +228,6 @@
 
     <div class="video-container">
         <div class="video-player-box" id="mainAppBox">
-            <!-- Lecteur vidéo HTML5 connecté -->
             <video class="video-element" id="mainLiveVideo" loop autoplay muted playsinline></video>
             
             <div class="video-sidebar-left">
@@ -267,8 +265,8 @@
             <span class="comment-close" onclick="dismissCommentSheet()">✕</span>
         </div>
         <div class="comment-body-scroll">
-            <div class="comment-box-item"><span class="comment-author">@Alpha_Tech :</span> Concept génial ! 🇬🇳</div>
-            <div class="comment-box-item"><span class="comment-author">@Mariama_Dev :</span> Idéal pour la famille. 😍</div>
+            <div class="comment-box-item"><span class="comment-author">@Alpha_Tech : ...</span> Concept génial ! 🇬🇳</div>
+            <div class="comment-box-item"><span class="comment-author">@Mariama_Dev : ...</span> Idéal pour la famille. 😍</div>
         </div>
     </div>
 
@@ -284,4 +282,8 @@
         let isLiked = false;
         let currentCategory = "humour";
 
-        // Chargement initial des vidéos en direct de la base
+        window.addEventListener('DOMContentLoaded', () => {
+            loadVideoFromDatabase('humour');
+        });
+
+        async function loadVideoFromDatabase(catName) {
