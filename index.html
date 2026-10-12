@@ -120,6 +120,77 @@ HTML
             color: #eee;
             line-height: 1.4;
         }
+
+        /* Fenêtre de commentaires (Modal) */
+        #commentModal {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 420px;
+            height: 50vh;
+            background: #1e1e2f;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.5);
+            z-index: 100;
+            flex-direction: column;
+            padding: 20px;
+        }
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 10px;
+        }
+        .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        .comment-list {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .comment-item {
+            background: rgba(255,255,255,0.05);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+        }
+        .comment-input-area {
+            display: flex;
+            gap: 10px;
+        }
+        .comment-input-area input {
+            flex: 1;
+            padding: 10px;
+            border-radius: 20px;
+            border: none;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            outline: none;
+        }
+        .comment-input-area button {
+            background: #00ffcc;
+            border: none;
+            padding: 0 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #1e1e2f;
+        }
     </style>
 </head>
 <body>
@@ -139,7 +210,8 @@ HTML
 
         <!-- Boutons d'interaction à droite -->
         <div class="sidebar">
-            <button class="action-btn" id="likeBtn" onclick="toggleLike()">
+            <!-- Le cœur est blanc par défaut (#ffffff) -->
+            <button class="action-btn" id="likeBtn" onclick="toggleLike()" style="color: white;">
                 ❤️ <span id="likeCount">12.5K</span>
             </button>
             <button class="action-btn" onclick="openComments()">
@@ -157,32 +229,46 @@ HTML
         </div>
     </div>
 
+    <!-- Panneau de Commentaires -->
+    <div id="commentModal">
+        <div class="comment-header">
+            <span id="commentTitle">Commentaires (2)</span>
+            <button class="close-btn" onclick="closeComments()">✕</button>
+        </div>
+        <div class="comment-list" id="commentList">
+            <!-- Les commentaires s'afficheront ici -->
+        </div>
+        <div class="comment-input-area">
+            <input type="text" id="commentInput" placeholder="Ajouter un commentaire...">
+            <button onclick="addComment()">Envoyer</button>
+        </div>
+    </div>
+
     <script>
-        // Base de données intégrée contenant toutes les vidéos et informations
         const database = {
             humour: {
                 url: 'https://www.w3schools.com/html/mov_bbb.mp4',
                 author: '@NagnoumaDeveloper',
                 desc: 'Préparez-vous à rire ! Les meilleures vidéos d\'humour positives sont ici. 🤣 ✨ #détente',
                 likes: 12500,
-                comments: 2,
-                liked: false
+                liked: false,
+                commentsList: ["Trop drôle cette vidéo 😂", "J'adore !"]
             },
             motivation: {
                 url: 'https://www.w3schools.com/html/movie.mp4',
                 author: '@MotivationDaily',
                 desc: 'Ne lâchez rien, chaque petit effort compte pour réussir vos grands projets ! 🚀💪',
                 likes: 8400,
-                comments: 45,
-                liked: false
+                liked: false,
+                commentsList: ["Tellement vrai, merci pour la motivation.", "Let's go ! 💪"]
             },
             enfants: {
                 url: 'https://www.w3schools.com/html/mov_bbb.mp4',
                 author: '@KidsFun',
                 desc: 'De superbes moments de joie et de rires pour les enfants ! 👶✨',
                 likes: 3200,
-                comments: 12,
-                liked: false
+                liked: false,
+                commentsList: ["Trop mignon !", "Génial pour les petits."]
             }
         };
 
@@ -197,9 +283,9 @@ HTML
             document.getElementById('videoAuthor').innerText = data.author;
             document.getElementById('videoDesc').innerText = data.desc;
             document.getElementById('likeCount').innerText = formatNumber(data.likes);
-            document.getElementById('commentCount').innerText = data.comments;
+            document.getElementById('commentCount').innerText = data.commentsList.length;
 
-            // Mise à jour de la couleur du bouton like selon l'état
+            // Appliquer la couleur du cœur (Blanc par défaut, Rouge si liké)
             const likeBtn = document.getElementById('likeBtn');
             likeBtn.style.color = data.liked ? '#ff4d4d' : 'white';
 
@@ -207,31 +293,56 @@ HTML
         }
 
         function switchCategory(category, btnElement) {
-            // Gestion visuelle des boutons de catégorie actifs
             document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
             btnElement.classList.add('active');
-
-            // Charger les données correspondantes
             loadCategoryData(category);
+            closeComments();
         }
 
         function toggleLike() {
             const data = database[currentCategory];
+            const likeBtn = document.getElementById('likeBtn');
+
             if (!data.liked) {
                 data.likes++;
                 data.liked = true;
-                document.getElementById('likeBtn').style.color = '#ff4d4d';
+                likeBtn.style.color = '#ff4d4d'; // Devient rouge
             } else {
                 data.likes--;
                 data.liked = false;
-                document.getElementById('likeBtn').style.color = 'white';
+                likeBtn.style.color = 'white'; // Revient au blanc
             }
             document.getElementById('likeCount').innerText = formatNumber(data.likes);
         }
 
         function openComments() {
             const data = database[currentCategory];
-            alert(`Commentaires (${data.comments}) : Superbe vidéo !`);
+            const modal = document.getElementById('commentModal');
+            const list = document.getElementById('commentList');
+            
+            list.innerHTML = '';
+            data.commentsList.forEach(cmt => {
+                list.innerHTML += `<div class="comment-item">${cmt}</div>`;
+            });
+
+            document.getElementById('commentTitle').innerText = `Commentaires (${data.commentsList.length})`;
+            modal.style.display = 'flex';
+        }
+
+        function closeComments() {
+            document.getElementById('commentModal').style.display = 'none';
+        }
+
+        function addComment() {
+            const input = document.getElementById('commentInput');
+            const text = input.value.trim();
+            if (text !== '') {
+                const data = database[currentCategory];
+                data.commentsList.push(text);
+                input.value = '';
+                openComments(); // Rafraîchir la liste
+                document.getElementById('commentCount').innerText = data.commentsList.length;
+            }
         }
 
         function shareVideo() {
@@ -252,8 +363,9 @@ HTML
             return num;
         }
 
-        // Lancement initial au chargement de la page
         window.onload = () => {
             loadCategoryData('humour');
         };
     </script>
+</body>
+</html>
