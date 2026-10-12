@@ -1,10 +1,12 @@
-```html
+Voici le code complet et corrigé pour votre fichier. Vous pouvez le copier-coller pour remplacer l'ancien :
+
+HTML
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChatBook - Bien-être & Famille</title>
+    <title>ChatBook</title>
     <style>
         body { font-family: Arial, sans-serif; background-color: #1a1a2e; color: #fff; margin: 0; padding: 20px; }
         .container { max-width: 600px; margin: 0 auto; background: #252545; padding: 20px; border-radius: 10px; }
@@ -15,6 +17,7 @@
         .send-btn { padding: 10px 15px; border-radius: 5px; border: none; background: #00bcd4; color: white; cursor: pointer; }
         .comment-list { margin-top: 15px; }
         .comment { background: #333; padding: 10px; border-radius: 5px; margin-bottom: 10px; }
+        #like-btn { user-select: none; }
     </style>
 </head>
 <body>
@@ -28,9 +31,9 @@
     <p>Préparez-vous à rire ! Les meilleures vidéos d'humour positives sont ici. 🤣✨ #détente</p>
 
     <div class="actions">
-        <div id="like-btn">🤍 <span id="like-count">12.5K</span></div>
+        <div id="like-btn" style="cursor: pointer;">🤍 <span id="like-count">12.5K</span></div>
         <div>💬 <span id="comment-count">2</span></div>
-        <div id="share-btn">🔗 Partager</div>
+        <div id="share-btn" style="cursor: pointer;">🔗 Partager</div>
     </div>
 
     <div class="comments-section">
@@ -45,7 +48,6 @@
 
 <script>
     const likeBtn = document.getElementById('like-btn');
-    const likeCount = document.getElementById('like-count');
     let isLiked = false;
 
     likeBtn.addEventListener('click', () => {
@@ -90,4 +92,3 @@
 
 </body>
 </html>
-```
