@@ -56,7 +56,7 @@ HTML
             width: 100%;
             max-width: 420px;
             height: 78vh;
-            background: rgba(0, 0, 0, 0.4);
+            background: #000;
             border-radius: 16px;
             display: flex;
             justify-content: center;
@@ -79,8 +79,9 @@ HTML
             gap: 20px;
             z-index: 10;
         }
+        /* Suppression du fond noir des boutons de droite : ils deviennent transparents/uniques */
         .action-btn {
-            background: rgba(0, 0, 0, 0.5);
+            background: transparent;
             border: none;
             width: 50px;
             height: 50px;
@@ -91,16 +92,18 @@ HTML
             justify-content: center;
             color: white;
             cursor: pointer;
-            font-size: 20px;
+            font-size: 24px;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.8);
             transition: transform 0.2s;
         }
         .action-btn:hover {
             transform: scale(1.1);
         }
         .action-btn span {
-            font-size: 11px;
+            font-size: 12px;
             margin-top: 3px;
             font-weight: bold;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.8);
         }
         .video-info {
             position: absolute;
@@ -108,7 +111,7 @@ HTML
             bottom: 20px;
             max-width: 75%;
             z-index: 10;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+            text-shadow: 0 2px 5px rgba(0,0,0,0.9);
         }
         .video-info h3 {
             font-size: 16px;
@@ -208,9 +211,8 @@ HTML
     <div class="main-container">
         <video id="videoPlayer" src="" controls autoplay muted loop></video>
 
-        <!-- Boutons d'interaction à droite -->
+        <!-- Boutons d'interaction à droite (sans fond noir, intégrés directement) -->
         <div class="sidebar">
-            <!-- Le cœur est blanc par défaut (#ffffff) -->
             <button class="action-btn" id="likeBtn" onclick="toggleLike()" style="color: white;">
                 ❤️ <span id="likeCount">12.5K</span>
             </button>
@@ -235,9 +237,7 @@ HTML
             <span id="commentTitle">Commentaires (2)</span>
             <button class="close-btn" onclick="closeComments()">✕</button>
         </div>
-        <div class="comment-list" id="commentList">
-            <!-- Les commentaires s'afficheront ici -->
-        </div>
+        <div class="comment-list" id="commentList"></div>
         <div class="comment-input-area">
             <input type="text" id="commentInput" placeholder="Ajouter un commentaire...">
             <button onclick="addComment()">Envoyer</button>
@@ -285,7 +285,6 @@ HTML
             document.getElementById('likeCount').innerText = formatNumber(data.likes);
             document.getElementById('commentCount').innerText = data.commentsList.length;
 
-            // Appliquer la couleur du cœur (Blanc par défaut, Rouge si liké)
             const likeBtn = document.getElementById('likeBtn');
             likeBtn.style.color = data.liked ? '#ff4d4d' : 'white';
 
@@ -306,11 +305,11 @@ HTML
             if (!data.liked) {
                 data.likes++;
                 data.liked = true;
-                likeBtn.style.color = '#ff4d4d'; // Devient rouge
+                likeBtn.style.color = '#ff4d4d';
             } else {
                 data.likes--;
                 data.liked = false;
-                likeBtn.style.color = 'white'; // Revient au blanc
+                likeBtn.style.color = 'white';
             }
             document.getElementById('likeCount').innerText = formatNumber(data.likes);
         }
@@ -340,7 +339,7 @@ HTML
                 const data = database[currentCategory];
                 data.commentsList.push(text);
                 input.value = '';
-                openComments(); // Rafraîchir la liste
+                openComments();
                 document.getElementById('commentCount').innerText = data.commentsList.length;
             }
         }
