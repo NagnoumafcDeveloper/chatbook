@@ -7,162 +7,30 @@
     <title>ChatBook - TikTok Mode</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            background-color: #000;
-            overflow: hidden;
-            font-family: Arial, sans-serif;
-            color: #fff;
-        }
-        .container {
-            height: 100vh;
-            scroll-snap-type: y mandatory;
-            overflow-y: scroll;
-            overflow-x: hidden;
-        }
-        .video-slide {
-            height: 100vh;
-            width: 100vw;
-            position: relative;
-            scroll-snap-align: start;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .video-slide video {
-            height: 100%;
-            width: 100%;
-            object-fit: cover;
-        }
-        .sidebar {
-            position: absolute;
-            right: 15px;
-            bottom: 80px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-            z-index: 10;
-        }
-        .action-btn {
-            background: rgba(0, 0, 0, 0.4);
-            border: none;
-            color: #fff;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            backdrop-filter: blur(5px);
-            font-size: 18px;
-        }
-        .action-btn:hover {
-            background: rgba(0, 0, 0, 0.6);
-        }
-        .action-btn.active {
-            color: #ff3b5c;
-        }
-        .action-count {
-            font-size: 12px;
-            font-weight: bold;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.8);
-            margin-top: -10px;
-        }
-        .video-info {
-            position: absolute;
-            bottom: 20px;
-            left: 15px;
-            right: 80px;
-            z-index: 10;
-        }
-        .video-title {
-            font-weight: bold;
-            font-size: 16px;
-            margin-bottom: 5px;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
-        }
-        .comments-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 60%;
-            background: rgba(0, 0, 0, 0.85);
-            border-top-left-radius: 15px;
-            border-top-right-radius: 15px;
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.3s ease-in-out;
-            transform: translateY(100%);
-            z-index: 20;
-        }
-        .comments-overlay.open {
-            transform: translateY(0);
-        }
-        .comments-header {
-            padding: 15px;
-            text-align: center;
-            font-weight: bold;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            position: relative;
-        }
-        .close-comments {
-            position: absolute;
-            right: 15px;
-            top: 15px;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 18px;
-            cursor: pointer;
-        }
-        .comments-list {
-            flex: 1;
-            overflow-y: auto;
-            padding: 15px;
-        }
-        .comment-item {
-            margin-bottom: 10px;
-            font-size: 14px;
-        }
-        .comment-input-container {
-            padding: 15px;
-            display: flex;
-            background: rgba(0, 0, 0, 0.5);
-        }
-        .comment-input {
-            flex: 1;
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
-            border-radius: 20px;
-            padding: 10px 15px;
-            color: white;
-            outline: none;
-        }
-        .submit-comment {
-            background: none;
-            border: none;
-            color: #1877f2;
-            font-weight: bold;
-            margin-left: 10px;
-            cursor: pointer;
-        }
-        #loading {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 18px;
-            color: #ccc;
-        }
+        body, html { margin: 0; padding: 0; height: 100%; background-color: #000; overflow: hidden; font-family: Arial, sans-serif; color: #fff; }
+        .container { height: 100vh; scroll-snap-type: y mandatory; overflow-y: scroll; overflow-x: hidden; }
+        .video-slide { height: 100vh; width: 100vw; position: relative; scroll-snap-align: start; display: flex; justify-content: center; align-items: center; }
+        .video-slide video { height: 100%; width: 100%; object-fit: cover; }
+        .sidebar { position: absolute; right: 15px; bottom: 80px; display: flex; flex-direction: column; align-items: center; gap: 15px; z-index: 10; }
+        .action-btn { background: rgba(0, 0, 0, 0.4); border: none; color: #fff; width: 45px; height: 45px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; backdrop-filter: blur(5px); font-size: 18px; }
+        .action-btn:hover { background: rgba(0, 0, 0, 0.6); }
+        .action-btn.active { color: #ff3b5c; }
+        .action-count { font-size: 12px; font-weight: bold; text-shadow: 0 1px 2px rgba(0,0,0,0.8); margin-top: -10px; }
+        .video-info { position: absolute; bottom: 20px; left: 15px; right: 80px; z-index: 10; }
+        .video-title { font-weight: bold; font-size: 16px; margin-bottom: 5px; text-shadow: 0 1px 3px rgba(0,0,0,0.8); }
+        .comments-overlay { position: absolute; bottom: 0; left: 0; width: 100%; height: 60%; background: rgba(0, 0, 0, 0.85); border-top-left-radius: 15px; border-top-right-radius: 15px; display: flex; flex-direction: column; transition: transform 0.3s ease-in-out; transform: translateY(100%); z-index: 20; }
+        .comments-overlay.open { transform: translateY(0); }
+        .comments-header { padding: 15px; text-align: center; font-weight: bold; border-bottom: 1px solid rgba(255,255,255,0.1); position: relative; }
+        .close-comments { position: absolute; right: 15px; top: 15px; background: none; border: none; color: white; font-size: 18px; cursor: pointer; }
+        .comments-list { flex: 1; overflow-y: auto; padding: 15px; }
+        .comment-item { margin-bottom: 10px; font-size: 14px; }
+        .comment-input-container { padding: 15px; display: flex; background: rgba(0, 0, 0, 0.5); }
+        .comment-input { flex: 1; background: rgba(255, 255, 255, 0.1); border: none; border-radius: 20px; padding: 10px 15px; color: white; outline: none; }
+        .submit-comment { background: none; border: none; color: #1877f2; font-weight: bold; margin-left: 10px; cursor: pointer; }
+        #loading { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 18px; color: #ccc; }
     </style>
 </head>
 <body>
-
     <div class="container" id="feed-container">
         <div id="loading">Chargement des vidéos...</div>
     </div>
@@ -170,13 +38,12 @@
     <script>
         const SUPABASE_URL = 'https://ddftothrbbaqsfjffzby.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRkZnRvdGhyYmJhcXNmamZmemJ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE0NjYzNjAsImV4cCI6MjEwNzA0MjM2MH0.4IRm2E0d8BU7PSvXDS6StmloqPLAMZQmAjOvaIz7N-w';
-        
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         async function loadVideos() {
             const container = document.getElementById('feed-container');
             container.innerHTML = '';
-
+            
             const { data: videos, error } = await supabase
                 .from('videos')
                 .select('*');
@@ -196,7 +63,7 @@
                 const slide = document.createElement('div');
                 slide.className = 'video-slide';
                 slide.innerHTML = `
-                    <video src="https://www.w3schools.com/html/mov_bbb.mp4" loop playsinline></video>
+                    <video src="${video.url}" loop playsinline></video>
                     <div class="video-info">
                         <div class="video-title">${video.titre}</div>
                     </div>
@@ -210,8 +77,7 @@
                     </div>
                     <div class="comments-overlay" id="comments-${video.id}">
                         <div class="comments-header">
-                            Commentaires
-                            <button class="close-comments" onclick="closeComments(${video.id})">✕</button>
+                            Commentaires <button class="close-comments" onclick="closeComments(${video.id})">✕</button>
                         </div>
                         <div class="comments-list">
                             <div class="comment-item">Aucun commentaire pour le moment.</div>
@@ -265,17 +131,14 @@
             const container = btn.parentElement;
             const input = container.querySelector('.comment-input');
             const list = btn.parentElement.parentElement.querySelector('.comments-list');
-            
             if (input.value.trim() !== '') {
                 const newComment = document.createElement('div');
                 newComment.className = 'comment-item';
                 newComment.textContent = input.value;
-                
                 const noCommentMsg = list.querySelector('.comment-item');
                 if (noCommentMsg && noCommentMsg.textContent.includes("Aucun commentaire")) {
                     list.innerHTML = '';
                 }
-                
                 list.appendChild(newComment);
                 input.value = '';
             }
