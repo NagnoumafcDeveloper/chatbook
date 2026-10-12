@@ -1,318 +1,288 @@
-<!DOCTYPE html>
+[11:03, 12/10/2026] Le Bon: Le sketch le plus drôle de l'année 😂
+[11:13, 12/10/2026] Le Bon: <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChatBook - TikTok Style</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>ChatBook - Serveur Live</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body, html { width: 100%; height: 100%; background-color: #000; color: #fff; font-family: Arial, sans-serif; overflow: hidden; }
-        
-        /* Conteneur principal plein écran */
-        .tiktok-container {
-            position: relative;
-            width: 100%;
-            height: 100vh;
-            max-width: 450px;
-            margin: 0 auto;
-            background: #111;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
         }
 
-        /* Zone de la vidéo ou du contenu en arrière-plan */
-        .video-background {
-            position: absolute;
-            top: 0;
-            left: 0;
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            overflow: hidden;
+            position: fixed;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #252545, #1a1a2e);
+        }
+
+        .video-player-box {
+            position: relative;
+            width: 100%;
+            height: calc(100vh - 60px);
+            background: linear-gradient(45deg, #1e3c72, #2a5298, #fe2c55);
+            background-size: 400% 400%;
+            animation: gradientBg 10s ease infinite;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
-            color: #555;
-            z-index: 1;
+            transition: background 0.5s ease;
         }
 
-        /* Informations en bas (Humour, Motivation, Enfants) */
-        .content-info {
-            position: relative;
-            z-index: 2;
-            padding: 20px;
-            padding-right: 80px; /* Espace pour ne pas cacher sous les boutons de droite */
-            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+        @keyframes gradientBg {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
-        .username {
+        .video-element {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 20px 10px 20px;
+            z-index: 50;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
+            gap: 12px;
+        }
+
+        .top-nav .logo {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: #1877f2;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
+            letter-spacing: -0.5px;
+        }
+
+        .tabs-categories {
+            display: flex;
+            gap: 12px;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 6px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .tabs-categories span {
+            font-size: 0.9rem;
             font-weight: bold;
-            font-size: 1.1rem;
-            margin-bottom: 8px;
+            opacity: 0.5;
+            cursor: pointer;
+            padding: 6px 12px;
+            border-radius: 15px;
+            transition: all 0.2s ease;
         }
 
-        .description {
-            font-size: 0.95rem;
-            line-height: 1.4;
-            margin-bottom: 10px;
+        .tabs-categories span.active {
+            opacity: 1;
+            background-color: #ffffff;
+            color: #000000;
         }
 
-        .tags {
-            font-size: 0.85rem;
-            color: #00bcd4;
-        }
-
-        /* Boutons d'interaction à droite (Style TikTok) */
-        .right-sidebar {
+        .video-sidebar-left {
             position: absolute;
-            right: 15px;
-            bottom: 100px;
-            z-index: 3;
+            bottom: 40px;
+            left: 15px;
+            z-index: 10;
+            max-width: 75%;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.9);
+        }
+
+        .video-sidebar-left .username { font-weight: bold; font-size: 1.05rem; margin-bottom: 5px; color: #00ffcc; }
+        .video-sidebar-left .description { font-size: 0.95rem; line-height: 1.3; }
+
+        .video-sidebar-right {
+            position: absolute;
+            bottom: 80px;
+            right: 25px;
+            z-index: 80;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 20px;
         }
 
-        .side-action {
+        .action-button-touch {
+            background: none;
+            border: none;
+            color: #ffffff;
             display: flex;
             flex-direction: column;
             align-items: center;
             cursor: pointer;
-            background: rgba(0, 0, 0, 0.4);
+            outline: none;
             padding: 10px;
+        }
+
+        .icon-circle {
+            width: 56px;
+            height: 56px;
+            background-color: rgba(0, 0, 0, 0.6);
             border-radius: 50%;
-            width: 50px;
-            height: 50px;
+            display: flex;
+            align-items: center;
             justify-content: center;
-            transition: transform 0.2s;
+            font-size: 1.8rem;
+            margin-bottom: 4px;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            transition: transform 0.1s ease;
         }
 
-        .side-action:active {
-            transform: scale(0.9);
-        }
+        .icon-circle:active { transform: scale(0.85); }
+        .icon-circle.liked { background-color: #fe2c55; border-color: #fe2c55; }
 
-        .side-action span {
-            font-size: 0.75rem;
-            margin-top: 4px;
+        .action-button-touch span {
+            font-size: 0.85rem;
             font-weight: bold;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
         }
 
-        .icon {
-            font-size: 1.4rem;
-        }
-
-        /* Section des commentaires cachée qui s'ouvre au clic */
-        .comments-modal {
-            position: absolute;
+        .comment-sheet {
+            position: fixed;
             bottom: -100%;
             left: 0;
             width: 100%;
-            height: 60vh;
-            background: #222;
+            height: 65vh;
+            background-color: #ffffff;
+            color: #000000;
             border-top-left-radius: 20px;
             border-top-right-radius: 20px;
-            z-index: 10;
-            transition: bottom 0.3s ease-in-out;
+            z-index: 150;
+            transition: bottom 0.3s ease-out;
             display: flex;
             flex-direction: column;
-            padding: 20px;
+            padding: 15px;
         }
 
-        .comments-modal.active {
+        .comment-sheet.open { bottom: 0; }
+        .comment-header { display: flex; justify-content: space-between; align-items: center; font-weight: bold; border-bottom: 1px solid #e4e6eb; padding-bottom: 10px;}
+        .comment-close { font-size: 1.6rem; cursor: pointer; color: #606770; padding: 5px; }
+        .comment-body-scroll { flex: 1; overflow-y: auto; padding: 15px 0; }
+        .comment-box-item { margin-bottom: 14px; font-size: 0.95rem; text-align: left; }
+        .comment-author { font-weight: bold; color: #1877f2; }
+
+        .bottom-bar-placement {
+            position: fixed;
             bottom: 0;
-        }
-
-        .comments-header {
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background-color: #111111;
+            border-top: 1px solid #222222;
+            z-index: 70;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
-            margin-bottom: 15px;
+            font-size: 0.8rem;
+            color: #888888;
             font-weight: bold;
-            border-bottom: 1px solid #333;
-            padding-bottom: 10px;
         }
 
-        .close-modal {
-            cursor: pointer;
-            font-size: 1.2rem;
-        }
-
-        .comments-list {
-            flex: 1;
-            overflow-y: auto;
-            margin-bottom: 15px;
-        }
-
-        .comment-item {
-            background: #333;
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            font-size: 0.9rem;
-        }
-
-        .comment-input-area {
-            display: flex;
-            gap: 10px;
-        }
-
-        .comment-input {
-            flex: 1;
-            padding: 10px;
+        .congrats-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            background-color: #ffffff;
+            color: #000000;
+            padding: 25px;
             border-radius: 20px;
-            border: none;
-            background: #333;
-            color: #fff;
-            outline: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            z-index: 200;
+            text-align: center;
+            width: 85%;
+            max-width: 320px;
+            display: none;
         }
-
-        .send-btn {
-            background: #ff3b5c;
-            color: white;
-            border: none;
-            padding: 0 15px;
-            border-radius: 20px;
-            font-weight: bold;
-            cursor: pointer;
-        }
+        .congrats-modal.show { display: block; transform: translate(-50%, -50%) scale(1); }
+        .congrats-btn { background-color: #42b72a; color: #ffffff; border: none; padding: 12px 25px; border-radius: 20px; font-weight: bold; cursor: pointer; }
     </style>
+    <!-- CONNEXION A SUPABASE -->
+    <script src="https://jsdelivr.net"></script>
 </head>
 <body>
 
-<div class="tiktok-container">
-    <!-- Fond / Vidéo -->
-    <div class="video-background">
-        🎥 Espace Vidéo ChatBook
-    </div>
-
-    <!-- Informations du post (Humour, Motivation, Enfants) -->
-    <div class="content-info">
-        <div class="username">@NagnoumaDeveloper</div>
-        <div class="description">
-            ✨ <strong>Humour & Détente :</strong> Préparez-vous à rire !<br>
-            💪 <strong>Motivation :</strong> Restez concentré sur vos objectifs.<br>
-            👶 <strong>Famille & Enfants :</strong> Des contenus sains pour nos enfants.
-        </div>
-        <div class="tags">#ChatBook #Motivation #Humour #Famille</div>
-    </div>
-
-    <!-- Barre latérale droite (J'aime, Commentaires, Partage) -->
-    <div class="right-sidebar">
-        <!-- J'aime -->
-        <div class="side-action" id="like-btn">
-            <div class="icon" id="like-icon">🤍</div>
-            <span id="like-count">12.5K</span>
-        </div>
-
-        <!-- Commentaires -->
-        <div class="side-action" id="comment-btn">
-            <div class="icon">💬</div>
-            <span id="comment-count">2</span>
-        </div>
-
-        <!-- Partage -->
-        <div class="side-action" id="share-btn">
-            <div class="icon">🔗</div>
-            <span>Partager</span>
+    <div class="top-nav">
+        <div class="logo">ChatBook</div>
+        <div class="tabs-categories">
+            <span id="tab-humour" class="active" onclick="switchCategory('humour')">🤣 Humour</span>
+            <span id="tab-motivation" onclick="switchCategory('motivation')">💪 Motivation</span>
+            <span id="tab-enfants" onclick="switchCategory('enfants')">👶 Enfants</span>
         </div>
     </div>
 
-    <!-- Panneau des commentaires (Style TikTok) -->
-    <div class="comments-modal" id="comments-modal">
-        <div class="comments-header">
-            <span>2 commentaires</span>
-            <span class="close-modal" id="close-modal">✕</span>
-        </div>
-        <div class="comments-list" id="comments-list">
-            <div class="comment-item"><strong>@Alpha_Tech:</strong> Ce concept anti-stress est génial Lamine ! 🇬🇳</div>
-            <div class="comment-item"><strong>@Mariama_Dev:</strong> Enfin une appli saine pour mes enfants ! 😍</div>
-        </div>
-        <div class="comment-input-area">
-            <input type="text" class="comment-input" id="comment-input" placeholder="Ajouter un commentaire...">
-            <button class="send-btn" id="send-btn">Envoyer</button>
-        </div>
-    </div>
-</div>
-
-<script>
-    // Gestion des J'aime
-    const likeBtn = document.getElementById('like-btn');
-    const likeIcon = document.getElementById('like-icon');
-    const likeCountSpan = document.getElementById('like-count');
-    let isLiked = false;
-
-    likeBtn.addEventListener('click', () => {
-        let currentLikes = 12.5;
-        if (!isLiked) {
-            likeIcon.innerText = '❤️';
-            likeCountSpan.innerText = (currentLikes + 0.1).toFixed(1) + 'K';
-            likeBtn.style.color = '#ff3b5c';
-        } else {
-            likeIcon.innerText = '🤍';
-            likeCountSpan.innerText = '12.5K';
-            likeBtn.style.color = '#fff';
-        }
-        isLiked = !isLiked;
-    });
-
-    // Gestion du panneau de commentaires
-    const commentBtn = document.getElementById('comment-btn');
-    const commentsModal = document.getElementById('comments-modal');
-    const closeModal = document.getElementById('close-modal');
-
-    commentBtn.addEventListener('click', () => {
-        commentsModal.classList.add('active');
-    });
-
-    closeModal.addEventListener('click', () => {
-        commentsModal.classList.remove('active');
-    });
-
-    // Ajout d'un commentaire
-    const sendBtn = document.getElementById('send-btn');
-    const commentInput = document.getElementById('comment-input');
-    const commentsList = document.getElementById('comments-list');
-    const commentCountSpan = document.getElementById('comment-count');
-    let commentTotal = 2;
-
-    sendBtn.addEventListener('click', () => {
-        const text = commentInput.value.trim();
-        if (text !== '') {
-            commentTotal++;
-            commentCountSpan.innerText = commentTotal;
+    <div class="video-container">
+        <div class="video-player-box" id="mainAppBox">
+            <!-- Lecteur vidéo HTML5 connecté -->
+            <video class="video-element" id="mainLiveVideo" loop autoplay muted playsinline></video>
             
-            const newComment = document.createElement('div');
-            newComment.classList.add('comment-item');
-            newComment.innerHTML = `<strong>Vous:</strong> ${text}`;
-            commentsList.appendChild(newComment);
-            
-            commentInput.value = '';
-            commentsList.scrollTop = commentsList.scrollHeight;
-        }
-    });
+            <div class="video-sidebar-left">
+                <div class="username" id="videoUser">@Chargement...</div>
+                <div class="description" id="videoDesc">Connexion à la base de données...</div>
+            </div>
+            <div class="video-sidebar-right">
+                <button type="button" class="action-button-touch" onclick="handleLikeInteraction()">
+                    <div class="icon-circle" id="likeIcon">🤍</div>
+                    <span id="like-counter">12.5K</span>
+                </button>
+                <button type="button" class="action-button-touch" onclick="triggerCommentSheet()">
+                    <div class="icon-circle">💬</div>
+                    <span>2</span>
+                </button>
+                <button type="button" class="action-button-touch" onclick="shareOnWhatsApp()">
+                    <div class="icon-circle">🔗</div>
+                    <span>Partager</span>
+                </button>
+            </div>
+        </div>
+    </div>
 
-    // Gestion du Partage (Menu natif du téléphone / Web Share API)
-    const shareBtn = document.getElementById('share-btn');
-    shareBtn.addEventListener('click', async () => {
-        if (navigator.share) {
-            try {
-                await navigator.share({
-                    title: 'ChatBook',
-                    text: 'Découvrez ce contenu sur ChatBook !',
-                    url: window.location.href,
-                });
-            } catch (error) {
-                console.log('Partage annulé ou échoué', error);
-            }
-        } else {
-            // Solution de secours si le navigateur ne gère pas le partage direct
-            navigator.clipboard.writeText(window.location.href);
-            alert('Lien copié dans le presse-papier !');
-        }
-    });
-</script>
+    <div class="congrats-modal" id="congratsBox">
+        <h2>🎉 Bravo Champion !</h2>
+        <br>
+        <p>Tu es un enfant très sage et très concentré. L'étude te donnera de grands super-pouvoirs dans la vie ! 📚✏️</p>
+        <br>
+        <button class="congrats-btn" onclick="closeCongrats()">Continuer à apprendre 🧠</button>
+    </div>
 
-</body>
-</html>
+    <div id="bottomCommentSheet" class="comment-sheet">
+        <div class="comment-header">
+            <span>Commentaires</span>
+            <span class="comment-close" onclick="dismissCommentSheet()">✕</span>
+        </div>
+        <div class="comment-body-scroll">
+            <div class="comment-box-item"><span class="comment-author">@Alpha_Tech :</span> Concept génial ! 🇬🇳</div>
+            <div class="comment-box-item"><span class="comment-author">@Mariama_Dev :</span> Idéal pour la famille. 😍</div>
+        </div>
+    </div>
+
+    <div class="bottom-bar-placement" id="bottomStatusLabel">
+        ✨ Connecté au serveur Supabase Live
+    </div>
+
+    <script>
+        const SUPABASE_URL = "https://supabase.co";
+        const SUPABASE_KEY = "sb_publishable_DucLDxgJL-poE8KrN_9bnA_K-D0aGOS";
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        let isLiked = false;
+        let currentCategory = "humour";
+
+        // Chargement initial des vidéos en direct de la base
