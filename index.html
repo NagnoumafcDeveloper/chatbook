@@ -11,6 +11,7 @@ HTML
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            user-select: none;
         }
         body, html {
             width: 100%;
@@ -45,6 +46,7 @@ HTML
             cursor: pointer;
             font-weight: bold;
             transition: all 0.3s ease;
+            pointer-events: auto; /* Cliquable */
         }
         .category-btn.active, .category-btn:hover {
             background: white;
@@ -68,16 +70,17 @@ HTML
             width: 100%;
             height: 100%;
             object-fit: cover;
+            cursor: pointer;
         }
         .sidebar {
             position: absolute;
             right: 15px;
-            bottom: 90px;
+            bottom: 80px;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 15px;
-            z-index: 10;
+            z-index: 20;
         }
         .action-btn {
             background: transparent;
@@ -94,9 +97,10 @@ HTML
             font-size: 22px;
             text-shadow: 0 2px 5px rgba(0,0,0,0.8);
             transition: transform 0.2s;
+            pointer-events: auto; /* Forcé cliquable */
         }
         .action-btn:hover {
-            transform: scale(1.1);
+            transform: scale(1.15);
         }
         .action-btn span {
             font-size: 11px;
@@ -108,9 +112,10 @@ HTML
             position: absolute;
             left: 15px;
             bottom: 20px;
-            max-width: 75%;
-            z-index: 10;
+            max-width: 70%;
+            z-index: 15;
             text-shadow: 0 2px 5px rgba(0,0,0,0.9);
+            pointer-events: none;
         }
         .video-info h3 {
             font-size: 16px;
@@ -121,6 +126,26 @@ HTML
             font-size: 13px;
             color: #eee;
             line-height: 1.4;
+        }
+
+        /* Bouton Suivant discret sur la vidéo */
+        .next-video-btn {
+            position: absolute;
+            bottom: 20px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 15px;
+            color: white;
+            font-size: 12px;
+            cursor: pointer;
+            z-index: 20;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+        .next-video-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
         }
 
         /* Fenêtre de commentaires (Modal) */
@@ -199,7 +224,7 @@ HTML
 
     <header>ChatBook</header>
 
-    <!-- Catégories -->
+    <!-- Catégories cliquables -->
     <div class="categories">
         <button class="category-btn active" onclick="switchCategory('humour', this)">😄 Humour</button>
         <button class="category-btn" onclick="switchCategory('motivation', this)">💪 Motivation</button>
@@ -208,34 +233,36 @@ HTML
 
     <!-- Conteneur Vidéo Principal -->
     <div class="main-container" id="videoContainer">
-        <video id="videoPlayer" src="" autoplay loop></video>
+        <!-- Vidéo cliquable pour lecture/pause -->
+        <video id="videoPlayer" onclick="togglePlayPause()" src="" autoplay loop></video>
 
+        <!-- Boutons d'interaction à droite (100% cliquables) -->
         <div class="sidebar">
-            <!-- Bouton Like (Blanc par défaut) -->
-            <button class="action-btn" id="likeBtn" onclick="toggleLike()" style="color: white;">
+            <button class="action-btn" id="likeBtn" onclick="toggleLike()">
                 ❤️ <span id="likeCount">0</span>
             </button>
-            <!-- Bouton Commentaires -->
             <button class="action-btn" onclick="openComments()">
                 💬 <span id="commentCount">0</span>
             </button>
-            <!-- Bouton Haut-parleur cliquable pour Activer/Couper le son -->
             <button class="action-btn" id="soundBtn" onclick="toggleSound()">
                 🔊 <span id="soundText">Son</span>
             </button>
-            <!-- Bouton Partager -->
             <button class="action-btn" onclick="shareVideo()">
                 🔗 <span>Partager</span>
             </button>
         </div>
 
+        <!-- Informations de la vidéo -->
         <div class="video-info">
             <h3 id="videoAuthor">@Auteur</h3>
             <p id="videoDesc">Description de la vidéo...</p>
         </div>
+
+        <!-- Bouton Suivant cliquable pour changer de vidéo -->
+        <button class="next-video-btn" onclick="nextVideo()">Vidéo suivante ➡️</button>
     </div>
 
-    <!-- Panneau de Commentaires -->
+    <!-- Panneau de Commentaires cliquable -->
     <div id="commentModal">
         <div class="comment-header">
             <span id="commentTitle">Commentaires (0)</span>
@@ -314,7 +341,7 @@ HTML
             document.getElementById('likeCount').innerText = formatNumber(videoData.likes);
             document.getElementById('commentCount').innerText = videoData.commentsList.length;
 
-            // Gestion propre du cœur : Blanc par défaut, Rouge si liké
+            // Forçage de la couleur du cœur : Blanc par défaut, Rouge si liké
             const likeBtn = document.getElementById('likeBtn');
             likeBtn.style.color = videoData.liked ? '#ff4d4d' : '#ffffff';
 
@@ -330,7 +357,14 @@ HTML
             closeComments();
         }
 
-        // Défilement fluide avec la molette de la souris
+        function nextVideo() {
+            const list = database[currentCategory];
+            currentIndex = (currentIndex + 1) % list.length;
+            loadCurrentVideo();
+            closeComments();
+        }
+
+        // Défilement avec la molette de la souris
         const container = document.getElementById('videoContainer');
         container.addEventListener('wheel', (e) => {
             e.preventDefault();
@@ -343,6 +377,15 @@ HTML
             loadCurrentVideo();
             closeComments();
         }, { passive: false });
+
+        function togglePlayPause() {
+            const player = document.getElementById('videoPlayer');
+            if (player.paused) {
+                player.play();
+            } else {
+                player.pause();
+            }
+        }
 
         function toggleLike() {
             const videoData = database[currentCategory][currentIndex];
@@ -360,11 +403,9 @@ HTML
             document.getElementById('likeCount').innerText = formatNumber(videoData.likes);
         }
 
-        // Fonction pour activer ou couper le son en cliquant sur le haut-parleur
         function toggleSound() {
             const player = document.getElementById('videoPlayer');
             const soundBtn = document.getElementById('soundBtn');
-            const soundText = document.getElementById('soundText');
 
             if (player.muted) {
                 player.muted = false;
@@ -427,3 +468,5 @@ HTML
             loadCurrentVideo();
         };
     </script>
+</body>
+</html>
