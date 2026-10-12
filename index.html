@@ -79,7 +79,6 @@ HTML
             gap: 20px;
             z-index: 10;
         }
-        /* Suppression du fond noir des boutons de droite : ils deviennent transparents/uniques */
         .action-btn {
             background: transparent;
             border: none;
@@ -122,6 +121,19 @@ HTML
             font-size: 13px;
             color: #eee;
             line-height: 1.4;
+        }
+
+        /* Indicateur de défilement */
+        .scroll-hint {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0,0,0,0.6);
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-size: 11px;
+            z-index: 10;
+            color: #00ffcc;
         }
 
         /* Fenêtre de commentaires (Modal) */
@@ -208,33 +220,33 @@ HTML
     </div>
 
     <!-- Conteneur Vidéo Principal -->
-    <div class="main-container">
+    <div class="main-container" id="videoContainer">
+        <div class="scroll-hint">📜 Faites défiler pour la suite</div>
         <video id="videoPlayer" src="" controls autoplay muted loop></video>
 
-        <!-- Boutons d'interaction à droite (sans fond noir, intégrés directement) -->
         <div class="sidebar">
+            <!-- Le cœur est forcé en blanc par défaut -->
             <button class="action-btn" id="likeBtn" onclick="toggleLike()" style="color: white;">
-                ❤️ <span id="likeCount">12.5K</span>
+                ❤️ <span id="likeCount">0</span>
             </button>
             <button class="action-btn" onclick="openComments()">
-                💬 <span id="commentCount">2</span>
+                💬 <span id="commentCount">0</span>
             </button>
             <button class="action-btn" onclick="shareVideo()">
                 🔗 <span>Partager</span>
             </button>
         </div>
 
-        <!-- Informations de la vidéo -->
         <div class="video-info">
-            <h3 id="videoAuthor">@NagnoumaDeveloper</h3>
-            <p id="videoDesc">Préparez-vous à rire ! Les meilleures vidéos d'humour positives sont ici. 🤣 ✨ #détente</p>
+            <h3 id="videoAuthor">@Auteur</h3>
+            <p id="videoDesc">Description de la vidéo...</p>
         </div>
     </div>
 
     <!-- Panneau de Commentaires -->
     <div id="commentModal">
         <div class="comment-header">
-            <span id="commentTitle">Commentaires (2)</span>
+            <span id="commentTitle">Commentaires (0)</span>
             <button class="close-btn" onclick="closeComments()">✕</button>
         </div>
         <div class="comment-list" id="commentList"></div>
@@ -245,86 +257,131 @@ HTML
     </div>
 
     <script>
+        // Liste de plusieurs vidéos par catégorie pour permettre le défilement
         const database = {
-            humour: {
-                url: 'https://www.w3schools.com/html/mov_bbb.mp4',
-                author: '@NagnoumaDeveloper',
-                desc: 'Préparez-vous à rire ! Les meilleures vidéos d\'humour positives sont ici. 🤣 ✨ #détente',
-                likes: 12500,
-                liked: false,
-                commentsList: ["Trop drôle cette vidéo 😂", "J'adore !"]
-            },
-            motivation: {
-                url: 'https://www.w3schools.com/html/movie.mp4',
-                author: '@MotivationDaily',
-                desc: 'Ne lâchez rien, chaque petit effort compte pour réussir vos grands projets ! 🚀💪',
-                likes: 8400,
-                liked: false,
-                commentsList: ["Tellement vrai, merci pour la motivation.", "Let's go ! 💪"]
-            },
-            enfants: {
-                url: 'https://www.w3schools.com/html/mov_bbb.mp4',
-                author: '@KidsFun',
-                desc: 'De superbes moments de joie et de rires pour les enfants ! 👶✨',
-                likes: 3200,
-                liked: false,
-                commentsList: ["Trop mignon !", "Génial pour les petits."]
-            }
+            humour: [
+                {
+                    url: 'https://www.w3schools.com/html/mov_bbb.mp4',
+                    author: '@NagnoumaDeveloper',
+                    desc: 'Préparez-vous à rire ! Les meilleures vidéos d\'humour positives sont ici. 🤣 ✨ #détente',
+                    likes: 1250,
+                    liked: false,
+                    commentsList: ["Trop drôle 😂", "Incroyable !"]
+                },
+                {
+                    url: 'https://www.w3schools.com/html/movie.mp4',
+                    author: '@HumourTotal',
+                    desc: 'Une blague qui fait du bien dès le matin ! 🎭✨',
+                    likes: 430,
+                    liked: false,
+                    commentsList: ["Excellent 👏"]
+                }
+            ],
+            motivation: [
+                {
+                    url: 'https://www.w3schools.com/html/movie.mp4',
+                    author: '@MotivationDaily',
+                    desc: 'Ne lâchez rien, chaque petit effort compte pour réussir vos grands projets ! 🚀💪',
+                    likes: 840,
+                    liked: false,
+                    commentsList: ["Tellement vrai !", "Let's go ! 💪"]
+                },
+                {
+                    url: 'https://www.w3schools.com/html/mov_bbb.mp4',
+                    author: '@MindsetMaster',
+                    desc: 'La discipline bat toujours le talent brut. Restez concentrés 🎯',
+                    likes: 3100,
+                    liked: false,
+                    commentsList: ["Citation magnifique.", "Merci pour la force !"]
+                }
+            ],
+            enfants: [
+                {
+                    url: 'https://www.w3schools.com/html/mov_bbb.mp4',
+                    author: '@KidsFun',
+                    desc: 'De superbes moments de joie et de rires pour les enfants ! 👶✨',
+                    likes: 320,
+                    liked: false,
+                    commentsList: ["Trop mignon !"]
+                }
+            ]
         };
 
         let currentCategory = 'humour';
+        let currentIndex = 0;
 
-        function loadCategoryData(category) {
-            currentCategory = category;
-            const data = database[category];
+        function loadCurrentVideo() {
+            const list = database[currentCategory];
+            if (!list || list.length === 0) return;
+
+            const videoData = list[currentIndex];
             const player = document.getElementById('videoPlayer');
 
-            player.src = data.url;
-            document.getElementById('videoAuthor').innerText = data.author;
-            document.getElementById('videoDesc').innerText = data.desc;
-            document.getElementById('likeCount').innerText = formatNumber(data.likes);
-            document.getElementById('commentCount').innerText = data.commentsList.length;
+            player.src = videoData.url;
+            document.getElementById('videoAuthor').innerText = videoData.author;
+            document.getElementById('videoDesc').innerText = videoData.desc;
+            document.getElementById('likeCount').innerText = formatNumber(videoData.likes);
+            document.getElementById('commentCount').innerText = videoData.commentsList.length;
 
+            // Réinitialisation stricte du cœur en BLANC si non liké, ROUGE si liké
             const likeBtn = document.getElementById('likeBtn');
-            likeBtn.style.color = data.liked ? '#ff4d4d' : 'white';
+            likeBtn.style.color = videoData.liked ? '#ff4d4d' : 'white';
 
-            player.play().catch(e => console.log("Lecture automatique gérée :", e));
+            player.play().catch(e => console.log("Lecture automatique :", e));
         }
 
         function switchCategory(category, btnElement) {
             document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
             btnElement.classList.add('active');
-            loadCategoryData(category);
+            currentCategory = category;
+            currentIndex = 0; // Revenir à la première vidéo de la catégorie
+            loadCurrentVideo();
             closeComments();
         }
 
+        // Permet de faire défiler les vidéos avec la molette de la souris sur le conteneur
+        const container = document.getElementById('videoContainer');
+        container.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const list = database[currentCategory];
+            if (e.deltaY > 0) {
+                // Défilement vers le bas -> Vidéo suivante
+                currentIndex = (currentIndex + 1) % list.length;
+            } else {
+                // Défilement vers le haut -> Vidéo précédente
+                currentIndex = (currentIndex - 1 + list.length) % list.length;
+            }
+            loadCurrentVideo();
+            closeComments();
+        }, { passive: false });
+
         function toggleLike() {
-            const data = database[currentCategory];
+            const videoData = database[currentCategory][currentIndex];
             const likeBtn = document.getElementById('likeBtn');
 
-            if (!data.liked) {
-                data.likes++;
-                data.liked = true;
-                likeBtn.style.color = '#ff4d4d';
+            if (!videoData.liked) {
+                videoData.likes++;
+                videoData.liked = true;
+                likeBtn.style.color = '#ff4d4d'; // Rouge
             } else {
-                data.likes--;
-                data.liked = false;
-                likeBtn.style.color = 'white';
+                videoData.likes--;
+                videoData.liked = false;
+                likeBtn.style.color = 'white'; // Blanc
             }
-            document.getElementById('likeCount').innerText = formatNumber(data.likes);
+            document.getElementById('likeCount').innerText = formatNumber(videoData.likes);
         }
 
         function openComments() {
-            const data = database[currentCategory];
+            const videoData = database[currentCategory][currentIndex];
             const modal = document.getElementById('commentModal');
             const list = document.getElementById('commentList');
             
             list.innerHTML = '';
-            data.commentsList.forEach(cmt => {
+            videoData.commentsList.forEach(cmt => {
                 list.innerHTML += `<div class="comment-item">${cmt}</div>`;
             });
 
-            document.getElementById('commentTitle').innerText = `Commentaires (${data.commentsList.length})`;
+            document.getElementById('commentTitle').innerText = `Commentaires (${videoData.commentsList.length})`;
             modal.style.display = 'flex';
         }
 
@@ -336,11 +393,11 @@ HTML
             const input = document.getElementById('commentInput');
             const text = input.value.trim();
             if (text !== '') {
-                const data = database[currentCategory];
-                data.commentsList.push(text);
+                const videoData = database[currentCategory][currentIndex];
+                videoData.commentsList.push(text);
                 input.value = '';
                 openComments();
-                document.getElementById('commentCount').innerText = data.commentsList.length;
+                document.getElementById('commentCount').innerText = videoData.commentsList.length;
             }
         }
 
@@ -363,7 +420,7 @@ HTML
         }
 
         window.onload = () => {
-            loadCategoryData('humour');
+            loadCurrentVideo();
         };
     </script>
 </body>
