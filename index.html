@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ChatBook - TikTok Mode</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         body, html {
             margin: 0;
@@ -84,7 +85,6 @@
             margin-bottom: 5px;
             text-shadow: 0 1px 3px rgba(0,0,0,0.8);
         }
-        /* Style de la section des commentaires */
         .comments-overlay {
             position: absolute;
             bottom: 0;
@@ -151,51 +151,61 @@
             margin-left: 10px;
             cursor: pointer;
         }
+        #loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 18px;
+            color: #ccc;
+        }
     </style>
 </head>
 <body>
 
-    <div class="container" id="feed-container"></div>
-
-    <!-- Les commentaires seront ajoutés dynamiquement par vidéo -->
+    <div class="container" id="feed-container">
+        <div id="loading">Chargement des vidéos...</div>
+    </div>
 
     <script>
+        const SUPABASE_URL = 'https://ddftothrbbaqsfjffzby.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRkZnRvdGhyYmJhcXNmamZmemJ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE0NjYzNjAsImV4cCI6MjEwNzA0MjM2MH0.4IRm2E0d8BU7PSvXDS6StmloqPLAMZQmAjOvaIz7N-w';
+        
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
         async function loadVideos() {
             const container = document.getElementById('feed-container');
             container.innerHTML = '';
 
-            const mockVideos = [
-                {
-                    id: 1,
-                    title: "Première vidéo de test ChatBook",
-                    url: "https://www.w3schools.com/html/mov_bbb.mp4",
-                    likes: 13,
-                    comments: ["Super vidéo !", "Génial !"]
-                },
-                {
-                    id: 2,
-                    title: "Deuxième vidéo de test",
-                    url: "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4",
-                    likes: 154,
-                    comments: ["Incroyable", "Beau travail"]
-                }
-            ];
+            const { data: videos, error } = await supabase
+                .from('videos')
+                .select('*');
 
-            mockVideos.forEach(video => {
+            if (error) {
+                console.error("Erreur lors du chargement des vidéos :", error);
+                container.innerHTML = '<div id="loading">Erreur de chargement</div>';
+                return;
+            }
+
+            if (!videos || videos.length === 0) {
+                container.innerHTML = '<div id="loading">Aucune vidéo trouvée</div>';
+                return;
+            }
+
+            videos.forEach(video => {
                 const slide = document.createElement('div');
                 slide.className = 'video-slide';
-                slide.setAttribute('data-id', video.id);
                 slide.innerHTML = `
-                    <video src="${video.url}" loop playsinline></video>
+                    <video src="https://www.w3schools.com/html/mov_bbb.mp4" loop playsinline></video>
                     <div class="video-info">
-                        <div class="video-title">${video.title}</div>
+                        <div class="video-title">${video.titre}</div>
                     </div>
                     <div class="sidebar">
                         <button class="action-btn" onclick="toggleLike(this)">❤</button>
-                        <span class="action-count like-count">${video.likes}</span>
+                        <span class="action-count like-count">0</span>
                         <button class="action-btn" onclick="toggleComments(${video.id})">💬</button>
                         <span class="action-count">Coms</span>
-                        <button class="action-btn" onclick="shareVideo('${video.title}')">↗</button>
+                        <button class="action-btn" onclick="shareVideo('${video.titre}')">↗</button>
                         <span class="action-count">Partager</span>
                     </div>
                     <div class="comments-overlay" id="comments-${video.id}">
@@ -204,7 +214,7 @@
                             <button class="close-comments" onclick="closeComments(${video.id})">✕</button>
                         </div>
                         <div class="comments-list">
-                            ${video.comments.map(c => `<div class="comment-item">${c}</div>`).join('')}
+                            <div class="comment-item">Aucun commentaire pour le moment.</div>
                         </div>
                         <div class="comment-input-container">
                             <input type="text" class="comment-input" placeholder="Ajouter un commentaire...">
@@ -260,6 +270,12 @@
                 const newComment = document.createElement('div');
                 newComment.className = 'comment-item';
                 newComment.textContent = input.value;
+                
+                const noCommentMsg = list.querySelector('.comment-item');
+                if (noCommentMsg && noCommentMsg.textContent.includes("Aucun commentaire")) {
+                    list.innerHTML = '';
+                }
+                
                 list.appendChild(newComment);
                 input.value = '';
             }
