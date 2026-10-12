@@ -3,161 +3,248 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChatBook - TikTok Mode</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <title>ChatBook</title>
     <style>
-        body, html { margin: 0; padding: 0; height: 100%; background-color: #000; overflow: hidden; font-family: Arial, sans-serif; color: #fff; }
-        .container { height: 100vh; scroll-snap-type: y mandatory; overflow-y: scroll; overflow-x: hidden; }
-        .video-slide { height: 100vh; width: 100vw; position: relative; scroll-snap-align: start; display: flex; justify-content: center; align-items: center; }
-        .video-slide video { height: 100%; width: 100%; object-fit: cover; }
-        .sidebar { position: absolute; right: 15px; bottom: 80px; display: flex; flex-direction: column; align-items: center; gap: 15px; z-index: 10; }
-        .action-btn { background: rgba(0, 0, 0, 0.4); border: none; color: #fff; width: 45px; height: 45px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; backdrop-filter: blur(5px); font-size: 18px; }
-        .action-btn:hover { background: rgba(0, 0, 0, 0.6); }
-        .action-btn.active { color: #ff3b5c; }
-        .action-count { font-size: 12px; font-weight: bold; text-shadow: 0 1px 2px rgba(0,0,0,0.8); margin-top: -10px; }
-        .video-info { position: absolute; bottom: 20px; left: 15px; right: 80px; z-index: 10; }
-        .video-title { font-weight: bold; font-size: 16px; margin-bottom: 5px; text-shadow: 0 1px 3px rgba(0,0,0,0.8); }
-        .comments-overlay { position: absolute; bottom: 0; left: 0; width: 100%; height: 60%; background: rgba(0, 0, 0, 0.85); border-top-left-radius: 15px; border-top-right-radius: 15px; display: flex; flex-direction: column; transition: transform 0.3s ease-in-out; transform: translateY(100%); z-index: 20; }
-        .comments-overlay.open { transform: translateY(0); }
-        .comments-header { padding: 15px; text-align: center; font-weight: bold; border-bottom: 1px solid rgba(255,255,255,0.1); position: relative; }
-        .close-comments { position: absolute; right: 15px; top: 15px; background: none; border: none; color: white; font-size: 18px; cursor: pointer; }
-        .comments-list { flex: 1; overflow-y: auto; padding: 15px; }
-        .comment-item { margin-bottom: 10px; font-size: 14px; }
-        .comment-input-container { padding: 15px; display: flex; background: rgba(0, 0, 0, 0.5); }
-        .comment-input { flex: 1; background: rgba(255, 255, 255, 0.1); border: none; border-radius: 20px; padding: 10px 15px; color: white; outline: none; }
-        .submit-comment { background: none; border: none; color: #1877f2; font-weight: bold; margin-left: 10px; cursor: pointer; }
-        #loading { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 18px; color: #ccc; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body, html {
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(135deg, #4a154b, #2b1055);
+            overflow: hidden;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+        }
+        .categories {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .category-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        .category-btn.active, .category-btn:hover {
+            background: white;
+            color: #2b1055;
+        }
+        .main-container {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            height: 75vh;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .sidebar {
+            position: absolute;
+            right: 15px;
+            bottom: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        .action-btn {
+            background: rgba(0, 0, 0, 0.5);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            font-size: 18px;
+            transition: transform 0.2s;
+        }
+        .action-btn:hover {
+            transform: scale(1.1);
+        }
+        .action-btn span {
+            font-size: 12px;
+            margin-top: 2px;
+        }
+        .video-info {
+            position: absolute;
+            left: 15px;
+            bottom: 20px;
+            max-width: 75%;
+        }
+        .video-info h3 {
+            font-size: 16px;
+            color: #00ffcc;
+            margin-bottom: 5px;
+        }
+        .video-info p {
+            font-size: 14px;
+            color: #ddd;
+        }
     </style>
 </head>
 <body>
-    <div class="container" id="feed-container">
-        <div id="loading">Chargement des vidéos...</div>
+
+    <header>ChatBook</header>
+
+    <!-- Catégories -->
+    <div class="categories">
+        <button class="category-btn active" onclick="filterCategory('humour')">😄 Humour</button>
+        <button class="category-btn" onclick="filterCategory('motivation')">💪 Motivation</button>
+        <button class="category-btn" onclick="filterCategory('enfants')">👶 Enfants</button>
+    </div>
+
+    <!-- Conteneur Principal de la Vidéo -->
+    <div class="main-container">
+        <!-- Élément Vidéo -->
+        <video id="videoPlayer" src="" controls autoplay muted loop></video>
+
+        <!-- Boutons d'interaction à droite (Likes, Commentaires, Partage) -->
+        <div class="sidebar">
+            <button class="action-btn" id="likeBtn" onclick="toggleLike()">
+                ❤️ <span id="likeCount">12.5K</span>
+            </button>
+            <button class="action-btn" onclick="openComments()">
+                💬 <span id="commentCount">2</span>
+            </button>
+            <button class="action-btn" onclick="shareVideo()">
+                🔗 <span>Partager</span>
+            </button>
+        </div>
+
+        <!-- Informations de la vidéo (Auteur et Description) -->
+        <div class="video-info">
+            <h3 id="videoAuthor">@NagnoumaDeveloper</h3>
+            <p id="videoDesc">Préparez-vous à rire ! Les meilleures vidéos d'humour positives sont ici. 🤣 ✨ #détente</p>
+        </div>
     </div>
 
     <script>
-        const SUPABASE_URL = 'https://ddftothrbbaqsfjffzby.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRkZnRvdGhyYmJhcXNmamZmemJ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE0NjYzNjAsImV4cCI6MjEwNzA0MjM2MH0.4IRm2E0d8BU7PSvXDS6StmloqPLAMZQmAjOvaIz7N-w';
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        // Exemple de base de données de vidéos
+        const videos = [
+            {
+                category: 'humour',
+                url: 'https://www.w3schools.com/html/mov_bbb.mp4',
+                author: '@NagnoumaDeveloper',
+                desc: 'Préparez-vous à rire ! Les meilleures vidéos d\'humour positives sont ici. 🤣 ✨ #détente',
+                likes: 12500,
+                comments: 2,
+                liked: false
+            },
+            {
+                category: 'motivation',
+                url: 'https://www.w3schools.com/html/movie.mp4',
+                author: '@MotivationDaily',
+                desc: 'Ne lâchez rien, chaque petit effort compte pour réussir vos projets ! 🚀',
+                likes: 8400,
+                comments: 45,
+                liked: false
+            }
+        ];
 
-        async function loadVideos() {
-            const container = document.getElementById('feed-container');
-            container.innerHTML = '';
+        let currentIndex = 0;
+
+        function loadVideo(index) {
+            const currentVideo = videos[index];
+            const player = document.getElementById('videoPlayer');
             
-            const { data: videos, error } = await supabase
-                .from('videos')
-                .select('*');
-
-            if (error) {
-                console.error("Erreur lors du chargement des vidéos :", error);
-                container.innerHTML = '<div id="loading">Erreur de chargement</div>';
-                return;
+            player.src = currentVideo.url;
+            document.getElementById('videoAuthor').innerText = currentVideo.author;
+            document.getElementById('videoDesc').innerText = currentVideo.desc;
+            document.getElementById('likeCount').innerText = formatNumber(currentVideo.likes);
+            document.getElementById('commentCount').innerText = currentVideo.comments;
+            
+            // État du bouton Like
+            const likeBtn = document.getElementById('likeBtn');
+            if (currentVideo.liked) {
+                likeBtn.style.color = '#ff4d4d';
+            } else {
+                likeBtn.style.color = 'white';
             }
+            
+            player.play().catch(e => console.log("Lecture automatique bloquée par le navigateur :", e));
+        }
 
-            if (!videos || videos.length === 0) {
-                container.innerHTML = '<div id="loading">Aucune vidéo trouvée</div>';
-                return;
+        function toggleLike() {
+            const currentVideo = videos[currentIndex];
+            if (!currentVideo.liked) {
+                currentVideo.likes++;
+                currentVideo.liked = true;
+                document.getElementById('likeBtn').style.color = '#ff4d4d';
+            } else {
+                currentVideo.likes--;
+                currentVideo.liked = false;
+                document.getElementById('likeBtn').style.color = 'white';
             }
-
-            videos.forEach(video => {
-                const slide = document.createElement('div');
-                slide.className = 'video-slide';
-                slide.innerHTML = `
-                    <video src="${video.url_video}" loop playsinline></video>
-                    <div class="video-info">
-                        <div class="video-title">${video.titre}</div>
-                    </div>
-                    <div class="sidebar">
-                        <button class="action-btn" onclick="toggleLike(this)">❤</button>
-                        <span class="action-count like-count">0</span>
-                        <button class="action-btn" onclick="toggleComments(${video.id})">💬</button>
-                        <span class="action-count">Coms</span>
-                        <button class="action-btn" onclick="shareVideo('${video.titre}')">↗</button>
-                        <span class="action-count">Partager</span>
-                    </div>
-                    <div class="comments-overlay" id="comments-${video.id}">
-                        <div class="comments-header">
-                            Commentaires <button class="close-comments" onclick="closeComments(${video.id})">✕</button>
-                        </div>
-                        <div class="comments-list">
-                            <div class="comment-item">Aucun commentaire pour le moment.</div>
-                        </div>
-                        <div class="comment-input-container">
-                            <input type="text" class="comment-input" placeholder="Ajouter un commentaire...">
-                            <button class="submit-comment" onclick="addComment(this, ${video.id})">Envoyer</button>
-                        </div>
-                    </div>
-                `;
-                container.appendChild(slide);
-            });
-
-            setupVideoAutoplay();
+            document.getElementById('likeCount').innerText = formatNumber(currentVideo.likes);
         }
 
-        function setupVideoAutoplay() {
-            const videos = document.querySelectorAll('video');
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.play().catch(() => {});
-                    } else {
-                        entry.target.pause();
-                    }
-                });
-            }, { threshold: 0.7 });
-
-            videos.forEach(video => observer.observe(video));
+        function openComments() {
+            alert("Espace commentaires : Vous pouvez ajouter ici l'ouverture de votre panneau de commentaires !");
         }
 
-        function toggleLike(btn) {
-            btn.classList.toggle('active');
-            let countSpan = btn.parentElement.querySelector('.like-count');
-            let count = parseInt(countSpan.textContent);
-            count = btn.classList.contains('active') ? count + 1 : count - 1;
-            countSpan.textContent = count;
-        }
-
-        function toggleComments(videoId) {
-            const overlay = document.getElementById(`comments-${videoId}`);
-            overlay.classList.add('open');
-        }
-
-        function closeComments(videoId) {
-            const overlay = document.getElementById(`comments-${videoId}`);
-            overlay.classList.remove('open');
-        }
-
-        function addComment(btn, videoId) {
-            const container = btn.parentElement;
-            const input = container.querySelector('.comment-input');
-            const list = btn.parentElement.parentElement.querySelector('.comments-list');
-            if (input.value.trim() !== '') {
-                const newComment = document.createElement('div');
-                newComment.className = 'comment-item';
-                newComment.textContent = input.value;
-                const noCommentMsg = list.querySelector('.comment-item');
-                if (noCommentMsg && noCommentMsg.textContent.includes("Aucun commentaire")) {
-                    list.innerHTML = '';
-                }
-                list.appendChild(newComment);
-                input.value = '';
-            }
-        }
-
-        function shareVideo(title) {
+        function shareVideo() {
             if (navigator.share) {
                 navigator.share({
-                    title: 'ChatBook',
-                    text: `Regarde cette vidéo sur ChatBook : ${title}`,
-                    url: window.location.href,
-                }).catch(() => {});
+                    title: 'ChatBook Video',
+                    url: window.location.href
+                }).catch(console.error);
             } else {
-                navigator.clipboard.writeText(window.location.href)
-                    .then(() => alert("Lien copié dans le presse-papier !"))
-                    .catch(() => alert("Impossible de copier le lien."));
+                alert("Lien copié dans le presse-papier !");
             }
         }
 
-        loadVideos();
+        function filterCategory(category) {
+            // Logique de filtrage par catégorie
+            const foundIndex = videos.findIndex(v => v.category === category);
+            if (foundIndex !== -1) {
+                currentIndex = foundIndex;
+                loadVideo(currentIndex);
+            } else {
+                alert("Aucune vidéo disponible pour cette catégorie pour le moment.");
+            }
+        }
+
+        function formatNumber(num) {
+            if (num >= 1000) {
+                return (num / 1000).toFixed(1) + 'K';
+            }
+            return num;
+        }
+
+        // Charger la première vidéo au démarrage de la page
+        window.onload = () => {
+            loadVideo(currentIndex);
+        };
     </script>
 </body>
 </html>
