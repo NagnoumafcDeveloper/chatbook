@@ -1,9 +1,10 @@
+HTML
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChatBook</title>
+    <title>ChatBook - TikTok Mode</title>
     <style>
         * {
             box-sizing: border-box;
@@ -22,16 +23,18 @@
             align-items: center;
         }
         header {
-            padding: 20px;
+            padding: 15px;
             text-align: center;
-            font-size: 24px;
+            font-size: 26px;
             font-weight: bold;
             color: #fff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
         .categories {
             display: flex;
             gap: 15px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+            z-index: 10;
         }
         .category-btn {
             background: rgba(255, 255, 255, 0.2);
@@ -41,23 +44,25 @@
             color: white;
             cursor: pointer;
             font-weight: bold;
-            transition: background 0.3s;
+            transition: all 0.3s ease;
         }
         .category-btn.active, .category-btn:hover {
             background: white;
             color: #2b1055;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
         .main-container {
             position: relative;
             width: 100%;
-            max-width: 450px;
-            height: 75vh;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 12px;
+            max-width: 420px;
+            height: 78vh;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 16px;
             display: flex;
             justify-content: center;
             align-items: center;
             overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
         }
         video {
             width: 100%;
@@ -67,11 +72,12 @@
         .sidebar {
             position: absolute;
             right: 15px;
-            bottom: 80px;
+            bottom: 90px;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 20px;
+            z-index: 10;
         }
         .action-btn {
             background: rgba(0, 0, 0, 0.5);
@@ -85,21 +91,24 @@
             justify-content: center;
             color: white;
             cursor: pointer;
-            font-size: 18px;
+            font-size: 20px;
             transition: transform 0.2s;
         }
         .action-btn:hover {
             transform: scale(1.1);
         }
         .action-btn span {
-            font-size: 12px;
-            margin-top: 2px;
+            font-size: 11px;
+            margin-top: 3px;
+            font-weight: bold;
         }
         .video-info {
             position: absolute;
             left: 15px;
             bottom: 20px;
             max-width: 75%;
+            z-index: 10;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
         }
         .video-info h3 {
             font-size: 16px;
@@ -107,8 +116,9 @@
             margin-bottom: 5px;
         }
         .video-info p {
-            font-size: 14px;
-            color: #ddd;
+            font-size: 13px;
+            color: #eee;
+            line-height: 1.4;
         }
     </style>
 </head>
@@ -118,17 +128,16 @@
 
     <!-- Catégories -->
     <div class="categories">
-        <button class="category-btn active" onclick="filterCategory('humour')">😄 Humour</button>
-        <button class="category-btn" onclick="filterCategory('motivation')">💪 Motivation</button>
-        <button class="category-btn" onclick="filterCategory('enfants')">👶 Enfants</button>
+        <button class="category-btn active" onclick="switchCategory('humour', this)">😄 Humour</button>
+        <button class="category-btn" onclick="switchCategory('motivation', this)">💪 Motivation</button>
+        <button class="category-btn" onclick="switchCategory('enfants', this)">👶 Enfants</button>
     </div>
 
-    <!-- Conteneur Principal de la Vidéo -->
+    <!-- Conteneur Vidéo Principal -->
     <div class="main-container">
-        <!-- Élément Vidéo -->
         <video id="videoPlayer" src="" controls autoplay muted loop></video>
 
-        <!-- Boutons d'interaction à droite (Likes, Commentaires, Partage) -->
+        <!-- Boutons d'interaction à droite -->
         <div class="sidebar">
             <button class="action-btn" id="likeBtn" onclick="toggleLike()">
                 ❤️ <span id="likeCount">12.5K</span>
@@ -141,7 +150,7 @@
             </button>
         </div>
 
-        <!-- Informations de la vidéo (Auteur et Description) -->
+        <!-- Informations de la vidéo -->
         <div class="video-info">
             <h3 id="videoAuthor">@NagnoumaDeveloper</h3>
             <p id="videoDesc">Préparez-vous à rire ! Les meilleures vidéos d'humour positives sont ici. 🤣 ✨ #détente</p>
@@ -149,10 +158,9 @@
     </div>
 
     <script>
-        // Exemple de base de données de vidéos
-        const videos = [
-            {
-                category: 'humour',
+        // Base de données intégrée contenant toutes les vidéos et informations
+        const database = {
+            humour: {
                 url: 'https://www.w3schools.com/html/mov_bbb.mp4',
                 author: '@NagnoumaDeveloper',
                 desc: 'Préparez-vous à rire ! Les meilleures vidéos d\'humour positives sont ici. 🤣 ✨ #détente',
@@ -160,56 +168,70 @@
                 comments: 2,
                 liked: false
             },
-            {
-                category: 'motivation',
+            motivation: {
                 url: 'https://www.w3schools.com/html/movie.mp4',
                 author: '@MotivationDaily',
-                desc: 'Ne lâchez rien, chaque petit effort compte pour réussir vos projets ! 🚀',
+                desc: 'Ne lâchez rien, chaque petit effort compte pour réussir vos grands projets ! 🚀💪',
                 likes: 8400,
                 comments: 45,
                 liked: false
+            },
+            enfants: {
+                url: 'https://www.w3schools.com/html/mov_bbb.mp4',
+                author: '@KidsFun',
+                desc: 'De superbes moments de joie et de rires pour les enfants ! 👶✨',
+                likes: 3200,
+                comments: 12,
+                liked: false
             }
-        ];
+        };
 
-        let currentIndex = 0;
+        let currentCategory = 'humour';
 
-        function loadVideo(index) {
-            const currentVideo = videos[index];
+        function loadCategoryData(category) {
+            currentCategory = category;
+            const data = database[category];
             const player = document.getElementById('videoPlayer');
-            
-            player.src = currentVideo.url;
-            document.getElementById('videoAuthor').innerText = currentVideo.author;
-            document.getElementById('videoDesc').innerText = currentVideo.desc;
-            document.getElementById('likeCount').innerText = formatNumber(currentVideo.likes);
-            document.getElementById('commentCount').innerText = currentVideo.comments;
-            
-            // État du bouton Like
+
+            player.src = data.url;
+            document.getElementById('videoAuthor').innerText = data.author;
+            document.getElementById('videoDesc').innerText = data.desc;
+            document.getElementById('likeCount').innerText = formatNumber(data.likes);
+            document.getElementById('commentCount').innerText = data.comments;
+
+            // Mise à jour de la couleur du bouton like selon l'état
             const likeBtn = document.getElementById('likeBtn');
-            if (currentVideo.liked) {
-                likeBtn.style.color = '#ff4d4d';
-            } else {
-                likeBtn.style.color = 'white';
-            }
-            
-            player.play().catch(e => console.log("Lecture automatique bloquée par le navigateur :", e));
+            likeBtn.style.color = data.liked ? '#ff4d4d' : 'white';
+
+            player.play().catch(e => console.log("Lecture automatique gérée :", e));
+        }
+
+        function switchCategory(category, btnElement) {
+            // Gestion visuelle des boutons de catégorie actifs
+            document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+
+            // Charger les données correspondantes
+            loadCategoryData(category);
         }
 
         function toggleLike() {
-            const currentVideo = videos[currentIndex];
-            if (!currentVideo.liked) {
-                currentVideo.likes++;
-                currentVideo.liked = true;
+            const data = database[currentCategory];
+            if (!data.liked) {
+                data.likes++;
+                data.liked = true;
                 document.getElementById('likeBtn').style.color = '#ff4d4d';
             } else {
-                currentVideo.likes--;
-                currentVideo.liked = false;
+                data.likes--;
+                data.liked = false;
                 document.getElementById('likeBtn').style.color = 'white';
             }
-            document.getElementById('likeCount').innerText = formatNumber(currentVideo.likes);
+            document.getElementById('likeCount').innerText = formatNumber(data.likes);
         }
 
         function openComments() {
-            alert("Espace commentaires : Vous pouvez ajouter ici l'ouverture de votre panneau de commentaires !");
+            const data = database[currentCategory];
+            alert(`Commentaires (${data.comments}) : Superbe vidéo !`);
         }
 
         function shareVideo() {
@@ -219,18 +241,7 @@
                     url: window.location.href
                 }).catch(console.error);
             } else {
-                alert("Lien copié dans le presse-papier !");
-            }
-        }
-
-        function filterCategory(category) {
-            // Logique de filtrage par catégorie
-            const foundIndex = videos.findIndex(v => v.category === category);
-            if (foundIndex !== -1) {
-                currentIndex = foundIndex;
-                loadVideo(currentIndex);
-            } else {
-                alert("Aucune vidéo disponible pour cette catégorie pour le moment.");
+                alert("Lien de la vidéo copié !");
             }
         }
 
@@ -241,10 +252,8 @@
             return num;
         }
 
-        // Charger la première vidéo au démarrage de la page
+        // Lancement initial au chargement de la page
         window.onload = () => {
-            loadVideo(currentIndex);
+            loadCategoryData('humour');
         };
     </script>
-</body>
-</html>
