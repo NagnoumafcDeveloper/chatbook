@@ -46,7 +46,7 @@ HTML
             cursor: pointer;
             font-weight: bold;
             transition: all 0.3s ease;
-            pointer-events: auto; /* Cliquable */
+            pointer-events: auto;
         }
         .category-btn.active, .category-btn:hover {
             background: white;
@@ -97,7 +97,7 @@ HTML
             font-size: 22px;
             text-shadow: 0 2px 5px rgba(0,0,0,0.8);
             transition: transform 0.2s;
-            pointer-events: auto; /* Forcé cliquable */
+            pointer-events: auto;
         }
         .action-btn:hover {
             transform: scale(1.15);
@@ -127,8 +127,6 @@ HTML
             color: #eee;
             line-height: 1.4;
         }
-
-        /* Bouton Suivant discret sur la vidéo */
         .next-video-btn {
             position: absolute;
             bottom: 20px;
@@ -148,7 +146,6 @@ HTML
             background: rgba(255, 255, 255, 0.4);
         }
 
-        /* Fenêtre de commentaires (Modal) */
         #commentModal {
             display: none;
             position: fixed;
@@ -224,21 +221,17 @@ HTML
 
     <header>ChatBook</header>
 
-    <!-- Catégories cliquables -->
     <div class="categories">
         <button class="category-btn active" onclick="switchCategory('humour', this)">😄 Humour</button>
         <button class="category-btn" onclick="switchCategory('motivation', this)">💪 Motivation</button>
         <button class="category-btn" onclick="switchCategory('enfants', this)">👶 Enfants</button>
     </div>
 
-    <!-- Conteneur Vidéo Principal -->
     <div class="main-container" id="videoContainer">
-        <!-- Vidéo cliquable pour lecture/pause -->
         <video id="videoPlayer" onclick="togglePlayPause()" src="" autoplay loop></video>
 
-        <!-- Boutons d'interaction à droite (100% cliquables) -->
         <div class="sidebar">
-            <button class="action-btn" id="likeBtn" onclick="toggleLike()">
+            <button class="action-btn" id="likeBtn" onclick="toggleLike()" style="color: white;">
                 ❤️ <span id="likeCount">0</span>
             </button>
             <button class="action-btn" onclick="openComments()">
@@ -252,17 +245,14 @@ HTML
             </button>
         </div>
 
-        <!-- Informations de la vidéo -->
         <div class="video-info">
             <h3 id="videoAuthor">@Auteur</h3>
             <p id="videoDesc">Description de la vidéo...</p>
         </div>
 
-        <!-- Bouton Suivant cliquable pour changer de vidéo -->
         <button class="next-video-btn" onclick="nextVideo()">Vidéo suivante ➡️</button>
     </div>
 
-    <!-- Panneau de Commentaires cliquable -->
     <div id="commentModal">
         <div class="comment-header">
             <span id="commentTitle">Commentaires (0)</span>
@@ -341,9 +331,8 @@ HTML
             document.getElementById('likeCount').innerText = formatNumber(videoData.likes);
             document.getElementById('commentCount').innerText = videoData.commentsList.length;
 
-            // Forçage de la couleur du cœur : Blanc par défaut, Rouge si liké
-            const likeBtn = document.getElementById('likeBtn');
-            likeBtn.style.color = videoData.liked ? '#ff4d4d' : '#ffffff';
+            // Le cœur reste toujours blanc, même si liké
+            document.getElementById('likeBtn').style.color = '#ffffff';
 
             player.play().catch(e => console.log("Lecture automatique :", e));
         }
@@ -364,7 +353,6 @@ HTML
             closeComments();
         }
 
-        // Défilement avec la molette de la souris
         const container = document.getElementById('videoContainer');
         container.addEventListener('wheel', (e) => {
             e.preventDefault();
@@ -389,18 +377,17 @@ HTML
 
         function toggleLike() {
             const videoData = database[currentCategory][currentIndex];
-            const likeBtn = document.getElementById('likeBtn');
-
+            
             if (!videoData.liked) {
                 videoData.likes++;
                 videoData.liked = true;
-                likeBtn.style.color = '#ff4d4d'; // Rouge
             } else {
                 videoData.likes--;
                 videoData.liked = false;
-                likeBtn.style.color = '#ffffff'; // Blanc
             }
+            // Le cœur reste blanc mais le compteur s'incrémente ou se décrémente correctement
             document.getElementById('likeCount').innerText = formatNumber(videoData.likes);
+            document.getElementById('likeBtn').style.color = '#ffffff';
         }
 
         function toggleSound() {
