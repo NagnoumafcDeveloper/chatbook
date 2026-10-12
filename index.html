@@ -1,273 +1,93 @@
+```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ChatBook - Bien-être & Famille</title>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-            -webkit-tap-highlight-color: transparent;
-            user-select: none;
-        }
-
-        body {
-            background-color: #000000;
-            color: #ffffff;
-            overflow: hidden;
-            position: fixed;
-            width: 100%;
-            height: 100%;
-        }
-
-        .video-player-box {
-            position: relative;
-            width: 100%;
-            height: calc(100vh - 60px);
-            /* Magnifique dégradé de couleurs animé */
-            background: linear-gradient(45deg, #1e3c72, #2a5298, #fe2c55);
-            background-size: 400% 400%;
-            animation: gradientBg 10s ease infinite;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.5s ease;
-        }
-
-        @keyframes gradientBg {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .top-nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px 20px 10px 20px;
-            z-index: 50;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
-            gap: 12px;
-        }
-
-        .top-nav .logo {
-            font-size: 1.6rem;
-            font-weight: 900;
-            color: #1877f2;
-            text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
-            letter-spacing: -0.5px;
-        }
-
-        /* LES 3 ONGLETS SPECIAUX DE LAMINE */
-        .tabs-categories {
-            display: flex;
-            gap: 12px;
-            background-color: rgba(255, 255, 255, 0.1);
-            padding: 6px 12px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-        }
-
-        .tabs-categories span {
-            font-size: 0.9rem;
-            font-weight: bold;
-            opacity: 0.5;
-            cursor: pointer;
-            padding: 6px 12px;
-            border-radius: 15px;
-            transition: all 0.2s ease;
-        }
-
-        .tabs-categories span.active {
-            opacity: 1;
-            background-color: #ffffff;
-            color: #000000;
-        }
-
-        .video-sidebar-left {
-            position: absolute;
-            bottom: 40px;
-            left: 15px;
-            z-index: 10;
-            max-width: 75%;
-            text-shadow: 1px 1px 4px rgba(0,0,0,0.9);
-        }
-
-        .video-sidebar-left .username { font-weight: bold; font-size: 1.05rem; margin-bottom: 5px; color: #00ffcc; }
-        .video-sidebar-left .description { font-size: 0.95rem; line-height: 1.3; }
-
-        .video-sidebar-right {
-            position: absolute;
-            bottom: 80px;
-            right: 25px;
-            z-index: 80;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .action-button-touch {
-            background: none;
-            border: none;
-            color: #ffffff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            cursor: pointer;
-            outline: none;
-            padding: 10px;
-        }
-
-        .icon-circle {
-            width: 56px;
-            height: 56px;
-            background-color: rgba(0, 0, 0, 0.6);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            margin-bottom: 4px;
-            border: 2px solid rgba(255, 255, 255, 0.4);
-            transition: transform 0.1s ease;
-        }
-
-        .icon-circle:active { transform: scale(0.85); }
-        .icon-circle.liked { background-color: #fe2c55; border-color: #fe2c55; }
-
-        .action-button-touch span {
-            font-size: 0.85rem;
-            font-weight: bold;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
-        }
-
-        .comment-sheet {
-            position: fixed;
-            bottom: -100%;
-            left: 0;
-            width: 100%;
-            height: 65vh;
-            background-color: #ffffff;
-            color: #000000;
-            border-top-left-radius: 20px;
-            border-top-right-radius: 20px;
-            z-index: 150;
-            transition: bottom 0.3s ease-out;
-            display: flex;
-            flex-direction: column;
-            padding: 15px;
-        }
-
-        .comment-sheet.open { bottom: 0; }
-        .comment-header { display: flex; justify-content: space-between; align-items: center; font-weight: bold; border-bottom: 1px solid #e4e6eb; padding-bottom: 10px;}
-        .comment-close { font-size: 1.6rem; cursor: pointer; color: #606770; padding: 5px; }
-        .comment-body-scroll { flex: 1; overflow-y: auto; padding: 15px 0; }
-        .comment-box-item { margin-bottom: 14px; font-size: 0.95rem; text-align: left; }
-        .comment-author { font-weight: bold; color: #1877f2; }
-        .comment-footer-input { display: flex; gap: 10px; padding: 10px 0; border-top: 1px solid #e4e6eb; }
-        .comment-footer-input input { flex: 1; padding: 14px; border: 1px solid #ccd0d5; border-radius: 25px; font-size: 1rem; background-color: #f0f2f5; outline: none; color: #000000; user-select: text; }
-        .comment-btn-send { background-color: #1877f2; color: #ffffff; border: none; padding: 0 20px; border-radius: 25px; font-weight: bold; cursor: pointer; }
-
-        .bottom-bar-placement {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 60px;
-            background-color: #111111;
-            border-top: 1px solid #222222;
-            z-index: 70;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 0.8rem;
-            color: #888888;
-            font-weight: bold;
-        }
+        body { font-family: Arial, sans-serif; background-color: #1a1a2e; color: #fff; margin: 0; padding: 20px; }
+        .container { max-width: 600px; margin: 0 auto; background: #252545; padding: 20px; border-radius: 10px; }
+        .header { display: flex; justify-content: space-between; align-items: center; }
+        .actions { display: flex; justify-content: space-around; margin-top: 20px; cursor: pointer; }
+        .comments-section { margin-top: 20px; border-top: 1px solid #444; padding-top: 15px; }
+        .comment-input { width: 80%; padding: 10px; border-radius: 5px; border: none; }
+        .send-btn { padding: 10px 15px; border-radius: 5px; border: none; background: #00bcd4; color: white; cursor: pointer; }
+        .comment-list { margin-top: 15px; }
+        .comment { background: #333; padding: 10px; border-radius: 5px; margin-bottom: 10px; }
     </style>
 </head>
 <body>
 
-    <div class="top-nav">
-        <div class="logo">ChatBook</div>
-        <div class="tabs-categories">
-            <span id="tab-humour" class="active" onclick="switchCategory('humour')">🤣 Humour</span>
-            <span id="tab-motivation" onclick="switchCategory('motivation')">💪 Motivation</span>
-            <span id="tab-enfants" onclick="switchCategory('enfants')">👶 Enfants</span>
-        </div>
+<div class="container">
+    <div class="header">
+        <h2>ChatBook</h2>
+        <span>@NagnoumaDeveloper</span>
+    </div>
+    
+    <p>Préparez-vous à rire ! Les meilleures vidéos d'humour positives sont ici. 🤣✨ #détente</p>
+
+    <div class="actions">
+        <div id="like-btn">🤍 <span id="like-count">12.5K</span></div>
+        <div>💬 <span id="comment-count">2</span></div>
+        <div id="share-btn">🔗 Partager</div>
     </div>
 
-    <div class="video-container">
-        <div class="video-player-box" id="mainAppBox">
-            <div class="video-sidebar-left">
-                <div class="username" id="videoUser">@NagnoumaDeveloper</div>
-                <div class="description" id="videoDesc">Préparez-vous à rire ! Les meilleures vidéos d'humour positives sont ici. 🤣✨ #détente</div>
-            </div>
-            <div class="video-sidebar-right">
-                <button type="button" class="action-button-touch" onclick="handleLikeInteraction(this)">
-                    <div class="icon-circle" id="likeIcon">🤍</div>
-                    <span id="like-counter">12.5K</span>
-                </button>
-                <button type="button" class="action-button-touch" onclick="triggerCommentSheet()">
-                    <div class="icon-circle">💬</div>
-                    <span id="comment-counter">2</span>
-                </button>
-                <button type="button" class="action-button-touch" onclick="shareOnWhatsApp()">
-                    <div class="icon-circle">🔗</div>
-                    <span>Partager</span>
-                </button>
-            </div>
+    <div class="comments-section">
+        <div class="comment-list" id="comment-list">
+            <div class="comment"><strong>@Alpha_Tech:</strong> Ce concept anti-stress est génial Lamine ! 🇬🇳</div>
+            <div class="comment"><strong>@Mariama_Dev:</strong> Enfin une appli saine pour mes enfants ! 😍</div>
         </div>
+        <input type="text" class="comment-input" id="comment-input" placeholder="Ajouter un commentaire...">
+        <button class="send-btn" id="send-btn">Envoyer</button>
     </div>
+</div>
 
-    <!-- ZONE COMMENTAIRES -->
-    <div id="bottomCommentSheet" class="comment-sheet">
-        <div class="comment-header">
-            <span>Commentaires</span>
-            <span class="comment-close" onclick="dismissCommentSheet()">✕</span>
-        </div>
-        <div class="comment-body-scroll" id="boxMessagesContainer">
-            <div class="comment-box-item"><span class="comment-author">@Alpha_Tech :</span> Ce concept anti-stress est génial Lamine ! 🇬🇳</div>
-            <div class="comment-box-item"><span class="comment-author">@Mariama_Dev :</span> Enfin une appli saine pour mes enfants ! 😍</div>
-        </div>
-        <div class="comment-footer-input">
-            <input type="text" id="textMessageField" placeholder="Ajouter un commentaire...">
-            <button type="button" class="comment-btn-send" onclick="submitNewComment()">Envoyer</button>
-        </div>
-    </div>
+<script>
+    const likeBtn = document.getElementById('like-btn');
+    const likeCount = document.getElementById('like-count');
+    let isLiked = false;
 
-    <div class="bottom-bar-placement">
-        ✨ Plateforme Mondiale ChatBook 100% Positive
-    </div>
-
-    <script>
-        let totalLikes = 12500;
-        let isLiked = false;
-        let totalComments = 2;
-
-        // SYSTEME DE LIKE DYNAMIQUE
-        function handleLikeInteraction(element) {
-            const icon = document.getElementById('likeIcon');
-            const counter = document.getElementById('like-counter');
-            if (isLiked) {
-                icon.classList.remove('liked');
-                icon.innerText = '🤍';
-                totalLikes--;
-                counter.innerText = "12.5K";
-                isLiked = false;
-            } else {
-                icon.classList.add('liked');
-                icon.innerText = '❤️';
-                totalLikes++;
-                counter.innerText = "12.6K";
-                isLiked = true;
-            }
+    likeBtn.addEventListener('click', () => {
+        let currentLikes = 12.5;
+        if (!isLiked) {
+            currentLikes += 0.1;
+            likeBtn.style.color = '#ff4d4d';
+            likeBtn.innerHTML = `❤️ <span id="like-count">${currentLikes.toFixed(1)}K</span>`;
+        } else {
+            likeBtn.style.color = '#fff';
+            likeBtn.innerHTML = `🤍 <span id="like-count">12.5K</span>`;
         }
+        isLiked = !isLiked;
+    });
+
+    const commentInput = document.getElementById('comment-input');
+    const sendBtn = document.getElementById('send-btn');
+    const commentList = document.getElementById('comment-list');
+    const commentCount = document.getElementById('comment-count');
+    let currentComments = 2;
+
+    sendBtn.addEventListener('click', () => {
+        const text = commentInput.value.trim();
+        if (text !== '') {
+            currentComments++;
+            commentCount.innerText = currentComments;
+            
+            const newComment = document.createElement('div');
+            newComment.classList.add('comment');
+            newComment.innerHTML = `<strong>Vous:</strong> ${text}`;
+            commentList.appendChild(newComment);
+            
+            commentInput.value = '';
+        }
+    });
+
+    document.getElementById('share-btn').addEventListener('click', () => {
+        navigator.clipboard.writeText(window.location.href);
+        alert('Lien copié dans le presse-papier !');
+    });
+</script>
+
+</body>
+</html>
+```
