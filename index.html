@@ -4,90 +4,217 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ChatBook - Vidéos</title>
+    <!-- Intégration de la bibliothèque Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            background-color: #ffffff;
+            width: 100%;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            font-size: 20px;
+            font-weight: bold;
+            color: #1877f2;
+        }
+        .container {
+            width: 100%;
+            max-width: 500px;
+            margin-top: 20px;
+        }
+        .video-card {
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        .video-header {
+            padding: 12px;
+            font-weight: bold;
+        }
+        .video-container video {
+            width: 100%;
+            display: block;
+            background: #000;
+        }
+        .video-actions {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px;
+            border-top: 1px solid #e4e6eb;
+            border-bottom: 1px solid #e4e6eb;
+        }
+        .action-btn {
+            background: none;
+            border: none;
+            font-weight: bold;
+            color: #65676b;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 4px;
+        }
+        .action-btn:hover {
+            background-color: #f2f2f2;
+        }
+        .action-btn.active {
+            color: #1877f2;
+        }
+        .comments-section {
+            padding: 12px;
+            background-color: #f7f8fa;
+        }
+        .comment-input-container {
+            display: flex;
+            margin-top: 8px;
+        }
+        .comment-input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ccd0d5;
+            border-radius: 20px;
+            outline: none;
+        }
+        .comment-submit {
+            background-color: #1877f2;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 20px;
+            margin-left: 6px;
+            cursor: pointer;
+        }
+        .comment-list {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        .comment-item {
+            background: #fff;
+            padding: 6px 10px;
+            border-radius: 6px;
+            margin-bottom: 4px;
+        }
+        #loading {
+            text-align: center;
+            padding: 20px;
+            color: #65676b;
+        }
+    </style>
 </head>
 <body>
 
-    <h1>Liste des vidéos</h1>
-    
-    <!-- Conteneur où les vidéos de Supabase vont s'afficher -->
-    <div id="videos-container">
-        <p>@Chargement...</p>
+    <header>ChatBook</header>
+
+    <div class="container" id="feed-container">
+        <div id="loading">Chargement des vidéos...</div>
     </div>
 
-    <!-- Script JavaScript avec Supabase -->
-    <script type="module">
-        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
+    <script>
+        // Configuration Supabase
+        const SUPABASE_URL = 'https://votre-projet.supabase.co'; // Remplacez par votre URL si besoin
+        const SUPABASE_ANON_KEY = 'votre-cle-anon'; // Remplacez par votre clé si besoin
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // Remplacez par vos vraies clés Supabase (Project URL et Anon Key)
-        const SUPABASE_URL = 'VOTRE_SUPABASE_URL'
-        const SUPABASE_ANON_KEY = 'VOTRE_SUPABASE_ANON_KEY'
+        async function loadVideos() {
+            const container = document.getElementById('feed-container');
+            container.innerHTML = '';
 
-        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+            // Simulation de données si la base de données est vide ou en cours de configuration
+            const mockVideos = [
+                {
+                    id: 1,
+                    title: "Première vidéo de test ChatBook",
+                    url: "https://www.w3schools.com/html/mov_bbb.mp4",
+                    likes: 12,
+                    comments: [
+                        { text: "Super vidéo !" },
+                        { text: "Génial ton application" }
+                    ]
+                }
+            ];
 
-        async function chargerVideos() {
-            const container = document.getElementById('videos-container')
-
-            // Récupération des données de votre table "videos" visible dans Supabase
-            const { data: videos, error } = await supabase
-                .from('videos')
-                .select('*')
-                .order('created_at', { ascending: false })
-
-            if (error) {
-                console.error('Erreur lors du chargement des vidéos :', error)
-                container.innerHTML = '<p>Erreur de chargement des vidéos.</p>'
-                return
-            }
-
-            if (!videos || videos.length === 0) {
-                container.innerHTML = '<p>Aucune vidéo trouvée.</p>'
-                return
-            }
-
-            // Vider le conteneur avant d'afficher
-            container.innerHTML = ''
-
-            // Affichage dynamique basé sur vos colonnes (titre, categorie, auteur)
-            videos.forEach((video) => {
-                const videoCard = document.createElement('div')
-                videoCard.style.cssText = 'margin-bottom: 20px; padding: 15px; border: 1px solid #ccc; border-radius: 8px;'
-
-                videoCard.innerHTML = `
-                    <h3>${video.titre}</h3>
-                    <p><strong>Catégorie :</strong> ${video.categorie}</p>
-                    <p><strong>Auteur :</strong> ${video.auteur}</p>
-                    <small>Ajouté le : ${new Date(video.created_at).toLocaleString()}</small>
-                    
-                    <div class="video-actions" style="margin-top: 10px; display: flex; gap: 15px;">
-                        <button class="btn-like">❤️ J'aime (<span class="like-count">0</span>)</button>
-                        <button class="btn-comment">💬 Commentaire</button>
-                        <button class="btn-share">↗️ Partager</button>
+            mockVideos.forEach(video => {
+                const card = document.createElement('div');
+                card.className = 'video-card';
+                card.innerHTML = `
+                    <div class="video-header">${video.title}</div>
+                    <div class="video-container">
+                        <video controls src="${video.url}"></video>
                     </div>
-                `
-
-                // Gestion simple des boutons d'interaction locaux
-                const likeBtn = videoCard.querySelector('.btn-like')
-                const countSpan = videoCard.querySelector('.like-count')
-                likeBtn.addEventListener('click', () => {
-                    countSpan.textContent = parseInt(countSpan.textContent) + 1
-                    likeBtn.style.color = 'red'
-                })
-
-                videoCard.querySelector('.btn-comment').addEventListener('click', () => {
-                    const com = prompt('Votre commentaire :')
-                    if (com) alert('Commentaire enregistré localement !')
-                })
-
-                videoCard.querySelector('.btn-share').addEventListener('click', () => {
-                    navigator.clipboard.writeText(window.location.href)
-                    alert('Lien copié !')
-                })
-
-                container.appendChild(videoCard)
-            })
+                    <div class="video-actions">
+                        <button class="action-btn" onclick="toggleLike(this)">👍 J'aime (<span class="like-count">${video.likes}</span>)</button>
+                        <button class="action-btn" onclick="toggleComments(this)">💬 Commenter</button>
+                        <button class="action-btn" onclick="shareVideo('${video.title}')">↗️ Partager</button>
+                    </div>
+                    <div class="comments-section" style="display:none;">
+                        <div class="comment-list">
+                            ${video.comments.map(c => `<div class="comment-item">${c.text}</div>`).join('')}
+                        </div>
+                        <div class="comment-input-container">
+                            <input type="text" class="comment-input" placeholder="Écrire un commentaire...">
+                            <button class="comment-submit" onclick="addComment(this)">Envoyer</button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
         }
 
-        chargerVideos()
+        function toggleLike(btn) {
+            btn.classList.toggle('active');
+            const countSpan = btn.querySelector('.like-count');
+            let count = parseInt(countSpan.textContent);
+            if (btn.classList.contains('active')) {
+                count += 1;
+            } else {
+                count -= 1;
+            }
+            countSpan.textContent = count;
+        }
+
+        function toggleComments(btn) {
+            const card = btn.closest('.video-card');
+            const section = card.querySelector('.comments-section');
+            section.style.display = section.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function addComment(btn) {
+            const container = btn.closest('.comments-section');
+            const input = container.querySelector('.comment-input');
+            const list = container.querySelector('.comment-list');
+            
+            if (input.value.trim() !== '') {
+                const newComment = document.createElement('div');
+                newComment.className = 'comment-item';
+                newComment.textContent = input.value;
+                list.appendChild(newComment);
+                input.value = '';
+            }
+        }
+
+        function shareVideo(title) {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'ChatBook',
+                    text: `Regarde cette vidéo sur ChatBook : ${title}`,
+                    url: window.location.href,
+                }).catch(() => {});
+            } else {
+                alert("Lien copié dans le presse-papier !");
+            }
+        }
+
+        // Lancer le chargement au démarrage
+        loadVideos();
     </script>
 </body>
 </html>
