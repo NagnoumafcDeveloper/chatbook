@@ -123,19 +123,6 @@ HTML
             line-height: 1.4;
         }
 
-        /* Indicateur de défilement */
-        .scroll-hint {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: rgba(0,0,0,0.6);
-            padding: 5px 10px;
-            border-radius: 10px;
-            font-size: 11px;
-            z-index: 10;
-            color: #00ffcc;
-        }
-
         /* Fenêtre de commentaires (Modal) */
         #commentModal {
             display: none;
@@ -221,12 +208,11 @@ HTML
 
     <!-- Conteneur Vidéo Principal -->
     <div class="main-container" id="videoContainer">
-        <div class="scroll-hint">📜 Faites défiler pour la suite</div>
         <video id="videoPlayer" src="" controls autoplay muted loop></video>
 
         <div class="sidebar">
-            <!-- Le cœur est forcé en blanc par défaut -->
-            <button class="action-btn" id="likeBtn" onclick="toggleLike()" style="color: white;">
+            <!-- Bouton Like avec couleur blanche forcée par défaut -->
+            <button class="action-btn" id="likeBtn" onclick="toggleLike()">
                 ❤️ <span id="likeCount">0</span>
             </button>
             <button class="action-btn" onclick="openComments()">
@@ -257,7 +243,6 @@ HTML
     </div>
 
     <script>
-        // Liste de plusieurs vidéos par catégorie pour permettre le défilement
         const database = {
             humour: [
                 {
@@ -323,9 +308,9 @@ HTML
             document.getElementById('likeCount').innerText = formatNumber(videoData.likes);
             document.getElementById('commentCount').innerText = videoData.commentsList.length;
 
-            // Réinitialisation stricte du cœur en BLANC si non liké, ROUGE si liké
+            // Application stricte de la couleur selon l'état liké ou non de la vidéo actuelle
             const likeBtn = document.getElementById('likeBtn');
-            likeBtn.style.color = videoData.liked ? '#ff4d4d' : 'white';
+            likeBtn.style.color = videoData.liked ? '#ff4d4d' : '#ffffff';
 
             player.play().catch(e => console.log("Lecture automatique :", e));
         }
@@ -334,21 +319,19 @@ HTML
             document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
             btnElement.classList.add('active');
             currentCategory = category;
-            currentIndex = 0; // Revenir à la première vidéo de la catégorie
+            currentIndex = 0;
             loadCurrentVideo();
             closeComments();
         }
 
-        // Permet de faire défiler les vidéos avec la molette de la souris sur le conteneur
+        // Défilement fluide avec la molette de la souris
         const container = document.getElementById('videoContainer');
         container.addEventListener('wheel', (e) => {
             e.preventDefault();
             const list = database[currentCategory];
             if (e.deltaY > 0) {
-                // Défilement vers le bas -> Vidéo suivante
                 currentIndex = (currentIndex + 1) % list.length;
             } else {
-                // Défilement vers le haut -> Vidéo précédente
                 currentIndex = (currentIndex - 1 + list.length) % list.length;
             }
             loadCurrentVideo();
@@ -366,7 +349,7 @@ HTML
             } else {
                 videoData.likes--;
                 videoData.liked = false;
-                likeBtn.style.color = 'white'; // Blanc
+                likeBtn.style.color = '#ffffff'; // Blanc
             }
             document.getElementById('likeCount').innerText = formatNumber(videoData.likes);
         }
