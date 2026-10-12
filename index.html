@@ -123,6 +123,19 @@ HTML
             line-height: 1.4;
         }
 
+        /* Indicateur de défilement */
+        .scroll-hint {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0,0,0,0.6);
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-size: 11px;
+            z-index: 10;
+            color: #00ffcc;
+        }
+
         /* Fenêtre de commentaires (Modal) */
         #commentModal {
             display: none;
@@ -206,12 +219,14 @@ HTML
         <button class="category-btn" onclick="switchCategory('enfants', this)">👶 Enfants</button>
     </div>
 
-    <!-- Conteneur Vidéo Principal (sans attribut muted pour garder le son) -->
+    <!-- Conteneur Vidéo Principal -->
     <div class="main-container" id="videoContainer">
-        <video id="videoPlayer" src="" controls autoplay loop></video>
+        <div class="scroll-hint">📜 Faites défiler pour la suite</div>
+        <video id="videoPlayer" src="" controls autoplay muted loop></video>
 
         <div class="sidebar">
-            <button class="action-btn" id="likeBtn" onclick="toggleLike()">
+            <!-- Le cœur est forcé en blanc par défaut -->
+            <button class="action-btn" id="likeBtn" onclick="toggleLike()" style="color: white;">
                 ❤️ <span id="likeCount">0</span>
             </button>
             <button class="action-btn" onclick="openComments()">
@@ -242,6 +257,7 @@ HTML
     </div>
 
     <script>
+        // Liste de plusieurs vidéos par catégorie pour permettre le défilement
         const database = {
             humour: [
                 {
@@ -307,13 +323,9 @@ HTML
             document.getElementById('likeCount').innerText = formatNumber(videoData.likes);
             document.getElementById('commentCount').innerText = videoData.commentsList.length;
 
-            // Forçage explicite du style en blanc (non liké) ou rouge (liké) selon l'objet de données
+            // Réinitialisation stricte du cœur en BLANC si non liké, ROUGE si liké
             const likeBtn = document.getElementById('likeBtn');
-            if (videoData.liked) {
-                likeBtn.style.color = '#ff4d4d';
-            } else {
-                likeBtn.style.color = '#ffffff';
-            }
+            likeBtn.style.color = videoData.liked ? '#ff4d4d' : 'white';
 
             player.play().catch(e => console.log("Lecture automatique :", e));
         }
@@ -322,19 +334,21 @@ HTML
             document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
             btnElement.classList.add('active');
             currentCategory = category;
-            currentIndex = 0;
+            currentIndex = 0; // Revenir à la première vidéo de la catégorie
             loadCurrentVideo();
             closeComments();
         }
 
-        // Défilement fluide avec la molette de la souris
+        // Permet de faire défiler les vidéos avec la molette de la souris sur le conteneur
         const container = document.getElementById('videoContainer');
         container.addEventListener('wheel', (e) => {
             e.preventDefault();
             const list = database[currentCategory];
             if (e.deltaY > 0) {
+                // Défilement vers le bas -> Vidéo suivante
                 currentIndex = (currentIndex + 1) % list.length;
             } else {
+                // Défilement vers le haut -> Vidéo précédente
                 currentIndex = (currentIndex - 1 + list.length) % list.length;
             }
             loadCurrentVideo();
@@ -348,11 +362,11 @@ HTML
             if (!videoData.liked) {
                 videoData.likes++;
                 videoData.liked = true;
-                likeBtn.style.color = '#ff4d4d'; // Devient rouge
+                likeBtn.style.color = '#ff4d4d'; // Rouge
             } else {
                 videoData.likes--;
                 videoData.liked = false;
-                likeBtn.style.color = '#ffffff'; // Revient au blanc
+                likeBtn.style.color = 'white'; // Blanc
             }
             document.getElementById('likeCount').innerText = formatNumber(videoData.likes);
         }
