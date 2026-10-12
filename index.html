@@ -266,6 +266,7 @@ HTML
     </div>
 
     <script>
+        // Base de données élargie avec plusieurs vidéos pour chaque catégorie
         const database = {
             humour: [
                 {
@@ -283,6 +284,14 @@ HTML
                     likes: 430,
                     liked: false,
                     commentsList: ["Excellent 👏"]
+                },
+                {
+                    url: 'https://www.w3schools.com/html/mov_bbb.mp4',
+                    author: '@RiresEnGros',
+                    desc: 'Quand tu penses avoir tout vu dans ta journée... 😅 #humour',
+                    likes: 2100,
+                    liked: false,
+                    commentsList: ["Tellement moi !", "J'en peux plus 😂"]
                 }
             ],
             motivation: [
@@ -301,6 +310,14 @@ HTML
                     likes: 3100,
                     liked: false,
                     commentsList: ["Citation magnifique.", "Merci pour la force !"]
+                },
+                {
+                    url: 'https://www.w3schools.com/html/movie.mp4',
+                    author: '@ObjectifSucces',
+                    desc: 'Le travail acharné paie toujours, croyez en vos rêves ! 🌟💼',
+                    likes: 5400,
+                    liked: false,
+                    commentsList: ["Objectif atteint !", "Inspirant 🚀"]
                 }
             ],
             enfants: [
@@ -311,6 +328,14 @@ HTML
                     likes: 320,
                     liked: false,
                     commentsList: ["Trop mignon !"]
+                },
+                {
+                    url: 'https://www.w3schools.com/html/movie.mp4',
+                    author: '@MondeDesPetits',
+                    desc: 'Des histoires et des jeux ludiques pour s\'amuser en famille 🧸🎨',
+                    likes: 980,
+                    liked: false,
+                    commentsList: ["Mes enfants adorent !", "Super vidéo."]
                 }
             ]
         };
@@ -331,7 +356,6 @@ HTML
             document.getElementById('likeCount').innerText = formatNumber(videoData.likes);
             document.getElementById('commentCount').innerText = videoData.commentsList.length;
 
-            // Le cœur reste toujours blanc, même si liké
             document.getElementById('likeBtn').style.color = '#ffffff';
 
             player.play().catch(e => console.log("Lecture automatique :", e));
@@ -385,7 +409,6 @@ HTML
                 videoData.likes--;
                 videoData.liked = false;
             }
-            // Le cœur reste blanc mais le compteur s'incrémente ou se décrémente correctement
             document.getElementById('likeCount').innerText = formatNumber(videoData.likes);
             document.getElementById('likeBtn').style.color = '#ffffff';
         }
