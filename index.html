@@ -31,25 +31,6 @@
       align-items: center;
     }
 
-    .categories {
-      position: absolute;
-      top: 20px;
-      display: flex;
-      gap: 15px;
-      font-weight: bold;
-      opacity: 0.8;
-      z-index: 10;
-    }
-
-    .video-wrapper {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
     .interactions {
       position: absolute;
       right: 15px;
@@ -75,6 +56,7 @@
       cursor: pointer;
       backdrop-filter: blur(5px);
       transition: background 0.3s;
+      position: relative;
     }
 
     .icon-btn:hover {
@@ -91,89 +73,47 @@
       line-height: normal;
     }
 
-    .video-info {
+    .red-dot {
+      width: 10px;
+      height: 10px;
+      background-color: #ff3b30;
+      border-radius: 50%;
       position: absolute;
-      bottom: 20px;
-      left: 20px;
-      right: 80px;
-      z-index: 10;
-    }
-
-    .username {
-      font-weight: bold;
-      font-size: 16px;
-      margin-bottom: 5px;
-    }
-
-    .description {
-      font-size: 14px;
-      opacity: 0.9;
-      margin-bottom: 10px;
-    }
-
-    .next-btn {
-      position: absolute;
-      bottom: 20px;
-      right: 20px;
-      background: rgba(255, 255, 255, 0.1);
-      border: none;
-      padding: 10px 15px;
-      border-radius: 20px;
-      color: white;
-      cursor: pointer;
-      font-size: 14px;
-      z-index: 10;
-      backdrop-filter: blur(5px);
+      top: -2px;
+      right: -2px;
+      border: 2px solid #0b0f19;
     }
   </style>
 </head>
 <body>
 
   <div class="app-container">
-    
-    <div class="categories">
-      <span>😄 Humour</span>
-      <span>💪 Motivation</span>
-      <span>👶 Enfants</span>
-    </div>
-
-    <div class="video-wrapper">
-      <!-- Votre contenu vidéo irait ici -->
-      
-      <div class="interactions">
-        <button class="icon-btn">
-          <span>❤️</span>
-          <p>431</p>
-        </button>
-        <button class="icon-btn">
-          <span>💬</span>
-          <p>0</p>
-        </button>
-        <button class="icon-btn">
-          <span>🔖</span>
-          <p>Favoris</p>
-        </button>
-        <button class="icon-btn">
-          <span>➕</span>
-          <p>Abonner</p>
-        </button>
-        <button class="icon-btn">
-          <span>🔊</span>
-          <p>Son</p>
-        </button>
-        <button class="icon-btn">
-          <span>🔗</span>
-          <p>Partager</p>
-        </button>
-      </div>
-
-      <div class="video-info">
-        <div class="username">@HumourTotal</div>
-        <div class="description">Une blague qui fait du bien dès le matin ! 🎭✨</div>
-      </div>
-      
-      <button class="next-btn">Vidéo suivante ➡️</button>
-
+    <div class="interactions">
+      <button class="icon-btn">
+        <span>➕</span>
+        <p>Abonner</p>
+        <div class="red-dot"></div>
+      </button>
+      <button class="icon-btn">
+        <span>❤️</span>
+        <p>431</p>
+      </button>
+      <button class="icon-btn">
+        <span>💬</span>
+        <p>0</p>
+      </button>
+      <button class="icon-btn">
+        <span>🔖</span>
+        <p>Favoris</p>
+      </button>
+      <button class="icon-btn">
+        <span>🔊</span>
+        <p>Son</p>
+      </button>
+      <button class="icon-btn">
+        <span>🔗</span>
+        <p>Partager</p>
+      </button>
     </div>
   </div>
 
