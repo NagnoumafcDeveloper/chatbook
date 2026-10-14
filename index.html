@@ -1,3 +1,6 @@
+Voici le code mis à jour. J'ai réduit la taille des chiffres des likes et j'ai fait en sorte que le cœur soit affiché par défaut en blanc (contour blanc ou cœur neutre) et qu'il devienne rouge uniquement lorsqu'on clique dessus.
+
+Code mis à jour (index.html) :
 HTML
 <!DOCTYPE html>
 <html lang="fr">
@@ -57,11 +60,6 @@ HTML
             align-items: center;
             position: relative;
         }
-        .video-area video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
         .sidebar-actions {
             position: absolute;
             right: 15px;
@@ -78,7 +76,7 @@ HTML
             color: white;
             cursor: pointer;
             text-align: center;
-            font-size: 12px;
+            font-size: 11px; /* Taille réduite pour harmoniser le texte et les icônes */
             transition: transform 0.2s;
         }
         .action-btn:hover {
@@ -86,10 +84,16 @@ HTML
         }
         .action-btn span {
             display: block;
-            font-size: 24px;
+            font-size: 22px; /* Taille de l'icône */
         }
-        .action-btn.liked span {
-            color: #ef4444;
+        /* Style par défaut du cœur en blanc/gris clair */
+        #likeIcon {
+            filter: grayscale(100%) brightness(200%);
+            transition: filter 0.2s;
+        }
+        /* Lorsque liké, le cœur redevient rouge */
+        .action-btn.liked #likeIcon {
+            filter: none;
         }
         .video-info {
             position: absolute;
@@ -126,7 +130,7 @@ HTML
         .next-btn:hover {
             background: #1d4ed8;
         }
-        /* Fenêtre de commentaires */
+        /* Modale des commentaires */
         .comments-modal {
             position: absolute;
             bottom: 0;
@@ -187,7 +191,6 @@ HTML
 
         <!-- Zone de la vidéo -->
         <div class="video-area">
-            <!-- Vous pouvez mettre une balise <video src="..." id="myVideo" autoplay loop></video> -->
             <div style="color: #64748b; font-size: 14px;">Espace Vidéo</div>
         </div>
 
@@ -201,17 +204,19 @@ HTML
         <div class="sidebar-actions">
             <button class="action-btn" id="likeBtn" onclick="toggleLike()">
                 <span id="likeIcon">❤️</span> 
-                <span id="likeCount">432</span>
+                <span id="likeCount" style="font-size: 12px;">432</span>
             </button>
             <button class="action-btn" onclick="toggleComments()">
                 <span>💬</span> 
-                <span id="commentCount">0</span>
+                <span id="commentCount" style="font-size: 12px;">0</span>
             </button>
             <button class="action-btn" id="soundBtn" onclick="toggleSound()">
-                <span id="soundIcon">🔊</span> Son
+                <span id="soundIcon">🔊</span> 
+                <span style="font-size: 12px;">Son</span>
             </button>
             <button class="action-btn" onclick="shareVideo()">
-                <span>↗️</span> Partager
+                <span>↗️</span> 
+                <span style="font-size: 12px;">Partager</span>
             </button>
         </div>
 
@@ -234,7 +239,6 @@ HTML
     </div>
 
     <script>
-        // Gestion des Likes
         let isLiked = false;
         let likesNum = 432;
         function toggleLike() {
@@ -251,35 +255,28 @@ HTML
             countElem.innerText = likesNum;
         }
 
-        // Ouverture / Fermeture des commentaires
         function toggleComments() {
             const modal = document.getElementById('commentsModal');
             modal.classList.toggle('open');
         }
 
-        // Gestion du Son
         let isMuted = false;
         function toggleSound() {
             const soundIcon = document.getElementById('soundIcon');
             isMuted = !isMuted;
             soundIcon.innerText = isMuted ? '🔇' : '🔊';
-            // Si vous avez une balise <video id="myVideo">, ajoutez : document.getElementById('myVideo').muted = isMuted;
         }
 
-        // Bouton Partager (Copie le lien)
         function shareVideo() {
             navigator.clipboard.writeText(window.location.href);
             alert("Lien copié dans le presse-papier ! 📋");
         }
 
-        // Changement de catégorie
         function switchCategory(element) {
             document.querySelectorAll('.categories span').forEach(el => el.classList.remove('active'));
             element.classList.add('active');
-            // Logique pour charger les vidéos de la catégorie sélectionnée
         }
 
-        // Bouton Vidéo suivante (Simulation de changement)
         const videosData = [
             { author: "@HumourTotal", desc: "Une blague qui fait du bien dès le matin ! 💙✨", likes: 432 },
             { author: "@MotivationPro", desc: "Ne lâche rien, chaque effort compte ! 💪🔥", likes: 1205 },
