@@ -65,6 +65,7 @@
 
     .icon-btn span {
       font-size: 20px;
+      transition: color 0.2s;
     }
 
     .icon-btn p {
@@ -83,39 +84,66 @@
       right: -2px;
       border: 2px solid #0b0f19;
     }
+
+    /* Classes pour les changements d'état */
+    .icon-btn.liked span {
+      color: white;
+    }
+    
+    .icon-btn.favorited span {
+      color: white;
+    }
   </style>
 </head>
 <body>
 
   <div class="app-container">
     <div class="interactions">
-      <button class="icon-btn">
+      <button class="icon-btn" id="subscribe-btn">
         <span>➕</span>
         <p>Abonner</p>
         <div class="red-dot"></div>
       </button>
-      <button class="icon-btn">
+      
+      <button class="icon-btn" id="like-btn">
         <span>❤️</span>
         <p>431</p>
       </button>
+      
       <button class="icon-btn">
         <span>💬</span>
         <p>0</p>
       </button>
-      <button class="icon-btn">
+      
+      <button class="icon-btn" id="favorite-btn">
         <span>🔖</span>
         <p>Favoris</p>
       </button>
+      
       <button class="icon-btn">
         <span>🔊</span>
         <p>Son</p>
       </button>
+      
       <button class="icon-btn">
         <span>🔗</span>
         <p>Partager</p>
       </button>
     </div>
   </div>
+
+  <script>
+    const likeBtn = document.getElementById('like-btn');
+    const favoriteBtn = document.getElementById('favorite-btn');
+
+    likeBtn.addEventListener('click', () => {
+      likeBtn.classList.toggle('liked');
+    });
+
+    favoriteBtn.addEventListener('click', () => {
+      favoriteBtn.classList.toggle('favorited');
+    });
+  </script>
 
 </body>
 </html>
