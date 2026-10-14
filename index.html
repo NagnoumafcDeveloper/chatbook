@@ -30,6 +30,7 @@ HTML
             flex-direction: column;
             position: relative;
         }
+        /* En-tête avec titre et catégories style pilules */
         .app-header {
             padding: 15px 10px;
             background: rgba(0, 0, 0, 0.4);
@@ -104,6 +105,7 @@ HTML
             display: block;
             font-size: 22px;
         }
+        /* Cœur par défaut en blanc */
         #likeIcon {
             filter: grayscale(100%) brightness(200%);
             transition: filter 0.2s;
@@ -146,6 +148,7 @@ HTML
         .next-btn:hover {
             background: #1d4ed8;
         }
+        /* Modale des commentaires */
         .comments-modal {
             position: absolute;
             bottom: 0;
@@ -225,79 +228,58 @@ HTML
         .comments-footer button:hover {
             background: #1d4ed8;
         }
-        /* Notification de copie */
-        #toast {
-            visibility: hidden;
-            min-width: 200px;
-            background-color: #333;
-            color: #fff;
-            text-align: center;
-            border-radius: 8px;
-            padding: 10px;
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 1000;
-            font-size: 14px;
-        }
-        #toast.show {
-            visibility: visible;
-            animation: fadein 0.5s, fadeout 0.5s 2.5s;
-        }
-        @keyframes fadein {
-            from {bottom: 0; opacity: 0;}
-            to {bottom: 30px; opacity: 1;}
-        }
-        @keyframes fadeout {
-            from {bottom: 30px; opacity: 1;}
-            to {bottom: 0; opacity: 0;}
-        }
     </style>
 </head>
 <body>
+
     <div class="container">
+        <!-- En-tête avec Titre et Catégories style pilules -->
         <div class="app-header">
             <h1 class="app-title">ChatBook</h1>
             <div class="categories">
-                <button class="category-btn active" onclick="switchCategory(this, 0)">😄 Humour</button>
-                <button class="category-btn" onclick="switchCategory(this, 1)">💪 Motivation</button>
-                <button class="category-btn" onclick="switchCategory(this, 2)">👶 Enfants</button>
+                <button class="category-btn active" onclick="switchCategory(this)">😄 Humour</button>
+                <button class="category-btn" onclick="switchCategory(this)">💪 Motivation</button>
+                <button class="category-btn" onclick="switchCategory(this)">👶 Enfants</button>
             </div>
         </div>
 
+        <!-- Zone de la vidéo -->
         <div class="video-area">
             <div style="color: #64748b; font-size: 14px;">Espace Vidéo</div>
         </div>
 
+        <!-- Informations de la vidéo -->
         <div class="video-info">
             <h3 id="videoAuthor">@HumourTotal</h3>
             <p id="videoDesc">Une blague qui fait du bien dès le matin ! 💙✨</p>
         </div>
 
+        <!-- Boutons d'actions verticaux -->
         <div class="sidebar-actions">
             <button class="action-btn" id="likeBtn" onclick="toggleLike()">
-                <span id="likeIcon">❤️</span>
+                <span id="likeIcon">❤️</span> 
                 <span id="likeCount" style="font-size: 12px;">432</span>
             </button>
             <button class="action-btn" onclick="toggleComments()">
-                <span>💬</span>
+                <span>💬</span> 
                 <span id="commentCount" style="font-size: 12px;">1</span>
             </button>
             <button class="action-btn" id="soundBtn" onclick="toggleSound()">
-                <span id="soundIcon">🔊</span>
+                <span id="soundIcon">🔊</span> 
                 <span style="font-size: 12px;">Son</span>
             </button>
             <button class="action-btn" onclick="shareVideo()">
-                <span>↗️</span>
+                <span>↗️</span> 
                 <span style="font-size: 12px;">Partager</span>
             </button>
         </div>
 
+        <!-- Bouton Vidéo suivante -->
         <div class="next-btn-container">
             <button class="next-btn" onclick="nextVideo()">Vidéo suivante ➡️</button>
         </div>
 
+        <!-- Modale des commentaires -->
         <div class="comments-modal" id="commentsModal">
             <div class="comments-header">
                 <span>Commentaires</span>
@@ -313,13 +295,9 @@ HTML
         </div>
     </div>
 
-    <!-- Notification visuelle de copie -->
-    <div id="toast">Lien copié dans le presse-papier ! 🔗</div>
-
     <script>
         let isLiked = false;
         let likesNum = 432;
-
         function toggleLike() {
             const btn = document.getElementById('likeBtn');
             const countElem = document.getElementById('likeCount');
@@ -346,18 +324,10 @@ HTML
             soundIcon.innerText = isMuted ? '🔇' : '🔊';
         }
 
+        // Partage ultra-fiable par fenêtre pop-up de prompt (fonctionne à 100% sur PC et mobile)
         function shareVideo() {
-            const dummy = document.createElement('input');
-            document.body.appendChild(dummy);
-            dummy.value = window.location.href;
-            dummy.select();
-            document.execCommand('copy');
-            document.body.removeChild(dummy);
-
-            // Afficher la notification
-            const toast = document.getElementById('toast');
-            toast.className = 'show';
-            setTimeout(() => { toast.className = toast.className.replace('show', ''); }, 3000);
+            const currentUrl = window.location.href;
+            window.prompt("Copiez ce lien pour partager la vidéo :", currentUrl);
         }
 
         let commentCount = 1;
@@ -374,6 +344,7 @@ HTML
 
             input.value = "";
             commentsBody.scrollTop = commentsBody.scrollHeight;
+
             commentCount++;
             document.getElementById('commentCount').innerText = commentCount;
         }
@@ -384,33 +355,20 @@ HTML
             }
         }
 
+        function switchCategory(element) {
+            document.querySelectorAll('.category-btn').forEach(el => el.classList.remove('active'));
+            element.classList.add('active');
+        }
+
         const videosData = [
             { author: "@HumourTotal", desc: "Une blague qui fait du bien dès le matin ! 💙✨", likes: 432 },
             { author: "@MotivationPro", desc: "Ne lâche rien, chaque effort compte ! 💪🔥", likes: 1205 },
             { author: "@KidsFun", desc: "Regarde cette réaction trop mignonne ! 🥰👶", likes: 890 }
         ];
-
         let currentIndex = 0;
-
-        function switchCategory(element, index) {
-            document.querySelectorAll('.category-btn').forEach(el => el.classList.remove('active'));
-            element.classList.add('active');
-            
-            currentIndex = index;
-            document.getElementById('videoAuthor').innerText = videosData[currentIndex].author;
-            document.getElementById('videoDesc').innerText = videosData[currentIndex].desc;
-            likesNum = videosData[currentIndex].likes;
-            document.getElementById('likeCount').innerText = likesNum;
-            isLiked = false;
-            document.getElementById('likeBtn').classList.remove('liked');
-        }
 
         function nextVideo() {
             currentIndex = (currentIndex + 1) % videosData.length;
-            const buttons = document.querySelectorAll('.category-btn');
-            document.querySelectorAll('.category-btn').forEach(el => el.classList.remove('active'));
-            buttons[currentIndex].classList.add('active');
-
             document.getElementById('videoAuthor').innerText = videosData[currentIndex].author;
             document.getElementById('videoDesc').innerText = videosData[currentIndex].desc;
             likesNum = videosData[currentIndex].likes;
@@ -419,5 +377,3 @@ HTML
             document.getElementById('likeBtn').classList.remove('liked');
         }
     </script>
-</body>
-</html>
