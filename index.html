@@ -1,4 +1,4 @@
-HTML
+```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -30,7 +30,6 @@ HTML
             flex-direction: column;
             position: relative;
         }
-        /* En-tête avec titre et catégories style pilules */
         .app-header {
             padding: 15px 10px;
             background: rgba(0, 0, 0, 0.4);
@@ -105,7 +104,6 @@ HTML
             display: block;
             font-size: 22px;
         }
-        /* Cœur par défaut en blanc */
         #likeIcon {
             filter: grayscale(100%) brightness(200%);
             transition: filter 0.2s;
@@ -148,7 +146,6 @@ HTML
         .next-btn:hover {
             background: #1d4ed8;
         }
-        /* Modale des commentaires */
         .comments-modal {
             position: absolute;
             bottom: 0;
@@ -233,7 +230,6 @@ HTML
 <body>
 
     <div class="container">
-        <!-- En-tête avec Titre et Catégories style pilules -->
         <div class="app-header">
             <h1 class="app-title">ChatBook</h1>
             <div class="categories">
@@ -243,18 +239,15 @@ HTML
             </div>
         </div>
 
-        <!-- Zone de la vidéo -->
         <div class="video-area">
             <div style="color: #64748b; font-size: 14px;">Espace Vidéo</div>
         </div>
 
-        <!-- Informations de la vidéo -->
         <div class="video-info">
             <h3 id="videoAuthor">@HumourTotal</h3>
             <p id="videoDesc">Une blague qui fait du bien dès le matin ! 💙✨</p>
         </div>
 
-        <!-- Boutons d'actions verticaux -->
         <div class="sidebar-actions">
             <button class="action-btn" id="likeBtn" onclick="toggleLike()">
                 <span id="likeIcon">❤️</span> 
@@ -274,12 +267,10 @@ HTML
             </button>
         </div>
 
-        <!-- Bouton Vidéo suivante -->
         <div class="next-btn-container">
             <button class="next-btn" onclick="nextVideo()">Vidéo suivante ➡️</button>
         </div>
 
-        <!-- Modale des commentaires -->
         <div class="comments-modal" id="commentsModal">
             <div class="comments-header">
                 <span>Commentaires</span>
@@ -324,10 +315,16 @@ HTML
             soundIcon.innerText = isMuted ? '🔇' : '🔊';
         }
 
-        // Partage ultra-fiable par fenêtre pop-up de prompt (fonctionne à 100% sur PC et mobile)
         function shareVideo() {
-            const currentUrl = window.location.href;
-            window.prompt("Copiez ce lien pour partager la vidéo :", currentUrl);
+            if (navigator.share) {
+                navigator.share({
+                    title: 'ChatBook',
+                    text: 'Regarde cette vidéo sur ChatBook !',
+                    url: window.location.href,
+                }).catch((error) => console.log('Partage annulé'));
+            } else {
+                alert("Votre appareil ne prend pas en charge cette méthode de partage.");
+            }
         }
 
         let commentCount = 1;
@@ -377,3 +374,6 @@ HTML
             document.getElementById('likeBtn').classList.remove('liked');
         }
     </script>
+</body>
+</html>
+```
