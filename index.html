@@ -1,7 +1,3 @@
-Je vois ! Pour que les boutons Son, Partage, et Commentaires réagissent eux aussi quand on clique dessus (comme un vrai lecteur vidéo), il faut ajouter des scripts pour chacun d'eux.
-
-Voici le code complet et corrigé où tous les boutons fonctionnent interactivement (changement de couleur, affichage d'un message ou activation/désactivation du son et du partage) :
-
 HTML
 <!DOCTYPE html>
 <html lang="fr">
@@ -49,12 +45,6 @@ HTML
 
     .categories span {
       cursor: pointer;
-      transition: opacity 0.2s;
-    }
-
-    .categories span:hover {
-      opacity: 1;
-      text-decoration: underline;
     }
 
     .video-wrapper {
@@ -90,12 +80,8 @@ HTML
       color: white;
       cursor: pointer;
       backdrop-filter: blur(5px);
-      transition: background 0.3s, transform 0.1s;
+      transition: background 0.3s;
       position: relative;
-    }
-
-    .icon-btn:active {
-      transform: scale(0.9);
     }
 
     .icon-btn:hover {
@@ -160,38 +146,38 @@ HTML
       <div class="interactions">
         
         <!-- Bouton S'abonner -->
-        <button class="icon-btn" id="subscribe-btn">
+        <button class="icon-btn" id="subscribe-btn" type="button">
           <span>➕</span>
           <p id="subscribe-text">Abonner</p>
           <div class="red-dot" id="red-dot"></div>
         </button>
         
         <!-- Bouton Like (Cœur) -->
-        <button class="icon-btn" id="like-btn">
+        <button class="icon-btn" id="like-btn" type="button">
           <span id="like-icon">🤍</span>
           <p id="like-count">431</p>
         </button>
         
         <!-- Bouton Commentaires -->
-        <button class="icon-btn" id="comment-btn">
+        <button class="icon-btn" id="comment-btn" type="button">
           <span>💬</span>
-          <p id="comment-count">0</p>
+          <p>0</p>
         </button>
         
         <!-- Bouton Favoris -->
-        <button class="icon-btn" id="favorite-btn">
+        <button class="icon-btn" id="favorite-btn" type="button">
           <span id="favorite-icon">🔖</span>
           <p>Favoris</p>
         </button>
         
         <!-- Bouton Son -->
-        <button class="icon-btn" id="sound-btn">
+        <button class="icon-btn" id="sound-btn" type="button">
           <span id="sound-icon">🔊</span>
           <p id="sound-text">Son</p>
         </button>
         
         <!-- Bouton Partager -->
-        <button class="icon-btn" id="share-btn">
+        <button class="icon-btn" id="share-btn" type="button">
           <span id="share-icon">🔗</span>
           <p>Partager</p>
         </button>
@@ -213,7 +199,7 @@ HTML
     const subscribeText = document.getElementById('subscribe-text');
     let isSubscribed = false;
 
-    subscribeBtn.addEventListener('click', () => {
+    subscribeBtn.onclick = function() {
       isSubscribed = !isSubscribed;
       if (isSubscribed) {
         redDot.style.display = 'none';
@@ -224,7 +210,7 @@ HTML
         subscribeText.textContent = 'Abonner';
         subscribeBtn.style.background = 'rgba(0, 0, 0, 0.4)';
       }
-    });
+    };
 
     // 2. Like (Cœur)
     const likeBtn = document.getElementById('like-btn');
@@ -232,7 +218,7 @@ HTML
     const likeCount = document.getElementById('like-count');
     let isLiked = false;
 
-    likeBtn.addEventListener('click', () => {
+    likeBtn.onclick = function() {
       isLiked = !isLiked;
       if (isLiked) {
         likeIcon.textContent = '❤️';
@@ -241,20 +227,20 @@ HTML
         likeIcon.textContent = '🤍';
         likeCount.textContent = '431';
       }
-    });
+    };
 
     // 3. Commentaires
     const commentBtn = document.getElementById('comment-btn');
-    commentBtn.addEventListener('click', () => {
+    commentBtn.onclick = function() {
       alert("Ouverture des commentaires !");
-    });
+    };
 
     // 4. Favoris
     const favoriteBtn = document.getElementById('favorite-btn');
     const favoriteIcon = document.getElementById('favorite-icon');
     let isFavorited = false;
 
-    favoriteBtn.addEventListener('click', () => {
+    favoriteBtn.onclick = function() {
       isFavorited = !isFavorited;
       if (isFavorited) {
         favoriteIcon.textContent = '❤️';
@@ -263,7 +249,7 @@ HTML
         favoriteIcon.textContent = '🔖';
         favoriteBtn.style.background = 'rgba(0, 0, 0, 0.4)';
       }
-    });
+    };
 
     // 5. Son (Volume)
     const soundBtn = document.getElementById('sound-btn');
@@ -271,7 +257,7 @@ HTML
     const soundText = document.getElementById('sound-text');
     let isMuted = false;
 
-    soundBtn.addEventListener('click', () => {
+    soundBtn.onclick = function() {
       isMuted = !isMuted;
       if (isMuted) {
         soundIcon.textContent = '🔇';
@@ -282,21 +268,13 @@ HTML
         soundText.textContent = 'Son';
         soundBtn.style.background = 'rgba(0, 0, 0, 0.4)';
       }
-    });
+    };
 
     // 6. Partager
     const shareBtn = document.getElementById('share-btn');
-    shareBtn.addEventListener('click', () => {
-      if (navigator.share) {
-        navigator.share({
-          title: 'ChatBook',
-          text: 'Regarde cette vidéo incroyable sur ChatBook !',
-          url: window.location.href,
-        }).catch(() => {});
-      } else {
-        alert("Lien copié dans le presse-papier !");
-      }
-    });
+    shareBtn.onclick = function() {
+      alert("Lien de partage copié !");
+    };
   </script>
 
 </body>
