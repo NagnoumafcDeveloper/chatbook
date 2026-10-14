@@ -1,4 +1,4 @@
-```html
+HTML
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -45,6 +45,12 @@
 
     .categories span {
       cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .categories span:hover {
+      opacity: 1;
+      text-decoration: underline;
     }
 
     .video-wrapper {
@@ -54,6 +60,14 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      background: black;
+    }
+
+    /* Élément vidéo visible */
+    .video-wrapper video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
     .interactions {
@@ -133,50 +147,53 @@
 
   <div class="app-container">
     
-    <!-- Texte des catégories tout en haut -->
-    <div class="categories">
-      <span>😄 Humour</span>
-      <span>💪 Motivation</span>
-      <span>👶 Enfants</span>
+    <!-- Catégories tout en haut -->
+    <div class="categories" id="categories-nav">
+      <span data-category="humour">😄 Humour</span>
+      <span data-category="motivation">💪 Motivation</span>
+      <span data-category="enfants">👶 Enfants</span>
     </div>
 
     <div class="video-wrapper">
       
-      <!-- Boutons d'interaction sur le côté droit -->
+      <!-- Balise vidéo (remplacez le lien src par votre fichier ou lien vidéo) -->
+      <video id="main-video" src="" autoplay loop playsinline></video>
+
+      <!-- Boutons d'interaction -->
       <div class="interactions">
         
-        <!-- Bouton S'abonner -->
+        <!-- Abonnement -->
         <button class="icon-btn" id="subscribe-btn" type="button">
           <span>➕</span>
           <p id="subscribe-text">Abonner</p>
           <div class="red-dot" id="red-dot"></div>
         </button>
         
-        <!-- Bouton Like (Cœur) -->
+        <!-- Like (Cœur) -->
         <button class="icon-btn" id="like-btn" type="button">
           <span id="like-icon">🤍</span>
           <p id="like-count">431</p>
         </button>
         
-        <!-- Bouton Commentaires -->
+        <!-- Commentaires -->
         <button class="icon-btn" id="comment-btn" type="button">
           <span>💬</span>
-          <p>0</p>
+          <p id="comment-count">0</p>
         </button>
         
-        <!-- Bouton Favoris -->
+        <!-- Favoris -->
         <button class="icon-btn" id="favorite-btn" type="button">
           <span id="favorite-icon">🔖</span>
           <p>Favoris</p>
         </button>
         
-        <!-- Bouton Son -->
+        <!-- Son -->
         <button class="icon-btn" id="sound-btn" type="button">
           <span id="sound-icon">🔊</span>
           <p id="sound-text">Son</p>
         </button>
         
-        <!-- Bouton Partager -->
+        <!-- Partager -->
         <button class="icon-btn" id="share-btn" type="button">
           <span id="share-icon">🔗</span>
           <p>Partager</p>
@@ -229,10 +246,13 @@
       }
     };
 
-    // 3. Commentaires (Vide pour ne pas avoir d'alerte)
+    // 3. Commentaires (Incrémente ou simule une action propre sans alerte)
     const commentBtn = document.getElementById('comment-btn');
+    const commentCount = document.getElementById('comment-count');
+    let commentClicked = false;
     commentBtn.onclick = function() {
-      // Pour l'instant, aucune action n'est définie ici, cela évite l'alignement développé.
+      commentClicked = !commentClicked;
+      commentCount.textContent = commentClicked ? '1' : '0';
     };
 
     // 4. Favoris
@@ -251,7 +271,8 @@
       }
     };
 
-    // 5. Son (Volume)
+    // 5. Son (Volume de la vidéo)
+    const mainVideo = document.getElementById('main-video');
     const soundBtn = document.getElementById('sound-btn');
     const soundIcon = document.getElementById('sound-icon');
     const soundText = document.getElementById('sound-text');
@@ -259,6 +280,7 @@
 
     soundBtn.onclick = function() {
       isMuted = !isMuted;
+      mainVideo.muted = isMuted;
       if (isMuted) {
         soundIcon.textContent = '🔇';
         soundText.textContent = 'Muet';
@@ -272,11 +294,22 @@
 
     // 6. Partager
     const shareBtn = document.getElementById('share-btn');
+    let sharedState = false;
     shareBtn.onclick = function() {
-      alert("Lien de partage copié !");
+      sharedState = !sharedState;
+      shareBtn.style.background = sharedState ? 'rgba(255, 59, 48, 0.5)' : 'rgba(0, 0, 0, 0.4)';
+    };
+
+    // 7. Navigation catégories (Humour, Motivation, Enfants)
+    const categoriesNav = document.getElementById('categories-nav');
+    categoriesNav.onclick = function(e) {
+      if (e.target.tagName === 'SPAN') {
+        const cat = e.target.getAttribute('data-category');
+        document.querySelectorAll('.categories span').forEach(el => el.style.opacity = '0.6');
+        e.target.style.opacity = '1';
+      }
     };
   </script>
 
 </body>
 </html>
-```
