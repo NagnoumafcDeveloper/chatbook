@@ -1,4 +1,4 @@
-HTML
+```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -77,6 +77,11 @@ HTML
             justify-content: center;
             align-items: center;
             position: relative;
+        }
+        .video-area video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         .sidebar-actions {
             position: absolute;
@@ -221,7 +226,7 @@ HTML
         </div>
 
         <div class="video-area">
-            <div style="color: #778da9; font-size: 14px;">Espace Vidéo</div>
+            <video src="VOTRE_LIEN_DE_VIDEO.mp4" autoplay loop muted playsinline controls></video>
         </div>
 
         <div class="video-info">
@@ -336,3 +341,4 @@ HTML
     </script>
 </body>
 </html>
+```
