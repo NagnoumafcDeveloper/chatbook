@@ -1,4 +1,4 @@
-```html
+HTML
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -147,12 +147,37 @@
             overflow-y: auto;
             font-size: 14px;
             color: #ccc;
+            margin-bottom: 10px;
         }
         .comment-item {
             margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
         .comment-item strong {
             color: #fff;
+        }
+        .comment-input-area {
+            display: flex;
+            gap: 10px;
+        }
+        .comment-input {
+            flex-grow: 1;
+            padding: 8px;
+            border-radius: 8px;
+            border: none;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            outline: none;
+        }
+        .comment-submit {
+            background-color: #ff3b30;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -185,7 +210,7 @@
 
                 <!-- Bouton Commentaire -->
                 <button class="action-btn" onclick="openComments()">
-                    💬 <span id="comment-count">12</span>
+                    💬 <span id="comment-count">0</span>
                 </button>
 
                 <!-- Bouton Son -->
@@ -203,26 +228,28 @@
             <button class="next-btn" onclick="nextVideo()">Vidéo suivante ➡️</button>
         </div>
 
-        <!-- Section des commentaires (cachée par défaut) -->
+        <!-- Section des commentaires (vide et interactive) -->
         <div class="comments-modal" id="comments-modal">
             <div class="comments-header">
                 <strong>Commentaires</strong>
                 <button class="close-comments" onclick="closeComments()">×</button>
             </div>
             <div class="comments-list" id="comments-list">
-                <div class="comment-item"><strong>@Utilisateur1:</strong> Trop drôle ! 😂</div>
-                <div class="comment-item"><strong>@Testeur:</strong> Excellent contenu.</div>
+                <!-- Aucun commentaire par défaut, les vôtres s'ajouteront ici -->
+            </div>
+            <div class="comment-input-area">
+                <input type="text" id="comment-input" class="comment-input" placeholder="Ajouter un commentaire...">
+                <button class="comment-submit" onclick="addComment()">Envoyer</button>
             </div>
         </div>
     </div>
 
     <script>
-        // États de l'application
         let isLiked = false;
         let likeCount = 431;
         let isMuted = false;
+        let commentCount = 0;
 
-        // Gestion des Likes
         function toggleLike() {
             isLiked = !isLiked;
             const heartIcon = document.getElementById('heart-icon');
@@ -241,7 +268,6 @@
             likeCountSpan.textContent = likeCount;
         }
 
-        // Gestion des catégories
         function switchCategory(category) {
             document.getElementById('tab-humour').classList.remove('active');
             document.getElementById('tab-motivation').classList.remove('active');
@@ -265,7 +291,6 @@
             }
         }
 
-        // Gestion des commentaires
         function openComments() {
             document.getElementById('comments-modal').style.display = 'flex';
         }
@@ -274,7 +299,23 @@
             document.getElementById('comments-modal').style.display = 'none';
         }
 
-        // Gestion du son
+        function addComment() {
+            const input = document.getElementById('comment-input');
+            const text = input.value.trim();
+            if (text === "") return;
+
+            const list = document.getElementById('comments-list');
+            const newItem = document.createElement('div');
+            newItem.className = 'comment-item';
+            newItem.innerHTML = `<strong>@Moi:</strong> ${text}`;
+            list.appendChild(newItem);
+
+            input.value = "";
+            commentCount += 1;
+            document.getElementById('comment-count').textContent = commentCount;
+            list.scrollTop = list.scrollHeight;
+        }
+
         function toggleSound() {
             isMuted = !isMuted;
             const soundIcon = document.getElementById('sound-icon');
@@ -289,7 +330,6 @@
             }
         }
 
-        // Gestion du partage
         function shareVideo() {
             if (navigator.share) {
                 navigator.share({
@@ -302,7 +342,6 @@
             }
         }
 
-        // Passage à la vidéo suivante
         function nextVideo() {
             isLiked = false;
             const heartIcon = document.getElementById('heart-icon');
@@ -316,4 +355,3 @@
     </script>
 </body>
 </html>
-```
