@@ -1,329 +1,207 @@
-HTML
+```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ChatBook</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background-color: #1a1e29;
-      color: white;
-      font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      overflow: hidden;
-    }
-
-    .app-container {
-      width: 100%;
-      max-width: 400px;
-      height: 100vh;
-      background-color: #0b0f19;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-
-    /* Catégories tout en haut */
-    .categories {
-      position: absolute;
-      top: 20px;
-      display: flex;
-      gap: 15px;
-      font-weight: bold;
-      font-size: 14px;
-      opacity: 0.9;
-      z-index: 10;
-    }
-
-    .categories span {
-      cursor: pointer;
-      transition: opacity 0.2s;
-    }
-
-    .categories span:hover {
-      opacity: 1;
-      text-decoration: underline;
-    }
-
-    .video-wrapper {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: black;
-    }
-
-    /* Élément vidéo visible */
-    .video-wrapper video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .interactions {
-      position: absolute;
-      right: 15px;
-      bottom: 120px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 15px;
-      z-index: 10;
-    }
-
-    .icon-btn {
-      background: rgba(0, 0, 0, 0.4);
-      border: none;
-      border-radius: 50%;
-      width: 45px;
-      height: 45px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      color: white;
-      cursor: pointer;
-      backdrop-filter: blur(5px);
-      transition: background 0.3s, color 0.3s;
-      position: relative;
-    }
-
-    .icon-btn:hover {
-      background: rgba(0, 0, 0, 0.6);
-    }
-
-    .icon-btn span {
-      font-size: 20px;
-    }
-
-    .icon-btn p {
-      font-size: 10px;
-      margin: 2px 0 0 0;
-      line-height: normal;
-    }
-
-    .red-dot {
-      width: 10px;
-      height: 10px;
-      background-color: #ff3b30;
-      border-radius: 50%;
-      position: absolute;
-      top: -2px;
-      right: -2px;
-      border: 2px solid #0b0f19;
-    }
-
-    /* Nouveau style pour le favori */
-    #favorite-btn.favorited {
-      background: rgba(255, 215, 0, 0.5); /* Jaune/Or translucide */
-      color: #ffd700;
-    }
-
-    #favorite-icon {
-        transition: transform 0.3s;
-    }
-
-    #favorite-btn.favorited #favorite-icon {
-        transform: scale(1.2) rotate(15deg);
-    }
-
-
-    .video-info {
-      position: absolute;
-      bottom: 20px;
-      left: 20px;
-      right: 80px;
-      z-index: 10;
-    }
-
-    .username {
-      font-weight: bold;
-      font-size: 16px;
-      margin-bottom: 5px;
-    }
-
-    .description {
-      font-size: 14px;
-      opacity: 0.9;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatBook</title>
+    <style>
+      body {
+          margin: 0;
+          font-family: Arial, sans-serif;
+          background-color: #000;
+          color: #fff;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+          overflow: hidden;
+      }
+      .video-container {
+          position: relative;
+          width: 375px;
+          height: 812px;
+          background-color: #333;
+      }
+      .sidebar {
+          position: absolute;
+          right: 15px;
+          bottom: 100px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 20px;
+      }
+      .action-item {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          color: #fff;
+          cursor: pointer;
+      }
+      .action-item span {
+          font-size: 12px;
+          margin-top: 5px;
+      }
+      .icon {
+          width: 35px;
+          height: 35px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 24px;
+      }
+      .follow-btn {
+          width: 30px;
+          height: 30px;
+          background-color: #fe2c55;
+          border-radius: 50%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          color: #fff;
+          font-weight: bold;
+          cursor: pointer;
+          position: relative;
+          margin-top: -10px;
+      }
+      .follow-btn.followed {
+          background-color: #fff;
+          color: #fe2c55;
+      }
+      .favoris-icon.active {
+          color: #ffcc00;
+      }
+      .modal {
+          display: none; 
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          height: 50%;
+          background: #111;
+          border-top-left-radius: 15px;
+          border-top-right-radius: 15px;
+          flex-direction: column;
+      }
+      .modal.active {
+          display: flex;
+      }
+      .modal-header {
+          display: flex;
+          justify-content: space-between;
+          padding: 10px;
+          border-bottom: 1px solid #333;
+      }
+      .close-btn {
+          cursor: pointer;
+      }
+      .comments-list {
+          flex: 1;
+          overflow-y: auto;
+          padding: 10px;
+      }
+      .comment-input {
+          display: flex;
+          padding: 10px;
+          background: #222;
+      }
+      .comment-input input {
+          flex: 1;
+          border: none;
+          background: none;
+          color: #fff;
+          padding: 10px;
+      }
+      .comment-input button {
+          border: none;
+          background: #fe2c55;
+          color: #fff;
+          padding: 10px 15px;
+          cursor: pointer;
+      }
+    </style>
 </head>
 <body>
 
-  <div class="app-container">
-    
-    <!-- Catégories tout en haut -->
-    <div class="categories" id="categories-nav">
-      <span data-category="humour">😄 Humour</span>
-      <span data-category="motivation">💪 Motivation</span>
-      <span data-category="enfants">👶 Enfants</span>
+<div class="video-container">
+   <div class="sidebar">
+       <div class="follow-btn" id="followBtn" onclick="toggleFollow()">+</div>
+
+       <div class="action-item" onclick="toggleFavorite()">
+           <div class="icon favoris-icon" id="favorisIcon">🔖</div>
+           <span id="favorisText">Favoris</span>
+       </div>
+
+       <div class="action-item" onclick="openComments()">
+           <div class="icon">💬</div>
+           <span id="commentCount">1</span>
+       </div>
+   </div>
+</div>
+
+<div class="modal" id="commentModal">
+    <div class="modal-header">
+        <strong>Commentaires</strong>
+        <span class="close-btn" onclick="closeComments()">X</span>
     </div>
-
-    <div class="video-wrapper">
-      
-      <!-- Balise vidéo -->
-      <video id="main-video" src="" autoplay loop playsinline></video>
-
-      <!-- Boutons d'interaction -->
-      <div class="interactions">
-        
-        <!-- Abonnement -->
-        <button class="icon-btn" id="subscribe-btn" type="button">
-          <span>➕</span>
-          <p id="subscribe-text">Abonner</p>
-          <div class="red-dot" id="red-dot"></div>
-        </button>
-        
-        <!-- Like (Cœur) -->
-        <button class="icon-btn" id="like-btn" type="button">
-          <span id="like-icon">🤍</span>
-          <p id="like-count">431</p>
-        </button>
-        
-        <!-- Commentaires -->
-        <button class="icon-btn" id="comment-btn" type="button">
-          <span>💬</span>
-          <p id="comment-count">0</p>
-        </button>
-        
-        <!-- Favoris (avec le nouveau style) -->
-        <button class="icon-btn" id="favorite-btn" type="button">
-          <span id="favorite-icon">🔖</span>
-          <p>Favoris</p>
-        </button>
-        
-        <!-- Son (avec le changement de couleur ciblé) -->
-        <button class="icon-btn" id="sound-btn" type="button">
-          <span id="sound-icon">🔊</span>
-          <p id="sound-text">Son</p>
-        </button>
-        
-        <!-- Partager -->
-        <button class="icon-btn" id="share-btn" type="button">
-          <span id="share-icon">🔗</span>
-          <p>Partager</p>
-        </button>
-        
-      </div>
-
-      <div class="video-info">
-        <div class="username">@ChatBookUser</div>
-        <div class="description">Bienvenue sur mon flux vidéo ! 🚀✨</div>
-      </div>
-
+    <div class="comments-list" id="commentsList">
+        <div>User1: Super vidéo !</div>
     </div>
-  </div>
+    <div class="comment-input">
+        <input type="text" id="commentTextInput" placeholder="Ajouter un commentaire...">
+        <button onclick="addComment()">Publier</button>
+    </div>
+</div>
 
-  <script>
-    // 1. Abonnement - Suppression de la pastille rouge
-    const subscribeBtn = document.getElementById('subscribe-btn');
-    const redDot = document.getElementById('red-dot');
-    const subscribeText = document.getElementById('subscribe-text');
-    let isSubscribed = false;
+<script>
+    function toggleFollow() {
+        const btn = document.getElementById("followBtn");
+        btn.classList.toggle("followed");
+        if (btn.classList.contains("followed")) {
+            btn.innerText = "✓";
+        } else {
+            btn.innerText = "+";
+        }
+    }
 
-    subscribeBtn.onclick = function() {
-      isSubscribed = !isSubscribed;
-      if (isSubscribed) {
-        redDot.style.display = 'none'; // La pastille rouge disparaît
-        subscribeText.textContent = 'Abonné';
-        subscribeBtn.style.background = 'rgba(255, 59, 48, 0.5)';
-      } else {
-        redDot.style.display = 'block'; // La pastille rouge réapparaît si on se désabonne
-        subscribeText.textContent = 'Abonner';
-        subscribeBtn.style.background = 'rgba(0, 0, 0, 0.4)';
-      }
-    };
+    function toggleFavorite() {
+        const icon = document.getElementById("favorisIcon");
+        const text = document.getElementById("favorisText");
+        
+        icon.classList.toggle("active");
+        if (icon.classList.contains("active")) {
+            text.innerText = "Favori"; 
+        } else {
+            text.innerText = "Favoris";
+        }
+    }
 
-    // 2. Like (Cœur)
-    const likeBtn = document.getElementById('like-btn');
-    const likeIcon = document.getElementById('like-icon');
-    const likeCount = document.getElementById('like-count');
-    let isLiked = false;
+    function openComments() {
+        document.getElementById("commentModal").classList.add("active");
+    }
 
-    likeBtn.onclick = function() {
-      isLiked = !isLiked;
-      if (isLiked) {
-        likeIcon.textContent = '❤️';
-        likeCount.textContent = '432';
-      } else {
-        likeIcon.textContent = '🤍';
-        likeCount.textContent = '431';
-      }
-    };
+    function closeComments() {
+        document.getElementById("commentModal").classList.remove("active");
+    }
 
-    // 3. Commentaires
-    const commentBtn = document.getElementById('comment-btn');
-    const commentCount = document.getElementById('comment-count');
-    let commentClicked = false;
-    commentBtn.onclick = function() {
-      commentClicked = !commentClicked;
-      commentCount.textContent = commentClicked ? '1' : '0';
-    };
-
-    // 4. Favoris - Nouveau style
-    const favoriteBtn = document.getElementById('favorite-btn');
-    let isFavorited = false;
-
-    favoriteBtn.onclick = function() {
-      isFavorited = !isFavorited;
-      if (isFavorited) {
-        favoriteBtn.classList.add('favorited'); // Applique le nouveau style jaune/or
-      } else {
-        favoriteBtn.classList.remove('favorited'); // Revient au style par défaut
-      }
-    };
-
-    // 5. Son (Volume de la vidéo) - Changement de couleur ciblé sur l'icône
-    const mainVideo = document.getElementById('main-video');
-    const soundBtn = document.getElementById('sound-btn');
-    const soundIcon = document.getElementById('sound-icon');
-    const soundText = document.getElementById('sound-text');
-    let isMuted = false;
-
-    soundBtn.onclick = function() {
-      isMuted = !isMuted;
-      mainVideo.muted = isMuted;
-      if (isMuted) {
-        soundIcon.textContent = '🔇';
-        soundText.textContent = 'Muet';
-        soundIcon.style.color = '#ff3b30'; // Seule l'icône du haut-parleur devient rouge
-        soundBtn.style.background = 'rgba(0, 0, 0, 0.4)'; // Le fond du bouton reste le même
-      } else {
-        soundIcon.textContent = '🔊';
-        soundText.textContent = 'Son';
-        soundIcon.style.color = 'white'; // L'icône redevient blanche
-        soundBtn.style.background = 'rgba(0, 0, 0, 0.4)';
-      }
-    };
-
-    // 6. Partager
-    const shareBtn = document.getElementById('share-btn');
-    let sharedState = false;
-    shareBtn.onclick = function() {
-      sharedState = !sharedState;
-      shareBtn.style.background = sharedState ? 'rgba(255, 59, 48, 0.5)' : 'rgba(0, 0, 0, 0.4)';
-    };
-
-    // 7. Navigation catégories
-    const categoriesNav = document.getElementById('categories-nav');
-    categoriesNav.onclick = function(e) {
-      if (e.target.tagName === 'SPAN') {
-        const cat = e.target.getAttribute('data-category');
-        document.querySelectorAll('.categories span').forEach(el => el.style.opacity = '0.6');
-        e.target.style.opacity = '1';
-      }
-    };
-  </script>
+    function addComment() {
+        const input = document.getElementById("commentTextInput");
+        const text = input.value.trim();
+        if (text !== "") {
+            const list = document.getElementById("commentsList");
+            const newComment = document.createElement("div");
+            newComment.innerText = "Vous : " + text;
+            list.appendChild(newComment);
+            input.value = "";
+            
+            const countSpan = document.getElementById("commentCount");
+            let count = parseInt(countSpan.innerText);
+            countSpan.innerText = count + 1;
+        }
+    }
+</script>
 
 </body>
 </html>
+```
