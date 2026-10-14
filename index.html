@@ -183,18 +183,21 @@ HTML
 <body>
 
     <div class="container">
+        <!-- En-tête -->
         <div class="header">
             <span id="tab-humour" class="active" onclick="switchCategory('humour')">[😄 Humour]</span>
             <span id="tab-motivation" onclick="switchCategory('motivation')">[💪 Motivation]</span>
             <span id="tab-enfants" onclick="switchCategory('enfants')">[👶 Enfants]</span>
         </div>
 
+        <!-- Contenu vidéo -->
         <div class="content">
             <div class="video-info">
                 <div class="username" id="video-username">@HumourTotal</div>
                 <div class="description" id="video-desc">Une blague qui fait du bien dès le matin ! 🎭✨</div>
             </div>
 
+            <!-- Boutons latéraux -->
             <div class="sidebar">
                 <button class="action-btn" onclick="toggleLike()">
                     <svg id="heart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -216,15 +219,19 @@ HTML
                 </button>
             </div>
 
+            <!-- Bouton Vidéo suivante -->
             <button class="next-btn" onclick="nextVideo()">Vidéo suivante ➡️</button>
         </div>
 
+        <!-- Section des commentaires (cachée par défaut) -->
         <div class="comments-modal" id="comments-modal">
             <div class="comments-header">
                 <strong>Commentaires</strong>
                 <button class="close-comments" onclick="closeComments()">×</button>
             </div>
-            <div class="comments-list" id="comments-list"></div>
+            <div class="comments-list" id="comments-list">
+                <!-- Les commentaires s'ajouteront ici -->
+            </div>
             <div class="comment-input-area">
                 <input type="text" id="comment-input" class="comment-input" placeholder="Ajouter un commentaire...">
                 <button class="comment-submit" onclick="addComment()">Envoyer</button>
@@ -232,6 +239,7 @@ HTML
         </div>
     </div>
 
+    <!-- Script JavaScript -->
     <script>
         let isLiked = false;
         let likeCount = 431;
@@ -331,14 +339,16 @@ HTML
         }
 
         function nextVideo() {
+            // Réinitialisation du like pour la nouvelle vidéo
             isLiked = false;
             const heartIcon = document.getElementById('heart-icon');
             heartIcon.setAttribute('fill', 'none');
             heartIcon.setAttribute('stroke', 'currentColor');
             
+            // Simulation de changement de contenu
             likeCount = Math.floor(Math.random() * 900) + 100;
             document.getElementById('like-count').textContent = likeCount;
-            document.getElementById('video-desc').textContent = "Nouvelle vidéo chargée avec succès ! 🎬";
+            document.getElementById('video-desc').textContent = "Une nouvelle vidéo chargée avec succès ! 🎬";
         }
     </script>
 </body>
