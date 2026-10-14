@@ -237,7 +237,7 @@ HTML
             </button>
             <button class="action-btn" onclick="toggleComments()">
                 <span>💬</span> 
-                <span id="commentCount" style="font-size: 12px;">0</span>
+                <span id="commentCount" style="font-size: 12px;">1</span>
             </button>
             <button class="action-btn" id="soundBtn" onclick="toggleSound()">
                 <span id="soundIcon">🔊</span> 
@@ -261,7 +261,7 @@ HTML
                 <button class="close-comments" onclick="toggleComments()">✕</button>
             </div>
             <div class="comments-body" id="commentsBody">
-                <div style="color: #94a3b8; text-align: center; margin-top: 20px;" id="noCommentText">Aucun commentaire pour le moment.</div>
+                <div class="comment-item"><strong>@Moi:</strong> kk</div>
             </div>
             <div class="comments-footer">
                 <input type="text" id="commentInput" placeholder="Ajouter un commentaire..." onkeypress="handleKeyPress(event)">
@@ -299,41 +299,19 @@ HTML
             soundIcon.innerText = isMuted ? '🔇' : '🔊';
         }
 
-        // Fonction de partage améliorée (utilise le menu natif si disponible)
+        // Système de partage ultra-fiable par invite de texte (contourne les blocages PC)
         function shareVideo() {
-            if (navigator.share) {
-                navigator.share({
-                    title: 'ChatBook',
-                    text: 'Regarde cette vidéo sur ChatBook !',
-                    url: window.location.href,
-                }).catch(() => {});
-            } else {
-                // Solution de secours : copie invisible sans bloquer avec une alerte moche
-                const dummy = document.createElement('input');
-                document.body.appendChild(dummy);
-                dummy.value = window.location.href;
-                dummy.select();
-                document.execCommand('copy');
-                document.body.removeChild(dummy);
-                
-                // Petit effet discret ou simple notification
-                const shareBtn = document.querySelector('.action-btn span:contains("Partager")');
-                alert("Lien de la vidéo copié ! Vous pouvez le coller partout.");
-            }
+            const currentUrl = window.location.href;
+            window.prompt("Copiez ce lien pour partager la vidéo :", currentUrl);
         }
 
-        let commentCount = 0;
+        let commentCount = 1;
         function addComment() {
             const input = document.getElementById('commentInput');
             const text = input.value.trim();
             if (text === "") return;
 
             const commentsBody = document.getElementById('commentsBody');
-            const noCommentText = document.getElementById('noCommentText');
-            if (noCommentText) {
-                noCommentText.remove();
-            }
-
             const commentDiv = document.createElement('div');
             commentDiv.className = 'comment-item';
             commentDiv.innerHTML = `<strong>@Moi:</strong> ${text}`;
