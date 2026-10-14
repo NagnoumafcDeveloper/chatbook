@@ -1,6 +1,4 @@
-Voici le code complet, corrigé et propre pour votre fichier index.html. J'ai retiré le mot "HTML" qui traînait tout en haut (ce qui faisait apparaître ce texte en arrière-plan sur votre écran), et j'ai remis exactement les catégories de la capture d'écran (Humour, Motivation, Enfants) avec les mêmes émojis et styles :
-
-HTML
+```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -231,7 +229,6 @@ HTML
 </head>
 <body>
     <div class="container">
-        <!-- En-tête avec Titre et Catégories style pilules -->
         <div class="app-header">
             <h1 class="app-title">ChatBook</h1>
             <div class="categories">
@@ -241,18 +238,15 @@ HTML
             </div>
         </div>
 
-        <!-- Zone de la vidéo -->
         <div class="video-area">
             <div style="color: #64748b; font-size: 14px;">Espace Vidéo</div>
         </div>
 
-        <!-- Informations de la vidéo -->
         <div class="video-info">
             <h3 id="videoAuthor">@HumourTotal</h3>
             <p id="videoDesc">Une blague qui fait du bien dès le matin ! 💙✨</p>
         </div>
 
-        <!-- Boutons d'actions verticaux -->
         <div class="sidebar-actions">
             <button class="action-btn" id="likeBtn" onclick="toggleLike()">
                 <span id="likeIcon">❤️</span>
@@ -272,12 +266,10 @@ HTML
             </button>
         </div>
 
-        <!-- Bouton Vidéo suivante -->
         <div class="next-btn-container">
             <button class="next-btn" onclick="nextVideo()">Vidéo suivante ➡️</button>
         </div>
 
-        <!-- Modale des commentaires -->
         <div class="comments-modal" id="commentsModal">
             <div class="comments-header">
                 <span>Commentaires</span>
@@ -324,8 +316,17 @@ HTML
         }
 
         function shareVideo() {
-            const currentUrl = window.location.href;
-            window.prompt("Copiez ce lien pour partager la vidéo :", currentUrl);
+            if (navigator.share) {
+                navigator.share({
+                    title: 'ChatBook',
+                    text: 'Regarde cette vidéo sur ChatBook !',
+                    url: window.location.href
+                })
+                .then(() => console.log('Partage réussi'))
+                .catch((error) => console.log('Erreur lors du partage :', error));
+            } else {
+                alert('La fonctionnalité de partage nest pas supportée sur cet appareil.');
+            }
         }
 
         let commentCount = 1;
@@ -389,3 +390,4 @@ HTML
     </script>
 </body>
 </html>
+```
