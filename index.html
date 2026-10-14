@@ -165,12 +165,8 @@ HTML
             overflow-y: auto;
             flex: 1;
             font-size: 14px;
-        }
-        .comment-item {
-            margin-bottom: 12px;
-        }
-        .comment-item strong {
-            color: #38bdf8;
+            color: #94a3b8;
+            text-align: center;
         }
     </style>
 </head>
@@ -226,9 +222,8 @@ HTML
                 <span>Commentaires</span>
                 <button class="close-comments" onclick="toggleComments()">✕</button>
             </div>
-            <div class="comments-body">
-                <div class="comment-item"><strong>@Utilisateur1:</strong> Trop drôle ! 😆</div>
-                <div class="comment-item"><strong>@Testeur:</strong> Excellent contenu.</div>
+            <div class="comments-body" id="commentsBody">
+                Aucun commentaire pour le moment.
             </div>
         </div>
     </div>
