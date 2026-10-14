@@ -94,7 +94,7 @@ HTML
       color: white;
       cursor: pointer;
       backdrop-filter: blur(5px);
-      transition: background 0.3s;
+      transition: background 0.3s, color 0.3s;
       position: relative;
     }
 
@@ -122,6 +122,21 @@ HTML
       right: -2px;
       border: 2px solid #0b0f19;
     }
+
+    /* Nouveau style pour le favori */
+    #favorite-btn.favorited {
+      background: rgba(255, 215, 0, 0.5); /* Jaune/Or translucide */
+      color: #ffd700;
+    }
+
+    #favorite-icon {
+        transition: transform 0.3s;
+    }
+
+    #favorite-btn.favorited #favorite-icon {
+        transform: scale(1.2) rotate(15deg);
+    }
+
 
     .video-info {
       position: absolute;
@@ -156,7 +171,7 @@ HTML
 
     <div class="video-wrapper">
       
-      <!-- Balise vidéo (remplacez le lien src par votre fichier ou lien vidéo) -->
+      <!-- Balise vidéo -->
       <video id="main-video" src="" autoplay loop playsinline></video>
 
       <!-- Boutons d'interaction -->
@@ -181,13 +196,13 @@ HTML
           <p id="comment-count">0</p>
         </button>
         
-        <!-- Favoris -->
+        <!-- Favoris (avec le nouveau style) -->
         <button class="icon-btn" id="favorite-btn" type="button">
           <span id="favorite-icon">🔖</span>
           <p>Favoris</p>
         </button>
         
-        <!-- Son -->
+        <!-- Son (avec le changement de couleur ciblé) -->
         <button class="icon-btn" id="sound-btn" type="button">
           <span id="sound-icon">🔊</span>
           <p id="sound-text">Son</p>
@@ -210,7 +225,7 @@ HTML
   </div>
 
   <script>
-    // 1. Abonnement
+    // 1. Abonnement - Suppression de la pastille rouge
     const subscribeBtn = document.getElementById('subscribe-btn');
     const redDot = document.getElementById('red-dot');
     const subscribeText = document.getElementById('subscribe-text');
@@ -219,11 +234,11 @@ HTML
     subscribeBtn.onclick = function() {
       isSubscribed = !isSubscribed;
       if (isSubscribed) {
-        redDot.style.display = 'none';
+        redDot.style.display = 'none'; // La pastille rouge disparaît
         subscribeText.textContent = 'Abonné';
         subscribeBtn.style.background = 'rgba(255, 59, 48, 0.5)';
       } else {
-        redDot.style.display = 'block';
+        redDot.style.display = 'block'; // La pastille rouge réapparaît si on se désabonne
         subscribeText.textContent = 'Abonner';
         subscribeBtn.style.background = 'rgba(0, 0, 0, 0.4)';
       }
@@ -246,7 +261,7 @@ HTML
       }
     };
 
-    // 3. Commentaires (Incrémente ou simule une action propre sans alerte)
+    // 3. Commentaires
     const commentBtn = document.getElementById('comment-btn');
     const commentCount = document.getElementById('comment-count');
     let commentClicked = false;
@@ -255,23 +270,20 @@ HTML
       commentCount.textContent = commentClicked ? '1' : '0';
     };
 
-    // 4. Favoris
+    // 4. Favoris - Nouveau style
     const favoriteBtn = document.getElementById('favorite-btn');
-    const favoriteIcon = document.getElementById('favorite-icon');
     let isFavorited = false;
 
     favoriteBtn.onclick = function() {
       isFavorited = !isFavorited;
       if (isFavorited) {
-        favoriteIcon.textContent = '❤️';
-        favoriteBtn.style.background = 'rgba(255, 59, 48, 0.5)';
+        favoriteBtn.classList.add('favorited'); // Applique le nouveau style jaune/or
       } else {
-        favoriteIcon.textContent = '🔖';
-        favoriteBtn.style.background = 'rgba(0, 0, 0, 0.4)';
+        favoriteBtn.classList.remove('favorited'); // Revient au style par défaut
       }
     };
 
-    // 5. Son (Volume de la vidéo)
+    // 5. Son (Volume de la vidéo) - Changement de couleur ciblé sur l'icône
     const mainVideo = document.getElementById('main-video');
     const soundBtn = document.getElementById('sound-btn');
     const soundIcon = document.getElementById('sound-icon');
@@ -284,10 +296,12 @@ HTML
       if (isMuted) {
         soundIcon.textContent = '🔇';
         soundText.textContent = 'Muet';
-        soundBtn.style.background = 'rgba(255, 59, 48, 0.5)';
+        soundIcon.style.color = '#ff3b30'; // Seule l'icône du haut-parleur devient rouge
+        soundBtn.style.background = 'rgba(0, 0, 0, 0.4)'; // Le fond du bouton reste le même
       } else {
         soundIcon.textContent = '🔊';
         soundText.textContent = 'Son';
+        soundIcon.style.color = 'white'; // L'icône redevient blanche
         soundBtn.style.background = 'rgba(0, 0, 0, 0.4)';
       }
     };
@@ -300,7 +314,7 @@ HTML
       shareBtn.style.background = sharedState ? 'rgba(255, 59, 48, 0.5)' : 'rgba(0, 0, 0, 0.4)';
     };
 
-    // 7. Navigation catégories (Humour, Motivation, Enfants)
+    // 7. Navigation catégories
     const categoriesNav = document.getElementById('categories-nav');
     categoriesNav.onclick = function(e) {
       if (e.target.tagName === 'SPAN') {
