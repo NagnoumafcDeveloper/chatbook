@@ -1,4 +1,4 @@
-HTML
+```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -181,7 +181,6 @@ HTML
     </style>
 </head>
 <body>
-
     <div class="container">
         <!-- En-tête -->
         <div class="header">
@@ -189,14 +188,12 @@ HTML
             <span id="tab-motivation" onclick="switchCategory('motivation')">[💪 Motivation]</span>
             <span id="tab-enfants" onclick="switchCategory('enfants')">[👶 Enfants]</span>
         </div>
-
         <!-- Contenu vidéo -->
         <div class="content">
             <div class="video-info">
                 <div class="username" id="video-username">@HumourTotal</div>
                 <div class="description" id="video-desc">Une blague qui fait du bien dès le matin ! 🎭✨</div>
             </div>
-
             <!-- Boutons latéraux -->
             <div class="sidebar">
                 <button class="action-btn" onclick="toggleLike()">
@@ -205,32 +202,27 @@ HTML
                     </svg>
                     <span id="like-count">431</span>
                 </button>
-
                 <button class="action-btn" onclick="openComments()">
                     💬 <span id="comment-count">0</span>
                 </button>
-
                 <button class="action-btn" onclick="toggleSound()">
                     <span id="sound-icon">🔊</span> <span id="sound-text">Son</span>
                 </button>
-
                 <button class="action-btn" onclick="shareVideo()">
                     🔗 <span>Partager</span>
                 </button>
             </div>
-
             <!-- Bouton Vidéo suivante -->
             <button class="next-btn" onclick="nextVideo()">Vidéo suivante ➡️</button>
         </div>
-
-        <!-- Section des commentaires (cachée par défaut) -->
+        <!-- Section des commentaires -->
         <div class="comments-modal" id="comments-modal">
             <div class="comments-header">
                 <strong>Commentaires</strong>
                 <button class="close-comments" onclick="closeComments()">×</button>
             </div>
             <div class="comments-list" id="comments-list">
-                <!-- Les commentaires s'ajouteront ici -->
+                <!-- Commentaires ajoutés ici -->
             </div>
             <div class="comment-input-area">
                 <input type="text" id="comment-input" class="comment-input" placeholder="Ajouter un commentaire...">
@@ -238,19 +230,15 @@ HTML
             </div>
         </div>
     </div>
-
-    <!-- Script JavaScript -->
     <script>
         let isLiked = false;
         let likeCount = 431;
         let isMuted = false;
         let commentCount = 0;
-
         function toggleLike() {
             isLiked = !isLiked;
             const heartIcon = document.getElementById('heart-icon');
             const likeCountSpan = document.getElementById('like-count');
-
             if (isLiked) {
                 heartIcon.setAttribute('fill', '#ff3b30');
                 heartIcon.setAttribute('stroke', '#ff3b30');
@@ -260,21 +248,16 @@ HTML
                 heartIcon.setAttribute('stroke', 'currentColor');
                 likeCount -= 1;
             }
-
             likeCountSpan.textContent = likeCount;
         }
-
         function switchCategory(category) {
             document.getElementById('tab-humour').classList.remove('active');
             document.getElementById('tab-motivation').classList.remove('active');
             document.getElementById('tab-enfants').classList.remove('active');
-
             const activeTab = document.getElementById('tab-' + category);
             activeTab.classList.add('active');
-
             const usernameEl = document.getElementById('video-username');
             const descEl = document.getElementById('video-desc');
-
             if (category === 'humour') {
                 usernameEl.textContent = "@HumourTotal";
                 descEl.textContent = "Une blague qui fait du bien dès le matin ! 🎭✨";
@@ -286,37 +269,30 @@ HTML
                 descEl.textContent = "Les moments les plus mignons de la journée 👶🥰";
             }
         }
-
         function openComments() {
             document.getElementById('comments-modal').style.display = 'flex';
         }
-
         function closeComments() {
             document.getElementById('comments-modal').style.display = 'none';
         }
-
         function addComment() {
             const input = document.getElementById('comment-input');
             const text = input.value.trim();
             if (text === "") return;
-
             const list = document.getElementById('comments-list');
             const newItem = document.createElement('div');
             newItem.className = 'comment-item';
             newItem.innerHTML = `<strong>@Moi:</strong> ${text}`;
             list.appendChild(newItem);
-
             input.value = "";
             commentCount += 1;
             document.getElementById('comment-count').textContent = commentCount;
             list.scrollTop = list.scrollHeight;
         }
-
         function toggleSound() {
             isMuted = !isMuted;
             const soundIcon = document.getElementById('sound-icon');
             const soundText = document.getElementById('sound-text');
-
             if (isMuted) {
                 soundIcon.textContent = "🔇";
                 soundText.textContent = "Muet";
@@ -325,7 +301,6 @@ HTML
                 soundText.textContent = "Son";
             }
         }
-
         function shareVideo() {
             if (navigator.share) {
                 navigator.share({
@@ -337,15 +312,11 @@ HTML
                 alert("Lien de la vidéo copié dans le presse-papier ! 🔗");
             }
         }
-
         function nextVideo() {
-            // Réinitialisation du like pour la nouvelle vidéo
             isLiked = false;
             const heartIcon = document.getElementById('heart-icon');
             heartIcon.setAttribute('fill', 'none');
             heartIcon.setAttribute('stroke', 'currentColor');
-            
-            // Simulation de changement de contenu
             likeCount = Math.floor(Math.random() * 900) + 100;
             document.getElementById('like-count').textContent = likeCount;
             document.getElementById('video-desc').textContent = "Une nouvelle vidéo chargée avec succès ! 🎬";
@@ -353,3 +324,4 @@ HTML
     </script>
 </body>
 </html>
+```
