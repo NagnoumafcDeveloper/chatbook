@@ -88,16 +88,9 @@
           color: #fe2c55;
           display: none;
       }
-      
-      /* Style avec l'étoile pour les favoris */
-      .favoris-icon {
-          font-family: "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
-      }
       .favoris-icon.active {
           color: #ffcc00;
-          text-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
       }
-
       .modal {
           position: absolute;
           bottom: -100%;
@@ -177,19 +170,16 @@
 
 <div class="video-container">
    <div class="sidebar">
-       <!-- Bouton Abonnement -->
        <div class="action-wrapper" onclick="toggleFollow()">
            <div class="icon">👤</div>
            <div class="follow-btn" id="followBtn">+</div>
        </div>
 
-       <!-- Bouton Favoris avec l'étoile -->
        <div class="action-item" onclick="toggleFavorite()">
            <div class="icon favoris-icon" id="favorisIcon">⭐</div>
            <span id="favorisText">Favoris</span>
        </div>
 
-       <!-- Bouton Commentaires -->
        <div class="action-item" onclick="openComments()">
            <div class="icon">💬</div>
            <span id="commentCount">0</span>
