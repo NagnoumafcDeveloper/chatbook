@@ -30,14 +30,14 @@ HTML
             flex-direction: column;
             position: relative;
         }
-        /* En-tête avec titre et catégories */
+        /* En-tête avec titre et catégories arrondies */
         .app-header {
-            padding: 12px 10px 10px 10px;
+            padding: 15px 10px;
             background: rgba(0, 0, 0, 0.4);
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             z-index: 10;
         }
         .app-title {
@@ -53,19 +53,23 @@ HTML
             width: 100%;
         }
         .category-btn {
-            background: #334155;
-            color: #cbd5e1;
+            background: #332d56;
+            color: #d1d5db;
             border: none;
-            padding: 6px 12px;
+            padding: 8px 14px;
             border-radius: 20px;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
         .category-btn.active {
             background: white;
-            color: #0f172a;
+            color: #1e1b4b;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
         }
         .video-area {
             flex: 1;
@@ -229,7 +233,7 @@ HTML
 <body>
 
     <div class="container">
-        <!-- En-tête avec Titre et Catégories en haut -->
+        <!-- En-tête avec Titre et Catégories style pilules -->
         <div class="app-header">
             <h1 class="app-title">ChatBook</h1>
             <div class="categories">
