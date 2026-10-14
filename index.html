@@ -1,3 +1,5 @@
+Voici le code complet, corrigé et propre pour votre fichier index.html. J'ai retiré le mot "HTML" qui traînait tout en haut (ce qui faisait apparaître ce texte en arrière-plan sur votre écran), et j'ai remis exactement les catégories de la capture d'écran (Humour, Motivation, Enfants) avec les mêmes émojis et styles :
+
 HTML
 <!DOCTYPE html>
 <html lang="fr">
@@ -30,7 +32,6 @@ HTML
             flex-direction: column;
             position: relative;
         }
-        /* En-tête avec titre et catégories arrondies */
         .app-header {
             padding: 15px 10px;
             background: rgba(0, 0, 0, 0.4);
@@ -105,7 +106,6 @@ HTML
             display: block;
             font-size: 22px;
         }
-        /* Cœur par défaut en blanc */
         #likeIcon {
             filter: grayscale(100%) brightness(200%);
             transition: filter 0.2s;
@@ -148,7 +148,6 @@ HTML
         .next-btn:hover {
             background: #1d4ed8;
         }
-        /* Modale des commentaires */
         .comments-modal {
             position: absolute;
             bottom: 0;
@@ -231,15 +230,14 @@ HTML
     </style>
 </head>
 <body>
-
     <div class="container">
         <!-- En-tête avec Titre et Catégories style pilules -->
         <div class="app-header">
             <h1 class="app-title">ChatBook</h1>
             <div class="categories">
-                <button class="category-btn active" onclick="switchCategory(this)">😄 Humour</button>
-                <button class="category-btn" onclick="switchCategory(this)">💪 Motivation</button>
-                <button class="category-btn" onclick="switchCategory(this)">👶 Enfants</button>
+                <button class="category-btn active" onclick="switchCategory(this, 0)">😄 Humour</button>
+                <button class="category-btn" onclick="switchCategory(this, 1)">💪 Motivation</button>
+                <button class="category-btn" onclick="switchCategory(this, 2)">👶 Enfants</button>
             </div>
         </div>
 
@@ -257,19 +255,19 @@ HTML
         <!-- Boutons d'actions verticaux -->
         <div class="sidebar-actions">
             <button class="action-btn" id="likeBtn" onclick="toggleLike()">
-                <span id="likeIcon">❤️</span> 
+                <span id="likeIcon">❤️</span>
                 <span id="likeCount" style="font-size: 12px;">432</span>
             </button>
             <button class="action-btn" onclick="toggleComments()">
-                <span>💬</span> 
+                <span>💬</span>
                 <span id="commentCount" style="font-size: 12px;">1</span>
             </button>
             <button class="action-btn" id="soundBtn" onclick="toggleSound()">
-                <span id="soundIcon">🔊</span> 
+                <span id="soundIcon">🔊</span>
                 <span style="font-size: 12px;">Son</span>
             </button>
             <button class="action-btn" onclick="shareVideo()">
-                <span>↗️</span> 
+                <span>↗️</span>
                 <span style="font-size: 12px;">Partager</span>
             </button>
         </div>
@@ -298,6 +296,7 @@ HTML
     <script>
         let isLiked = false;
         let likesNum = 432;
+
         function toggleLike() {
             const btn = document.getElementById('likeBtn');
             const countElem = document.getElementById('likeCount');
@@ -343,7 +342,6 @@ HTML
 
             input.value = "";
             commentsBody.scrollTop = commentsBody.scrollHeight;
-
             commentCount++;
             document.getElementById('commentCount').innerText = commentCount;
         }
@@ -354,20 +352,33 @@ HTML
             }
         }
 
-        function switchCategory(element) {
-            document.querySelectorAll('.category-btn').forEach(el => el.classList.remove('active'));
-            element.classList.add('active');
-        }
-
         const videosData = [
             { author: "@HumourTotal", desc: "Une blague qui fait du bien dès le matin ! 💙✨", likes: 432 },
             { author: "@MotivationPro", desc: "Ne lâche rien, chaque effort compte ! 💪🔥", likes: 1205 },
             { author: "@KidsFun", desc: "Regarde cette réaction trop mignonne ! 🥰👶", likes: 890 }
         ];
+
         let currentIndex = 0;
+
+        function switchCategory(element, index) {
+            document.querySelectorAll('.category-btn').forEach(el => el.classList.remove('active'));
+            element.classList.add('active');
+            
+            currentIndex = index;
+            document.getElementById('videoAuthor').innerText = videosData[currentIndex].author;
+            document.getElementById('videoDesc').innerText = videosData[currentIndex].desc;
+            likesNum = videosData[currentIndex].likes;
+            document.getElementById('likeCount').innerText = likesNum;
+            isLiked = false;
+            document.getElementById('likeBtn').classList.remove('liked');
+        }
 
         function nextVideo() {
             currentIndex = (currentIndex + 1) % videosData.length;
+            const buttons = document.querySelectorAll('.category-btn');
+            document.querySelectorAll('.category-btn').forEach(el => el.classList.remove('active'));
+            buttons[currentIndex].classList.add('active');
+
             document.getElementById('videoAuthor').innerText = videosData[currentIndex].author;
             document.getElementById('videoDesc').innerText = videosData[currentIndex].desc;
             likesNum = videosData[currentIndex].likes;
@@ -376,6 +387,5 @@ HTML
             document.getElementById('likeBtn').classList.remove('liked');
         }
     </script>
-
 </body>
 </html>
