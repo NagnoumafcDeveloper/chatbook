@@ -126,12 +126,13 @@ HTML
         .next-btn:hover {
             background: #1d4ed8;
         }
+        /* Modale des commentaires */
         .comments-modal {
             position: absolute;
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 50%;
+            height: 60%;
             background: #1e293b;
             border-top-left-radius: 16px;
             border-top-right-radius: 16px;
@@ -165,8 +166,46 @@ HTML
             overflow-y: auto;
             flex: 1;
             font-size: 14px;
+        }
+        .comment-item {
+            margin-bottom: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 8px 12px;
+            border-radius: 8px;
+        }
+        /* Zone de saisie du commentaire */
+        .comments-footer {
+            padding: 12px;
+            border-top: 1px solid #334155;
+            display: flex;
+            gap: 10px;
+            background: #0f172a;
+        }
+        .comments-footer input {
+            flex: 1;
+            background: #1e293b;
+            border: 1px solid #475569;
+            border-radius: 20px;
+            padding: 8px 15px;
+            color: white;
+            outline: none;
+            font-size: 13px;
+        }
+        .comments-footer input::placeholder {
             color: #94a3b8;
-            text-align: center;
+        }
+        .comments-footer button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 13px;
+        }
+        .comments-footer button:hover {
+            background: #1d4ed8;
         }
     </style>
 </head>
@@ -223,7 +262,12 @@ HTML
                 <button class="close-comments" onclick="toggleComments()">✕</button>
             </div>
             <div class="comments-body" id="commentsBody">
-                Aucun commentaire pour le moment.
+                <div style="color: #94a3b8; text-align: center; margin-top: 20px;" id="noCommentText">Aucun commentaire pour le moment.</div>
+            </div>
+            <!-- Zone pour écrire un commentaire -->
+            <div class="comments-footer">
+                <input type="text" id="commentInput" placeholder="Ajouter un commentaire..." onkeypress="handleKeyPress(event)">
+                <button onclick="addComment()">Envoyer</button>
             </div>
         </div>
     </div>
@@ -267,6 +311,37 @@ HTML
                 });
             } else {
                 prompt("Copiez ce lien pour partager :", currentUrl);
+            }
+        }
+
+        // Gestion de l'ajout dynamique de commentaires
+        let commentCount = 0;
+        function addComment() {
+            const input = document.getElementById('commentInput');
+            const text = input.value.trim();
+            if (text === "") return;
+
+            const commentsBody = document.getElementById('commentsBody');
+            const noCommentText = document.getElementById('noCommentText');
+            if (noCommentText) {
+                noCommentText.remove();
+            }
+
+            const commentDiv = document.createElement('div');
+            commentDiv.className = 'comment-item';
+            commentDiv.innerHTML = `<strong>@Moi:</strong> ${text}`;
+            commentsBody.appendChild(commentDiv);
+
+            input.value = "";
+            commentsBody.scrollTop = commentsBody.scrollHeight;
+
+            commentCount++;
+            document.getElementById('commentCount').innerText = commentCount;
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                addComment();
             }
         }
 
