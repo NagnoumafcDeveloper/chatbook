@@ -1,4 +1,4 @@
-```html
+HTML
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -212,7 +212,7 @@
 
     <div class="container">
         <div class="app-header">
-            <h1 class="app-title">ChatBook</h1>
+            <h1 class="app-title">[cite: 7] ChatBook</h1>
             <div class="categories">
                 <button class="category-btn active" onclick="switchCategory(this)">😄 Humour</button>
                 <button class="category-btn" onclick="switchCategory(this)">💪 Motivation</button>
@@ -225,14 +225,14 @@
         </div>
 
         <div class="video-info">
-            <h3 id="videoAuthor">@HumourTotal</h3>
-            <p id="videoDesc">Une blague qui fait du bien dès le matin ! 💙✨</p>
+            <h3 id="videoAuthor"> @MotivationPro</h3>
+            <p id="videoDesc">[cite: 1] Ne lâche rien, chaque effort compte ! 💪🔥</p>
         </div>
 
         <div class="sidebar-actions">
             <button class="action-btn" id="likeBtn" onclick="toggleLike()">
                 <span id="likeIcon">❤️</span> 
-                <span id="likeCount" style="font-size: 12px;">432</span>
+                <span id="likeCount" style="font-size: 12px;">1206</span>
             </button>
             <button class="action-btn" onclick="toggleComments()">
                 <span>💬</span> 
@@ -265,7 +265,7 @@
 
     <script>
         let isLiked = false;
-        let likesNum = 432;
+        let likesNum = 1206;
         function toggleLike() {
             const btn = document.getElementById('likeBtn');
             const countElem = document.getElementById('likeCount');
@@ -336,4 +336,3 @@
     </script>
 </body>
 </html>
-```
