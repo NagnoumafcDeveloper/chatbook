@@ -1,4 +1,4 @@
-HTML
+```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -62,7 +62,7 @@ HTML
           transform: scale(1.2);
       }
       
-      /* Bouton d'abonnement */
+      /* Style du bouton d’abonnement */
       .follow-btn {
           width: 22px;
           height: 22px;
@@ -88,17 +88,18 @@ HTML
           display: none;
       }
 
-      /* Style J'aime (Cœur) */
+      /* Style du bouton J'aime */
       .like-icon.active {
           color: #fe2c55;
       }
 
-      /* Style Favoris (Ruban) */
+      /* Style du bouton Favoris avec une étoile jaune */
       .favoris-icon.active {
           color: #ffcc00;
+          text-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
       }
 
-      /* Modal de commentaires */
+      /* Fenêtre modale des commentaires */
       .modal {
           position: absolute;
           bottom: -100%;
@@ -187,7 +188,7 @@ HTML
        <!-- Like (Cœur) -->
        <div class="action-item" onclick="toggleLike()">
            <div class="icon like-icon" id="likeIcon">❤️</div>
-           <span id="likeCount">12k</span>
+           <span>J'aime</span>
        </div>
 
        <!-- Commentaires -->
@@ -196,9 +197,9 @@ HTML
            <span id="commentCount">0</span>
        </div>
 
-       <!-- Favoris (Ruban) -->
+       <!-- Favoris (Étoile) -->
        <div class="action-item" onclick="toggleFavorite()">
-           <div class="icon favoris-icon" id="favorisIcon">🔖</div>
+           <div class="icon favoris-icon" id="favorisIcon">⭐</div>
            <span id="favorisText">Favoris</span>
        </div>
 
@@ -236,7 +237,14 @@ HTML
 
     function toggleFavorite() {
         const icon = document.getElementById("favorisIcon");
+        const text = document.getElementById("favorisText");
+        
         icon.classList.toggle("active");
+        if (icon.classList.contains("active")) {
+            text.innerText = "Favori";
+        } else {
+            text.innerText = "Favoris";
+        }
     }
 
     function shareVideo() {
@@ -275,3 +283,4 @@ HTML
 
 </body>
 </html>
+```
