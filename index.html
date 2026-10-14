@@ -1,4 +1,4 @@
-HTML
+```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -9,7 +9,7 @@ HTML
         body {
             margin: 0;
             padding: 0;
-            background-color: #000;
+            background-color: #0a192f;
             color: #fff;
             font-family: Arial, sans-serif;
             display: flex;
@@ -23,13 +23,15 @@ HTML
             max-width: 400px;
             height: 100vh;
             max-height: 800px;
-            background-color: #111;
+            background-color: rgba(255, 255, 255, 0.05);
             position: relative;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             padding: 20px;
             box-sizing: border-box;
+            border-radius: 12px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
         }
         .header {
             display: flex;
@@ -37,7 +39,7 @@ HTML
             gap: 15px;
             font-size: 14px;
             font-weight: bold;
-            color: #777;
+            color: #8892b0;
             z-index: 10;
         }
         .header span {
@@ -66,7 +68,7 @@ HTML
         }
         .description {
             font-size: 14px;
-            color: #ddd;
+            color: #8892b0;
         }
         .sidebar {
             position: absolute;
@@ -97,7 +99,7 @@ HTML
             transform: scale(1.2);
         }
         .next-btn {
-            background-color: rgba(255, 255, 255, 0.2);
+            background-color: rgba(255, 255, 255, 0.1);
             border: none;
             color: white;
             padding: 10px;
@@ -109,7 +111,48 @@ HTML
             transition: background-color 0.2s;
         }
         .next-btn:hover {
-            background-color: rgba(255, 255, 255, 0.3);
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        /* Style pour la zone de commentaires */
+        .comments-modal {
+            display: none;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background-color: #112240;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            padding: 20px;
+            box-sizing: border-box;
+            flex-direction: column;
+            z-index: 20;
+        }
+        .comments-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .close-comments {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        .comments-list {
+            flex-grow: 1;
+            overflow-y: auto;
+            font-size: 14px;
+            color: #ccc;
+        }
+        .comment-item {
+            margin-bottom: 10px;
+        }
+        .comment-item strong {
+            color: #fff;
         }
     </style>
 </head>
@@ -159,6 +202,18 @@ HTML
             <!-- Bouton Vidéo suivante -->
             <button class="next-btn" onclick="nextVideo()">Vidéo suivante ➡️</button>
         </div>
+
+        <!-- Section des commentaires (cachée par défaut) -->
+        <div class="comments-modal" id="comments-modal">
+            <div class="comments-header">
+                <strong>Commentaires</strong>
+                <button class="close-comments" onclick="closeComments()">×</button>
+            </div>
+            <div class="comments-list" id="comments-list">
+                <div class="comment-item"><strong>@Utilisateur1:</strong> Trop drôle ! 😂</div>
+                <div class="comment-item"><strong>@Testeur:</strong> Excellent contenu.</div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -186,14 +241,12 @@ HTML
             likeCountSpan.textContent = likeCount;
         }
 
-        // Gestion des catégories (Onglets du haut)
+        // Gestion des catégories
         function switchCategory(category) {
-            // Retirer la classe active de tous les onglets
             document.getElementById('tab-humour').classList.remove('active');
             document.getElementById('tab-motivation').classList.remove('active');
             document.getElementById('tab-enfants').classList.remove('active');
 
-            // Activer l'onglet cliqué et changer le contenu dynamiquement
             const activeTab = document.getElementById('tab-' + category);
             activeTab.classList.add('active');
 
@@ -214,7 +267,11 @@ HTML
 
         // Gestion des commentaires
         function openComments() {
-            alert("Ouverture de l'espace commentaires...");
+            document.getElementById('comments-modal').style.display = 'flex';
+        }
+
+        function closeComments() {
+            document.getElementById('comments-modal').style.display = 'none';
         }
 
         // Gestion du son
@@ -247,13 +304,11 @@ HTML
 
         // Passage à la vidéo suivante
         function nextVideo() {
-            // Réinitialisation du like pour la nouvelle vidéo
             isLiked = false;
             const heartIcon = document.getElementById('heart-icon');
             heartIcon.setAttribute('fill', 'none');
             heartIcon.setAttribute('stroke', 'currentColor');
             
-            // Simulation de changement de contenu aléatoire
             likeCount = Math.floor(Math.random() * 900) + 100;
             document.getElementById('like-count').textContent = likeCount;
             document.getElementById('video-desc').textContent = "Nouvelle vidéo chargée avec succès ! 🎬";
@@ -261,3 +316,4 @@ HTML
     </script>
 </body>
 </html>
+```
