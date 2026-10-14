@@ -27,6 +27,16 @@
           justify-content: center;
           align-items: center;
       }
+      .header-text {
+          position: absolute;
+          top: 20px;
+          left: 20px;
+          font-size: 24px;
+          font-weight: bold;
+          z-index: 20;
+          text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+          color: #fff;
+      }
       .sidebar {
           position: absolute;
           right: 15px;
@@ -61,8 +71,6 @@
       .icon:active {
           transform: scale(1.2);
       }
-      
-      /* Style du bouton d’abonnement */
       .follow-btn {
           width: 22px;
           height: 22px;
@@ -87,19 +95,17 @@
       .follow-btn.followed {
           display: none;
       }
-
-      /* Style du bouton J'aime */
+      .like-icon {
+          color: #fff;
+          transition: color 0.2s;
+      }
       .like-icon.active {
           color: #fe2c55;
       }
-
-      /* Style du bouton Favoris avec une étoile jaune */
       .favoris-icon.active {
           color: #ffcc00;
           text-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
       }
-
-      /* Fenêtre modale des commentaires */
       .modal {
           position: absolute;
           bottom: -100%;
@@ -178,32 +184,29 @@
 <body>
 
 <div class="video-container">
+   <div class="header-text">Motivation, Humour & Enfant</div>
+
    <div class="sidebar">
-       <!-- Profil avec bouton d'abonnement -->
        <div class="action-wrapper" onclick="toggleFollow()">
            <div class="icon">👤</div>
            <div class="follow-btn" id="followBtn">+</div>
        </div>
 
-       <!-- Like (Cœur) -->
        <div class="action-item" onclick="toggleLike()">
            <div class="icon like-icon" id="likeIcon">❤️</div>
            <span>J'aime</span>
        </div>
 
-       <!-- Commentaires -->
        <div class="action-item" onclick="openComments()">
            <div class="icon">💬</div>
            <span id="commentCount">0</span>
        </div>
 
-       <!-- Favoris (Étoile) -->
        <div class="action-item" onclick="toggleFavorite()">
            <div class="icon favoris-icon" id="favorisIcon">⭐</div>
-           <span id="favorisText">Favoris</span>
+           <span>Favoris</span>
        </div>
 
-       <!-- Partage -->
        <div class="action-item" onclick="shareVideo()">
            <div class="icon">↗️</div>
            <span>Partager</span>
@@ -211,7 +214,6 @@
    </div>
 </div>
 
-<!-- Fenêtre des commentaires -->
 <div class="modal" id="commentModal">
     <div class="modal-header">
         <span id="commentHeaderCount">0 commentaire</span>
@@ -237,14 +239,7 @@
 
     function toggleFavorite() {
         const icon = document.getElementById("favorisIcon");
-        const text = document.getElementById("favorisText");
-        
         icon.classList.toggle("active");
-        if (icon.classList.contains("active")) {
-            text.innerText = "Favori";
-        } else {
-            text.innerText = "Favoris";
-        }
     }
 
     function shareVideo() {
