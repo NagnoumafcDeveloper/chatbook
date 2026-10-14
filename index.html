@@ -1,4 +1,4 @@
-HTML
+```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -211,9 +211,8 @@ HTML
 <body>
 
     <div class="container">
-        <!-- En-tête -->
         <div class="app-header">
-            <h1 class="app-title">[cite: 7] ChatBook</h1>
+            <h1 class="app-title">ChatBook</h1>
             <div class="categories">
                 <button class="category-btn active" onclick="switchCategory(this)">😄 Humour</button>
                 <button class="category-btn" onclick="switchCategory(this)">💪 Motivation</button>
@@ -221,18 +220,15 @@ HTML
             </div>
         </div>
 
-        <!-- Zone de la vidéo -->
         <div class="video-area">
             <div style="color: #64748b; font-size: 14px;">Espace Vidéo</div>
         </div>
 
-        <!-- Informations de la vidéo -->
         <div class="video-info">
-            <h3 id="videoAuthor"> @HumourTotal</h3>
-            <p id="videoDesc">[cite: 1] Une blague qui fait du bien dès le matin ! 💙✨</p>
+            <h3 id="videoAuthor">@HumourTotal</h3>
+            <p id="videoDesc">Une blague qui fait du bien dès le matin ! 💙✨</p>
         </div>
 
-        <!-- Boutons d'actions verticaux -->
         <div class="sidebar-actions">
             <button class="action-btn" id="likeBtn" onclick="toggleLike()">
                 <span id="likeIcon">❤️</span> 
@@ -252,7 +248,6 @@ HTML
             </button>
         </div>
 
-        <!-- Modale des commentaires -->
         <div class="comments-modal" id="commentsModal">
             <div class="comments-header">
                 <span>Commentaires</span>
@@ -341,3 +336,4 @@ HTML
     </script>
 </body>
 </html>
+```
