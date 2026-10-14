@@ -37,15 +37,17 @@ HTML
             gap: 15px;
             font-size: 14px;
             font-weight: bold;
-            color: #ccc;
+            color: #777;
+            z-index: 10;
         }
         .header span {
             cursor: pointer;
+            padding-bottom: 2px;
+            transition: color 0.2s, border-bottom 0.2s;
         }
         .header span.active {
             color: #fff;
             border-bottom: 2px solid #fff;
-            padding-bottom: 2px;
         }
         .content {
             flex-grow: 1;
@@ -104,30 +106,34 @@ HTML
             text-align: center;
             font-weight: bold;
             margin-bottom: 10px;
+            transition: background-color 0.2s;
+        }
+        .next-btn:hover {
+            background-color: rgba(255, 255, 255, 0.3);
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <!-- En-tête -->
+        <!-- En-tête avec onglets interactifs -->
         <div class="header">
-            <span>[😄 Humour]</span>
-            <span>[💪 Motivation]</span>
-            <span>[👶 Enfants]</span>
+            <span id="tab-humour" class="active" onclick="switchCategory('humour')">[😄 Humour]</span>
+            <span id="tab-motivation" onclick="switchCategory('motivation')">[💪 Motivation]</span>
+            <span id="tab-enfants" onclick="switchCategory('enfants')">[👶 Enfants]</span>
         </div>
 
         <!-- Corps de la vidéo / Infos -->
         <div class="content">
             <div class="video-info">
-                <div class="username">@HumourTotal</div>
-                <div class="description">Une blague qui fait du bien dès le matin ! 🎭✨</div>
+                <div class="username" id="video-username">@HumourTotal</div>
+                <div class="description" id="video-desc">Une blague qui fait du bien dès le matin ! 🎭✨</div>
             </div>
 
             <!-- Boutons d'interaction latéraux -->
             <div class="sidebar">
                 <!-- Bouton Like -->
-                <button class="action-btn" id="like-btn" onclick="toggleLike()">
+                <button class="action-btn" onclick="toggleLike()">
                     <svg id="heart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                     </svg>
@@ -135,17 +141,17 @@ HTML
                 </button>
 
                 <!-- Bouton Commentaire -->
-                <button class="action-btn">
-                    💬 <span id="comment-count">1</span>
+                <button class="action-btn" onclick="openComments()">
+                    💬 <span id="comment-count">12</span>
                 </button>
 
                 <!-- Bouton Son -->
-                <button class="action-btn">
-                    🔊 <span>Son</span>
+                <button class="action-btn" onclick="toggleSound()">
+                    <span id="sound-icon">🔊</span> <span id="sound-text">Son</span>
                 </button>
 
                 <!-- Bouton Partager -->
-                <button class="action-btn">
+                <button class="action-btn" onclick="shareVideo()">
                     🔗 <span>Partager</span>
                 </button>
             </div>
@@ -156,22 +162,22 @@ HTML
     </div>
 
     <script>
-        // État initial de la vidéo (aimée ou non)
+        // États de l'application
         let isLiked = false;
         let likeCount = 431;
+        let isMuted = false;
 
+        // Gestion des Likes
         function toggleLike() {
             isLiked = !isLiked;
             const heartIcon = document.getElementById('heart-icon');
             const likeCountSpan = document.getElementById('like-count');
 
             if (isLiked) {
-                // Devient rouge et remplit le cœur
                 heartIcon.setAttribute('fill', '#ff3b30');
                 heartIcon.setAttribute('stroke', '#ff3b30');
                 likeCount += 1;
             } else {
-                // Devient blanc (vide)
                 heartIcon.setAttribute('fill', 'none');
                 heartIcon.setAttribute('stroke', 'currentColor');
                 likeCount -= 1;
@@ -180,15 +186,77 @@ HTML
             likeCountSpan.textContent = likeCount;
         }
 
+        // Gestion des catégories (Onglets du haut)
+        function switchCategory(category) {
+            // Retirer la classe active de tous les onglets
+            document.getElementById('tab-humour').classList.remove('active');
+            document.getElementById('tab-motivation').classList.remove('active');
+            document.getElementById('tab-enfants').classList.remove('active');
+
+            // Activer l'onglet cliqué et changer le contenu dynamiquement
+            const activeTab = document.getElementById('tab-' + category);
+            activeTab.classList.add('active');
+
+            const usernameEl = document.getElementById('video-username');
+            const descEl = document.getElementById('video-desc');
+
+            if (category === 'humour') {
+                usernameEl.textContent = "@HumourTotal";
+                descEl.textContent = "Une blague qui fait du bien dès le matin ! 🎭✨";
+            } else if (category === 'motivation') {
+                usernameEl.textContent = "@MindsetGagne";
+                descEl.textContent = "Ne lâche rien, tes efforts paieront toujours ! 🚀🔥";
+            } else if (category === 'enfants') {
+                usernameEl.textContent = "@BbeDoux";
+                descEl.textContent = "Les moments les plus mignons de la journée 👶🥰";
+            }
+        }
+
+        // Gestion des commentaires
+        function openComments() {
+            alert("Ouverture de l'espace commentaires...");
+        }
+
+        // Gestion du son
+        function toggleSound() {
+            isMuted = !isMuted;
+            const soundIcon = document.getElementById('sound-icon');
+            const soundText = document.getElementById('sound-text');
+
+            if (isMuted) {
+                soundIcon.textContent = "🔇";
+                soundText.textContent = "Muet";
+            } else {
+                soundIcon.textContent = "🔊";
+                soundText.textContent = "Son";
+            }
+        }
+
+        // Gestion du partage
+        function shareVideo() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'ChatBook Video',
+                    text: 'Regarde cette vidéo sur ChatBook !',
+                    url: window.location.href,
+                }).catch(() => {});
+            } else {
+                alert("Lien de la vidéo copié dans le presse-papier ! 🔗");
+            }
+        }
+
+        // Passage à la vidéo suivante
         function nextVideo() {
-            // Réinitialisation pour la prochaine vidéo (état non liké par défaut)
+            // Réinitialisation du like pour la nouvelle vidéo
             isLiked = false;
             const heartIcon = document.getElementById('heart-icon');
             heartIcon.setAttribute('fill', 'none');
             heartIcon.setAttribute('stroke', 'currentColor');
             
-            // Vous pouvez charger une autre vidéo ici
-            alert("Chargement de la vidéo suivante...");
+            // Simulation de changement de contenu aléatoire
+            likeCount = Math.floor(Math.random() * 900) + 100;
+            document.getElementById('like-count').textContent = likeCount;
+            document.getElementById('video-desc').textContent = "Nouvelle vidéo chargée avec succès ! 🎬";
         }
     </script>
 </body>
