@@ -4,7 +4,7 @@ HTML
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChatBook - TikTok Mode</title>
+    <title>ChatBook</title>
     <style>
         body {
             margin: 0;
@@ -113,7 +113,6 @@ HTML
         .next-btn:hover {
             background-color: rgba(255, 255, 255, 0.2);
         }
-        /* Style pour la zone de commentaires */
         .comments-modal {
             display: none;
             position: absolute;
@@ -184,23 +183,19 @@ HTML
 <body>
 
     <div class="container">
-        <!-- En-tête avec onglets interactifs -->
         <div class="header">
             <span id="tab-humour" class="active" onclick="switchCategory('humour')">[😄 Humour]</span>
             <span id="tab-motivation" onclick="switchCategory('motivation')">[💪 Motivation]</span>
             <span id="tab-enfants" onclick="switchCategory('enfants')">[👶 Enfants]</span>
         </div>
 
-        <!-- Corps de la vidéo / Infos -->
         <div class="content">
             <div class="video-info">
                 <div class="username" id="video-username">@HumourTotal</div>
                 <div class="description" id="video-desc">Une blague qui fait du bien dès le matin ! 🎭✨</div>
             </div>
 
-            <!-- Boutons d'interaction latéraux -->
             <div class="sidebar">
-                <!-- Bouton Like -->
                 <button class="action-btn" onclick="toggleLike()">
                     <svg id="heart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
@@ -208,35 +203,28 @@ HTML
                     <span id="like-count">431</span>
                 </button>
 
-                <!-- Bouton Commentaire -->
                 <button class="action-btn" onclick="openComments()">
                     💬 <span id="comment-count">0</span>
                 </button>
 
-                <!-- Bouton Son -->
                 <button class="action-btn" onclick="toggleSound()">
                     <span id="sound-icon">🔊</span> <span id="sound-text">Son</span>
                 </button>
 
-                <!-- Bouton Partager -->
                 <button class="action-btn" onclick="shareVideo()">
                     🔗 <span>Partager</span>
                 </button>
             </div>
 
-            <!-- Bouton Vidéo suivante -->
             <button class="next-btn" onclick="nextVideo()">Vidéo suivante ➡️</button>
         </div>
 
-        <!-- Section des commentaires (vide et interactive) -->
         <div class="comments-modal" id="comments-modal">
             <div class="comments-header">
                 <strong>Commentaires</strong>
                 <button class="close-comments" onclick="closeComments()">×</button>
             </div>
-            <div class="comments-list" id="comments-list">
-                <!-- Aucun commentaire par défaut, les vôtres s'ajouteront ici -->
-            </div>
+            <div class="comments-list" id="comments-list"></div>
             <div class="comment-input-area">
                 <input type="text" id="comment-input" class="comment-input" placeholder="Ajouter un commentaire...">
                 <button class="comment-submit" onclick="addComment()">Envoyer</button>
