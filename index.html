@@ -1,6 +1,4 @@
-Voici le code complet et corrigé, prêt à être utilisé. Ce code intègre les catégories tout en haut, la disposition exacte des boutons (l'abonnement au-dessus du cœur, les favoris au-dessus du son), et le comportement interactif de chaque bouton sans problème de décalage ou d'alignement.
-
-HTML
+```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -92,7 +90,6 @@ HTML
 
     .icon-btn span {
       font-size: 20px;
-      line-height: 1;
     }
 
     .icon-btn p {
@@ -136,7 +133,7 @@ HTML
 
   <div class="app-container">
     
-    <!-- Catégories tout en haut -->
+    <!-- Texte des catégories tout en haut -->
     <div class="categories">
       <span>😄 Humour</span>
       <span>💪 Motivation</span>
@@ -145,41 +142,41 @@ HTML
 
     <div class="video-wrapper">
       
-      <!-- Boutons d'interaction -->
+      <!-- Boutons d'interaction sur le côté droit -->
       <div class="interactions">
         
-        <!-- 1. Abonner (au-dessus du cœur) -->
+        <!-- Bouton S'abonner -->
         <button class="icon-btn" id="subscribe-btn" type="button">
           <span>➕</span>
           <p id="subscribe-text">Abonner</p>
           <div class="red-dot" id="red-dot"></div>
         </button>
         
-        <!-- 2. Like (Cœur) -->
+        <!-- Bouton Like (Cœur) -->
         <button class="icon-btn" id="like-btn" type="button">
           <span id="like-icon">🤍</span>
           <p id="like-count">431</p>
         </button>
         
-        <!-- 3. Commentaires -->
+        <!-- Bouton Commentaires -->
         <button class="icon-btn" id="comment-btn" type="button">
           <span>💬</span>
           <p>0</p>
         </button>
         
-        <!-- 4. Favoris (au-dessus du son) -->
+        <!-- Bouton Favoris -->
         <button class="icon-btn" id="favorite-btn" type="button">
           <span id="favorite-icon">🔖</span>
           <p>Favoris</p>
         </button>
         
-        <!-- 5. Son -->
+        <!-- Bouton Son -->
         <button class="icon-btn" id="sound-btn" type="button">
           <span id="sound-icon">🔊</span>
           <p id="sound-text">Son</p>
         </button>
         
-        <!-- 6. Partager -->
+        <!-- Bouton Partager -->
         <button class="icon-btn" id="share-btn" type="button">
           <span id="share-icon">🔗</span>
           <p>Partager</p>
@@ -196,7 +193,7 @@ HTML
   </div>
 
   <script>
-    // Abonnement
+    // 1. Abonnement
     const subscribeBtn = document.getElementById('subscribe-btn');
     const redDot = document.getElementById('red-dot');
     const subscribeText = document.getElementById('subscribe-text');
@@ -215,7 +212,7 @@ HTML
       }
     };
 
-    // Like (Cœur)
+    // 2. Like (Cœur)
     const likeBtn = document.getElementById('like-btn');
     const likeIcon = document.getElementById('like-icon');
     const likeCount = document.getElementById('like-count');
@@ -232,13 +229,13 @@ HTML
       }
     };
 
-    // Commentaires
+    // 3. Commentaires (Vide pour ne pas avoir d'alerte)
     const commentBtn = document.getElementById('comment-btn');
     commentBtn.onclick = function() {
-      alert("Ouverture des commentaires !");
+      // Pour l'instant, aucune action n'est définie ici, cela évite l'alignement développé.
     };
 
-    // Favoris
+    // 4. Favoris
     const favoriteBtn = document.getElementById('favorite-btn');
     const favoriteIcon = document.getElementById('favorite-icon');
     let isFavorited = false;
@@ -254,7 +251,7 @@ HTML
       }
     };
 
-    // Son
+    // 5. Son (Volume)
     const soundBtn = document.getElementById('sound-btn');
     const soundIcon = document.getElementById('sound-icon');
     const soundText = document.getElementById('sound-text');
@@ -273,7 +270,7 @@ HTML
       }
     };
 
-    // Partager
+    // 6. Partager
     const shareBtn = document.getElementById('share-btn');
     shareBtn.onclick = function() {
       alert("Lien de partage copié !");
@@ -282,3 +279,4 @@ HTML
 
 </body>
 </html>
+```
