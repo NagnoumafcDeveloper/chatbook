@@ -6,477 +6,190 @@ HTML
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ChatBook - TikTok Mode</title>
     <style>
-        * {
-            box-sizing: border-box;
+        body {
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            user-select: none;
-        }
-        body, html {
-            width: 100%;
-            height: 100vh;
-            background: linear-gradient(135deg, #4a154b, #2b1055);
-            overflow: hidden;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        header {
-            padding: 15px;
-            text-align: center;
-            font-size: 26px;
-            font-weight: bold;
+            background-color: #000;
             color: #fff;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-        }
-        .categories {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 15px;
-            z-index: 10;
-        }
-        .category-btn {
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            padding: 8px 20px;
-            border-radius: 20px;
-            color: white;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            pointer-events: auto;
-        }
-        .category-btn.active, .category-btn:hover {
-            background: white;
-            color: #2b1055;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        }
-        .main-container {
-            position: relative;
-            width: 100%;
-            max-width: 420px;
-            height: 78vh;
-            background: #000;
-            border-radius: 16px;
+            font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
+            height: 100vh;
             overflow: hidden;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
         }
-        video {
+        .container {
             width: 100%;
-            height: 100%;
-            object-fit: cover;
+            max-width: 400px;
+            height: 100vh;
+            max-height: 800px;
+            background-color: #111;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .header {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #ccc;
+        }
+        .header span {
             cursor: pointer;
+        }
+        .header span.active {
+            color: #fff;
+            border-bottom: 2px solid #fff;
+            padding-bottom: 2px;
+        }
+        .content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            position: relative;
+        }
+        .video-info {
+            margin-bottom: 20px;
+        }
+        .username {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        .description {
+            font-size: 14px;
+            color: #ddd;
         }
         .sidebar {
             position: absolute;
-            right: 15px;
+            right: 10px;
             bottom: 80px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 15px;
-            z-index: 20;
+            gap: 20px;
         }
         .action-btn {
-            background: transparent;
-            border: none;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            cursor: pointer;
-            font-size: 22px;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.8);
-            transition: transform 0.2s;
-            pointer-events: auto;
-        }
-        .action-btn:hover {
-            transform: scale(1.15);
-        }
-        .action-btn span {
-            font-size: 11px;
-            margin-top: 3px;
-            font-weight: bold;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.8);
-        }
-        .video-info {
-            position: absolute;
-            left: 15px;
-            bottom: 20px;
-            max-width: 70%;
-            z-index: 15;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.9);
-            pointer-events: none;
-        }
-        .video-info h3 {
-            font-size: 16px;
-            color: #00ffcc;
-            margin-bottom: 5px;
-        }
-        .video-info p {
-            font-size: 13px;
-            color: #eee;
-            line-height: 1.4;
-        }
-        .next-video-btn {
-            position: absolute;
-            bottom: 20px;
-            right: 15px;
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            padding: 6px 12px;
-            border-radius: 15px;
-            color: white;
-            font-size: 12px;
-            cursor: pointer;
-            z-index: 20;
-            font-weight: bold;
-            transition: background 0.2s;
-        }
-        .next-video-btn:hover {
-            background: rgba(255, 255, 255, 0.4);
-        }
-
-        #commentModal {
-            display: none;
-            position: fixed;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100%;
-            max-width: 420px;
-            height: 50vh;
-            background: #1e1e2f;
-            border-top-left-radius: 20px;
-            border-top-right-radius: 20px;
-            box-shadow: 0 -5px 20px rgba(0,0,0,0.5);
-            z-index: 100;
-            flex-direction: column;
-            padding: 20px;
-        }
-        .comment-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: bold;
-            margin-bottom: 15px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding-bottom: 10px;
-        }
-        .close-btn {
             background: none;
             border: none;
             color: white;
-            font-size: 18px;
             cursor: pointer;
-        }
-        .comment-list {
-            flex: 1;
-            overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            margin-bottom: 15px;
+            align-items: center;
+            font-size: 12px;
+            gap: 5px;
         }
-        .comment-item {
-            background: rgba(255,255,255,0.05);
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-size: 13px;
+        .action-btn svg {
+            width: 32px;
+            height: 32px;
+            transition: transform 0.2s, fill 0.2s;
         }
-        .comment-input-area {
-            display: flex;
-            gap: 10px;
+        .action-btn:active svg {
+            transform: scale(1.2);
         }
-        .comment-input-area input {
-            flex: 1;
+        .next-btn {
+            background-color: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
             padding: 10px;
             border-radius: 20px;
-            border: none;
-            background: rgba(255,255,255,0.1);
-            color: white;
-            outline: none;
-        }
-        .comment-input-area button {
-            background: #00ffcc;
-            border: none;
-            padding: 0 15px;
-            border-radius: 20px;
-            font-weight: bold;
             cursor: pointer;
-            color: #1e1e2f;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 10px;
         }
     </style>
 </head>
 <body>
 
-    <header>ChatBook</header>
-
-    <div class="categories">
-        <button class="category-btn active" onclick="switchCategory('humour', this)">😄 Humour</button>
-        <button class="category-btn" onclick="switchCategory('motivation', this)">💪 Motivation</button>
-        <button class="category-btn" onclick="switchCategory('enfants', this)">👶 Enfants</button>
-    </div>
-
-    <div class="main-container" id="videoContainer">
-        <video id="videoPlayer" onclick="togglePlayPause()" src="" autoplay loop></video>
-
-        <div class="sidebar">
-            <button class="action-btn" id="likeBtn" onclick="toggleLike()" style="color: white;">
-                ❤️ <span id="likeCount">0</span>
-            </button>
-            <button class="action-btn" onclick="openComments()">
-                💬 <span id="commentCount">0</span>
-            </button>
-            <button class="action-btn" id="soundBtn" onclick="toggleSound()">
-                🔊 <span id="soundText">Son</span>
-            </button>
-            <button class="action-btn" onclick="shareVideo()">
-                🔗 <span>Partager</span>
-            </button>
+    <div class="container">
+        <!-- En-tête -->
+        <div class="header">
+            <span>[😄 Humour]</span>
+            <span>[💪 Motivation]</span>
+            <span>[👶 Enfants]</span>
         </div>
 
-        <div class="video-info">
-            <h3 id="videoAuthor">@Auteur</h3>
-            <p id="videoDesc">Description de la vidéo...</p>
-        </div>
+        <!-- Corps de la vidéo / Infos -->
+        <div class="content">
+            <div class="video-info">
+                <div class="username">@HumourTotal</div>
+                <div class="description">Une blague qui fait du bien dès le matin ! 🎭✨</div>
+            </div>
 
-        <button class="next-video-btn" onclick="nextVideo()">Vidéo suivante ➡️</button>
-    </div>
+            <!-- Boutons d'interaction latéraux -->
+            <div class="sidebar">
+                <!-- Bouton Like -->
+                <button class="action-btn" id="like-btn" onclick="toggleLike()">
+                    <svg id="heart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                    </svg>
+                    <span id="like-count">431</span>
+                </button>
 
-    <div id="commentModal">
-        <div class="comment-header">
-            <span id="commentTitle">Commentaires (0)</span>
-            <button class="close-btn" onclick="closeComments()">✕</button>
-        </div>
-        <div class="comment-list" id="commentList"></div>
-        <div class="comment-input-area">
-            <input type="text" id="commentInput" placeholder="Ajouter un commentaire...">
-            <button onclick="addComment()">Envoyer</button>
+                <!-- Bouton Commentaire -->
+                <button class="action-btn">
+                    💬 <span id="comment-count">1</span>
+                </button>
+
+                <!-- Bouton Son -->
+                <button class="action-btn">
+                    🔊 <span>Son</span>
+                </button>
+
+                <!-- Bouton Partager -->
+                <button class="action-btn">
+                    🔗 <span>Partager</span>
+                </button>
+            </div>
+
+            <!-- Bouton Vidéo suivante -->
+            <button class="next-btn" onclick="nextVideo()">Vidéo suivante ➡️</button>
         </div>
     </div>
 
     <script>
-        // Base de données élargie avec plusieurs vidéos pour chaque catégorie
-        const database = {
-            humour: [
-                {
-                    url: 'https://www.w3schools.com/html/mov_bbb.mp4',
-                    author: '@NagnoumaDeveloper',
-                    desc: 'Préparez-vous à rire ! Les meilleures vidéos d\'humour positives sont ici. 🤣 ✨ #détente',
-                    likes: 1250,
-                    liked: false,
-                    commentsList: ["Trop drôle 😂", "Incroyable !"]
-                },
-                {
-                    url: 'https://www.w3schools.com/html/movie.mp4',
-                    author: '@HumourTotal',
-                    desc: 'Une blague qui fait du bien dès le matin ! 🎭✨',
-                    likes: 430,
-                    liked: false,
-                    commentsList: ["Excellent 👏"]
-                },
-                {
-                    url: 'https://www.w3schools.com/html/mov_bbb.mp4',
-                    author: '@RiresEnGros',
-                    desc: 'Quand tu penses avoir tout vu dans ta journée... 😅 #humour',
-                    likes: 2100,
-                    liked: false,
-                    commentsList: ["Tellement moi !", "J'en peux plus 😂"]
-                }
-            ],
-            motivation: [
-                {
-                    url: 'https://www.w3schools.com/html/movie.mp4',
-                    author: '@MotivationDaily',
-                    desc: 'Ne lâchez rien, chaque petit effort compte pour réussir vos grands projets ! 🚀💪',
-                    likes: 840,
-                    liked: false,
-                    commentsList: ["Tellement vrai !", "Let's go ! 💪"]
-                },
-                {
-                    url: 'https://www.w3schools.com/html/mov_bbb.mp4',
-                    author: '@MindsetMaster',
-                    desc: 'La discipline bat toujours le talent brut. Restez concentrés 🎯',
-                    likes: 3100,
-                    liked: false,
-                    commentsList: ["Citation magnifique.", "Merci pour la force !"]
-                },
-                {
-                    url: 'https://www.w3schools.com/html/movie.mp4',
-                    author: '@ObjectifSucces',
-                    desc: 'Le travail acharné paie toujours, croyez en vos rêves ! 🌟💼',
-                    likes: 5400,
-                    liked: false,
-                    commentsList: ["Objectif atteint !", "Inspirant 🚀"]
-                }
-            ],
-            enfants: [
-                {
-                    url: 'https://www.w3schools.com/html/mov_bbb.mp4',
-                    author: '@KidsFun',
-                    desc: 'De superbes moments de joie et de rires pour les enfants ! 👶✨',
-                    likes: 320,
-                    liked: false,
-                    commentsList: ["Trop mignon !"]
-                },
-                {
-                    url: 'https://www.w3schools.com/html/movie.mp4',
-                    author: '@MondeDesPetits',
-                    desc: 'Des histoires et des jeux ludiques pour s\'amuser en famille 🧸🎨',
-                    likes: 980,
-                    liked: false,
-                    commentsList: ["Mes enfants adorent !", "Super vidéo."]
-                }
-            ]
-        };
+        // État initial de la vidéo (aimée ou non)
+        let isLiked = false;
+        let likeCount = 431;
 
-        let currentCategory = 'humour';
-        let currentIndex = 0;
+        function toggleLike() {
+            isLiked = !isLiked;
+            const heartIcon = document.getElementById('heart-icon');
+            const likeCountSpan = document.getElementById('like-count');
 
-        function loadCurrentVideo() {
-            const list = database[currentCategory];
-            if (!list || list.length === 0) return;
+            if (isLiked) {
+                // Devient rouge et remplit le cœur
+                heartIcon.setAttribute('fill', '#ff3b30');
+                heartIcon.setAttribute('stroke', '#ff3b30');
+                likeCount += 1;
+            } else {
+                // Devient blanc (vide)
+                heartIcon.setAttribute('fill', 'none');
+                heartIcon.setAttribute('stroke', 'currentColor');
+                likeCount -= 1;
+            }
 
-            const videoData = list[currentIndex];
-            const player = document.getElementById('videoPlayer');
-
-            player.src = videoData.url;
-            document.getElementById('videoAuthor').innerText = videoData.author;
-            document.getElementById('videoDesc').innerText = videoData.desc;
-            document.getElementById('likeCount').innerText = formatNumber(videoData.likes);
-            document.getElementById('commentCount').innerText = videoData.commentsList.length;
-
-            document.getElementById('likeBtn').style.color = '#ffffff';
-
-            player.play().catch(e => console.log("Lecture automatique :", e));
-        }
-
-        function switchCategory(category, btnElement) {
-            document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
-            btnElement.classList.add('active');
-            currentCategory = category;
-            currentIndex = 0;
-            loadCurrentVideo();
-            closeComments();
+            likeCountSpan.textContent = likeCount;
         }
 
         function nextVideo() {
-            const list = database[currentCategory];
-            currentIndex = (currentIndex + 1) % list.length;
-            loadCurrentVideo();
-            closeComments();
-        }
-
-        const container = document.getElementById('videoContainer');
-        container.addEventListener('wheel', (e) => {
-            e.preventDefault();
-            const list = database[currentCategory];
-            if (e.deltaY > 0) {
-                currentIndex = (currentIndex + 1) % list.length;
-            } else {
-                currentIndex = (currentIndex - 1 + list.length) % list.length;
-            }
-            loadCurrentVideo();
-            closeComments();
-        }, { passive: false });
-
-        function togglePlayPause() {
-            const player = document.getElementById('videoPlayer');
-            if (player.paused) {
-                player.play();
-            } else {
-                player.pause();
-            }
-        }
-
-        function toggleLike() {
-            const videoData = database[currentCategory][currentIndex];
+            // Réinitialisation pour la prochaine vidéo (état non liké par défaut)
+            isLiked = false;
+            const heartIcon = document.getElementById('heart-icon');
+            heartIcon.setAttribute('fill', 'none');
+            heartIcon.setAttribute('stroke', 'currentColor');
             
-            if (!videoData.liked) {
-                videoData.likes++;
-                videoData.liked = true;
-            } else {
-                videoData.likes--;
-                videoData.liked = false;
-            }
-            document.getElementById('likeCount').innerText = formatNumber(videoData.likes);
-            document.getElementById('likeBtn').style.color = '#ffffff';
+            // Vous pouvez charger une autre vidéo ici
+            alert("Chargement de la vidéo suivante...");
         }
-
-        function toggleSound() {
-            const player = document.getElementById('videoPlayer');
-            const soundBtn = document.getElementById('soundBtn');
-
-            if (player.muted) {
-                player.muted = false;
-                soundBtn.innerHTML = '🔊 <span id="soundText">Son</span>';
-            } else {
-                player.muted = true;
-                soundBtn.innerHTML = '🔇 <span id="soundText">Muet</span>';
-            }
-        }
-
-        function openComments() {
-            const videoData = database[currentCategory][currentIndex];
-            const modal = document.getElementById('commentModal');
-            const list = document.getElementById('commentList');
-            
-            list.innerHTML = '';
-            videoData.commentsList.forEach(cmt => {
-                list.innerHTML += `<div class="comment-item">${cmt}</div>`;
-            });
-
-            document.getElementById('commentTitle').innerText = `Commentaires (${videoData.commentsList.length})`;
-            modal.style.display = 'flex';
-        }
-
-        function closeComments() {
-            document.getElementById('commentModal').style.display = 'none';
-        }
-
-        function addComment() {
-            const input = document.getElementById('commentInput');
-            const text = input.value.trim();
-            if (text !== '') {
-                const videoData = database[currentCategory][currentIndex];
-                videoData.commentsList.push(text);
-                input.value = '';
-                openComments();
-                document.getElementById('commentCount').innerText = videoData.commentsList.length;
-            }
-        }
-
-        function shareVideo() {
-            if (navigator.share) {
-                navigator.share({
-                    title: 'ChatBook Video',
-                    url: window.location.href
-                }).catch(console.error);
-            } else {
-                alert("Lien de la vidéo copié !");
-            }
-        }
-
-        function formatNumber(num) {
-            if (num >= 1000) {
-                return (num / 1000).toFixed(1) + 'K';
-            }
-            return num;
-        }
-
-        window.onload = () => {
-            loadCurrentVideo();
-        };
     </script>
 </body>
 </html>
