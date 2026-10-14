@@ -1,4 +1,4 @@
-```html
+HTML
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -225,6 +225,34 @@
         .comments-footer button:hover {
             background: #1d4ed8;
         }
+        /* Notification de copie */
+        #toast {
+            visibility: hidden;
+            min-width: 200px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 8px;
+            padding: 10px;
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            font-size: 14px;
+        }
+        #toast.show {
+            visibility: visible;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+        @keyframes fadein {
+            from {bottom: 0; opacity: 0;}
+            to {bottom: 30px; opacity: 1;}
+        }
+        @keyframes fadeout {
+            from {bottom: 30px; opacity: 1;}
+            to {bottom: 0; opacity: 0;}
+        }
     </style>
 </head>
 <body>
@@ -285,6 +313,9 @@
         </div>
     </div>
 
+    <!-- Notification visuelle de copie -->
+    <div id="toast">Lien copié dans le presse-papier ! 🔗</div>
+
     <script>
         let isLiked = false;
         let likesNum = 432;
@@ -316,17 +347,17 @@
         }
 
         function shareVideo() {
-            if (navigator.share) {
-                navigator.share({
-                    title: 'ChatBook',
-                    text: 'Regarde cette vidéo sur ChatBook !',
-                    url: window.location.href
-                })
-                .then(() => console.log('Partage réussi'))
-                .catch((error) => console.log('Erreur lors du partage :', error));
-            } else {
-                alert('La fonctionnalité de partage nest pas supportée sur cet appareil.');
-            }
+            const dummy = document.createElement('input');
+            document.body.appendChild(dummy);
+            dummy.value = window.location.href;
+            dummy.select();
+            document.execCommand('copy');
+            document.body.removeChild(dummy);
+
+            // Afficher la notification
+            const toast = document.getElementById('toast');
+            toast.className = 'show';
+            setTimeout(() => { toast.className = toast.className.replace('show', ''); }, 3000);
         }
 
         let commentCount = 1;
@@ -390,4 +421,3 @@
     </script>
 </body>
 </html>
-```
