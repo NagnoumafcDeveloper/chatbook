@@ -1,4 +1,4 @@
-```html
+HTML
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -81,7 +81,7 @@
         .sidebar-actions {
             position: absolute;
             right: 15px;
-            bottom: 80px;
+            bottom: 30px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -126,25 +126,6 @@
             margin: 0;
             font-size: 13px;
             color: #cbd5e1;
-        }
-        .next-btn-container {
-            padding: 12px;
-            background: rgba(0, 0, 0, 0.4);
-            text-align: center;
-            z-index: 10;
-        }
-        .next-btn {
-            background: #2563eb;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background 0.2s;
-        }
-        .next-btn:hover {
-            background: #1d4ed8;
         }
         .comments-modal {
             position: absolute;
@@ -230,8 +211,9 @@
 <body>
 
     <div class="container">
+        <!-- En-tête -->
         <div class="app-header">
-            <h1 class="app-title">ChatBook</h1>
+            <h1 class="app-title">[cite: 7] ChatBook</h1>
             <div class="categories">
                 <button class="category-btn active" onclick="switchCategory(this)">😄 Humour</button>
                 <button class="category-btn" onclick="switchCategory(this)">💪 Motivation</button>
@@ -239,15 +221,18 @@
             </div>
         </div>
 
+        <!-- Zone de la vidéo -->
         <div class="video-area">
             <div style="color: #64748b; font-size: 14px;">Espace Vidéo</div>
         </div>
 
+        <!-- Informations de la vidéo -->
         <div class="video-info">
-            <h3 id="videoAuthor">@HumourTotal</h3>
-            <p id="videoDesc">Une blague qui fait du bien dès le matin ! 💙✨</p>
+            <h3 id="videoAuthor"> @HumourTotal</h3>
+            <p id="videoDesc">[cite: 1] Une blague qui fait du bien dès le matin ! 💙✨</p>
         </div>
 
+        <!-- Boutons d'actions verticaux -->
         <div class="sidebar-actions">
             <button class="action-btn" id="likeBtn" onclick="toggleLike()">
                 <span id="likeIcon">❤️</span> 
@@ -267,10 +252,7 @@
             </button>
         </div>
 
-        <div class="next-btn-container">
-            <button class="next-btn" onclick="nextVideo()">Vidéo suivante ➡️</button>
-        </div>
-
+        <!-- Modale des commentaires -->
         <div class="comments-modal" id="commentsModal">
             <div class="comments-header">
                 <span>Commentaires</span>
@@ -321,9 +303,9 @@
                     title: 'ChatBook',
                     text: 'Regarde cette vidéo sur ChatBook !',
                     url: window.location.href,
-                }).catch((error) => console.log('Partage annulé'));
+                }).catch(() => {});
             } else {
-                alert("Votre appareil ne prend pas en charge cette méthode de partage.");
+                window.prompt("Copiez ce lien pour partager la vidéo :", window.location.href);
             }
         }
 
@@ -356,24 +338,6 @@
             document.querySelectorAll('.category-btn').forEach(el => el.classList.remove('active'));
             element.classList.add('active');
         }
-
-        const videosData = [
-            { author: "@HumourTotal", desc: "Une blague qui fait du bien dès le matin ! 💙✨", likes: 432 },
-            { author: "@MotivationPro", desc: "Ne lâche rien, chaque effort compte ! 💪🔥", likes: 1205 },
-            { author: "@KidsFun", desc: "Regarde cette réaction trop mignonne ! 🥰👶", likes: 890 }
-        ];
-        let currentIndex = 0;
-
-        function nextVideo() {
-            currentIndex = (currentIndex + 1) % videosData.length;
-            document.getElementById('videoAuthor').innerText = videosData[currentIndex].author;
-            document.getElementById('videoDesc').innerText = videosData[currentIndex].desc;
-            likesNum = videosData[currentIndex].likes;
-            document.getElementById('likeCount').innerText = likesNum;
-            isLiked = false;
-            document.getElementById('likeBtn').classList.remove('liked');
-        }
     </script>
 </body>
 </html>
-```
