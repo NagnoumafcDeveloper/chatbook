@@ -6,322 +6,247 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ChatBook</title>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #0a192f;
-            color: #fff;
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden;
-        }
-        .container {
-            width: 100%;
-            max-width: 400px;
-            height: 100vh;
-            max-height: 800px;
-            background-color: rgba(255, 255, 255, 0.05);
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 20px;
-            box-sizing: border-box;
-            border-radius: 12px;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
-        }
-        .header {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            font-size: 14px;
-            font-weight: bold;
-            color: #8892b0;
-            z-index: 10;
-        }
-        .header span {
-            cursor: pointer;
-            padding-bottom: 2px;
-            transition: color 0.2s, border-bottom 0.2s;
-        }
-        .header span.active {
-            color: #fff;
-            border-bottom: 2px solid #fff;
-        }
-        .content {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            position: relative;
-        }
-        .video-info {
-            margin-bottom: 20px;
-        }
-        .username {
-            font-weight: bold;
-            font-size: 16px;
-            margin-bottom: 5px;
-        }
-        .description {
-            font-size: 14px;
-            color: #8892b0;
-        }
-        .sidebar {
-            position: absolute;
-            right: 10px;
-            bottom: 80px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-        }
-        .action-btn {
-            background: none;
-            border: none;
-            color: white;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            font-size: 12px;
-            gap: 5px;
-        }
-        .action-btn svg {
-            width: 32px;
-            height: 32px;
-            transition: transform 0.2s, fill 0.2s;
-        }
-        .action-btn:active svg {
-            transform: scale(1.2);
-        }
-        .next-btn {
-            background-color: rgba(255, 255, 255, 0.1);
-            border: none;
-            color: white;
-            padding: 10px;
-            border-radius: 20px;
-            cursor: pointer;
-            text-align: center;
-            font-weight: bold;
-            margin-bottom: 10px;
-            transition: background-color 0.2s;
-        }
-        .next-btn:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-        .comments-modal {
-            display: none;
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 50%;
-            background-color: #112240;
-            border-top-left-radius: 20px;
-            border-top-right-radius: 20px;
-            padding: 20px;
-            box-sizing: border-box;
-            flex-direction: column;
-            z-index: 20;
-        }
-        .comments-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        .close-comments {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 20px;
-            cursor: pointer;
-        }
-        .comments-list {
-            flex-grow: 1;
-            overflow-y: auto;
-            font-size: 14px;
-            color: #ccc;
-            margin-bottom: 10px;
-        }
-        .comment-item {
-            margin-bottom: 10px;
-            padding-bottom: 5px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .comment-item strong {
-            color: #fff;
-        }
-        .comment-input-area {
-            display: flex;
-            gap: 10px;
-        }
-        .comment-input {
-            flex-grow: 1;
-            padding: 8px;
-            border-radius: 8px;
-            border: none;
-            background-color: rgba(255, 255, 255, 0.1);
-            color: #fff;
-            outline: none;
-        }
-        .comment-submit {
-            background-color: #ff3b30;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-        }
+      body {
+          margin: 0;
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+          background-color: #000;
+          color: #fff;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+          overflow: hidden;
+      }
+      .video-container {
+          position: relative;
+          width: 100%;
+          max-width: 414px;
+          height: 100vh;
+          background-color: #121212;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+      }
+      .sidebar {
+          position: absolute;
+          right: 15px;
+          bottom: 100px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 20px;
+          z-index: 10;
+      }
+      .action-item {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          color: #fff;
+          cursor: pointer;
+      }
+      .action-item span {
+          font-size: 12px;
+          margin-top: 5px;
+          text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+      }
+      .icon {
+          width: 40px;
+          height: 40px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 26px;
+          transition: transform 0.2s ease;
+      }
+      .icon:active {
+          transform: scale(1.2);
+      }
+      .follow-btn {
+          width: 24px;
+          height: 24px;
+          background-color: #fe2c55;
+          border-radius: 50%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          color: #fff;
+          font-size: 14px;
+          font-weight: bold;
+          cursor: pointer;
+          position: absolute;
+          bottom: -8px;
+          left: 50%;
+          transform: translateX(-50%);
+          transition: background-color 0.2s;
+      }
+      .action-wrapper {
+          position: relative;
+          margin-bottom: 10px;
+      }
+      .follow-btn.followed {
+          background-color: #fff;
+          color: #fe2c55;
+          display: none;
+      }
+      .favoris-icon.active {
+          color: #ffcc00;
+      }
+      .modal {
+          position: absolute;
+          bottom: -100%;
+          left: 0;
+          width: 100%;
+          height: 60vh;
+          background: #1e1e1e;
+          border-top-left-radius: 20px;
+          border-top-right-radius: 20px;
+          display: flex;
+          flex-direction: column;
+          transition: bottom 0.3s ease-in-out;
+          z-index: 100;
+      }
+      .modal.active {
+          bottom: 0;
+      }
+      .modal-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 15px 20px;
+          border-bottom: 1px solid #333;
+          font-size: 15px;
+          font-weight: bold;
+      }
+      .close-btn {
+          cursor: pointer;
+          font-size: 18px;
+          color: #aaa;
+      }
+      .comments-list {
+          flex: 1;
+          overflow-y: auto;
+          padding: 15px;
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+      }
+      .comment-item {
+          background: #2a2a2a;
+          padding: 10px 14px;
+          border-radius: 12px;
+          font-size: 14px;
+          color: #e1e1e1;
+      }
+      .comment-input {
+          display: flex;
+          padding: 12px 15px;
+          background: #181818;
+          border-top: 1px solid #333;
+          gap: 10px;
+      }
+      .comment-input input {
+          flex: 1;
+          border: none;
+          background: #2a2a2a;
+          color: #fff;
+          padding: 10px 15px;
+          border-radius: 20px;
+          outline: none;
+          font-size: 14px;
+      }
+      .comment-input button {
+          border: none;
+          background: #fe2c55;
+          color: #fff;
+          padding: 0 18px;
+          border-radius: 20px;
+          cursor: pointer;
+          font-weight: bold;
+          font-size: 14px;
+      }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- En-tête -->
-        <div class="header">
-            <span id="tab-humour" class="active" onclick="switchCategory('humour')">[😄 Humour]</span>
-            <span id="tab-motivation" onclick="switchCategory('motivation')">[💪 Motivation]</span>
-            <span id="tab-enfants" onclick="switchCategory('enfants')">[👶 Enfants]</span>
-        </div>
-        <!-- Contenu vidéo -->
-        <div class="content">
-            <div class="video-info">
-                <div class="username" id="video-username">@HumourTotal</div>
-                <div class="description" id="video-desc">Une blague qui fait du bien dès le matin ! 🎭✨</div>
-            </div>
-            <!-- Boutons latéraux -->
-            <div class="sidebar">
-                <button class="action-btn" onclick="toggleLike()">
-                    <svg id="heart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                    </svg>
-                    <span id="like-count">431</span>
-                </button>
-                <button class="action-btn" onclick="openComments()">
-                    💬 <span id="comment-count">0</span>
-                </button>
-                <button class="action-btn" onclick="toggleSound()">
-                    <span id="sound-icon">🔊</span> <span id="sound-text">Son</span>
-                </button>
-                <button class="action-btn" onclick="shareVideo()">
-                    🔗 <span>Partager</span>
-                </button>
-            </div>
-            <!-- Bouton Vidéo suivante -->
-            <button class="next-btn" onclick="nextVideo()">Vidéo suivante ➡️</button>
-        </div>
-        <!-- Section des commentaires -->
-        <div class="comments-modal" id="comments-modal">
-            <div class="comments-header">
-                <strong>Commentaires</strong>
-                <button class="close-comments" onclick="closeComments()">×</button>
-            </div>
-            <div class="comments-list" id="comments-list">
-                <!-- Commentaires ajoutés ici -->
-            </div>
-            <div class="comment-input-area">
-                <input type="text" id="comment-input" class="comment-input" placeholder="Ajouter un commentaire...">
-                <button class="comment-submit" onclick="addComment()">Envoyer</button>
-            </div>
-        </div>
+
+<div class="video-container">
+   <div class="sidebar">
+       <div class="action-wrapper" onclick="toggleFollow()">
+           <div class="icon">👤</div>
+           <div class="follow-btn" id="followBtn">+</div>
+       </div>
+
+       <div class="action-item" onclick="toggleFavorite()">
+           <div class="icon favoris-icon" id="favorisIcon">⭐</div>
+           <span id="favorisText">Favoris</span>
+       </div>
+
+       <div class="action-item" onclick="openComments()">
+           <div class="icon">💬</div>
+           <span id="commentCount">0</span>
+       </div>
+   </div>
+</div>
+
+<div class="modal" id="commentModal">
+    <div class="modal-header">
+        <span id="commentHeaderCount">0 commentaire</span>
+        <span class="close-btn" onclick="closeComments()">✕</span>
     </div>
-    <script>
-        let isLiked = false;
-        let likeCount = 431;
-        let isMuted = false;
-        let commentCount = 0;
-        function toggleLike() {
-            isLiked = !isLiked;
-            const heartIcon = document.getElementById('heart-icon');
-            const likeCountSpan = document.getElementById('like-count');
-            if (isLiked) {
-                heartIcon.setAttribute('fill', '#ff3b30');
-                heartIcon.setAttribute('stroke', '#ff3b30');
-                likeCount += 1;
-            } else {
-                heartIcon.setAttribute('fill', 'none');
-                heartIcon.setAttribute('stroke', 'currentColor');
-                likeCount -= 1;
-            }
-            likeCountSpan.textContent = likeCount;
+    <div class="comments-list" id="commentsList"></div>
+    <div class="comment-input">
+        <input type="text" id="commentTextInput" placeholder="Ajouter un commentaire...">
+        <button onclick="addComment()">Publier</button>
+    </div>
+</div>
+
+<script>
+    function toggleFollow() {
+        const btn = document.getElementById("followBtn");
+        btn.classList.add("followed");
+    }
+
+    function toggleFavorite() {
+        const icon = document.getElementById("favorisIcon");
+        const text = document.getElementById("favorisText");
+        
+        icon.classList.toggle("active");
+        if (icon.classList.contains("active")) {
+            text.innerText = "Favori";
+        } else {
+            text.innerText = "Favoris";
         }
-        function switchCategory(category) {
-            document.getElementById('tab-humour').classList.remove('active');
-            document.getElementById('tab-motivation').classList.remove('active');
-            document.getElementById('tab-enfants').classList.remove('active');
-            const activeTab = document.getElementById('tab-' + category);
-            activeTab.classList.add('active');
-            const usernameEl = document.getElementById('video-username');
-            const descEl = document.getElementById('video-desc');
-            if (category === 'humour') {
-                usernameEl.textContent = "@HumourTotal";
-                descEl.textContent = "Une blague qui fait du bien dès le matin ! 🎭✨";
-            } else if (category === 'motivation') {
-                usernameEl.textContent = "@MindsetGagne";
-                descEl.textContent = "Ne lâche rien, tes efforts paieront toujours ! 🚀🔥";
-            } else if (category === 'enfants') {
-                usernameEl.textContent = "@BbeDoux";
-                descEl.textContent = "Les moments les plus mignons de la journée 👶🥰";
-            }
-        }
-        function openComments() {
-            document.getElementById('comments-modal').style.display = 'flex';
-        }
-        function closeComments() {
-            document.getElementById('comments-modal').style.display = 'none';
-        }
-        function addComment() {
-            const input = document.getElementById('comment-input');
-            const text = input.value.trim();
-            if (text === "") return;
-            const list = document.getElementById('comments-list');
-            const newItem = document.createElement('div');
-            newItem.className = 'comment-item';
-            newItem.innerHTML = `<strong>@Moi:</strong> ${text}`;
-            list.appendChild(newItem);
+    }
+
+    function openComments() {
+        document.getElementById("commentModal").classList.add("active");
+    }
+
+    function closeComments() {
+        document.getElementById("commentModal").classList.remove("active");
+    }
+
+    function addComment() {
+        const input = document.getElementById("commentTextInput");
+        const text = input.value.trim();
+        if (text !== "") {
+            const list = document.getElementById("commentsList");
+            const newComment = document.createElement("div");
+            newComment.className = "comment-item";
+            newComment.innerText = text;
+            list.appendChild(newComment);
             input.value = "";
-            commentCount += 1;
-            document.getElementById('comment-count').textContent = commentCount;
-            list.scrollTop = list.scrollHeight;
+            updateCounts();
         }
-        function toggleSound() {
-            isMuted = !isMuted;
-            const soundIcon = document.getElementById('sound-icon');
-            const soundText = document.getElementById('sound-text');
-            if (isMuted) {
-                soundIcon.textContent = "🔇";
-                soundText.textContent = "Muet";
-            } else {
-                soundIcon.textContent = "🔊";
-                soundText.textContent = "Son";
-            }
-        }
-        function shareVideo() {
-            if (navigator.share) {
-                navigator.share({
-                    title: 'ChatBook Video',
-                    text: 'Regarde cette vidéo sur ChatBook !',
-                    url: window.location.href,
-                }).catch(() => {});
-            } else {
-                alert("Lien de la vidéo copié dans le presse-papier ! 🔗");
-            }
-        }
-        function nextVideo() {
-            isLiked = false;
-            const heartIcon = document.getElementById('heart-icon');
-            heartIcon.setAttribute('fill', 'none');
-            heartIcon.setAttribute('stroke', 'currentColor');
-            likeCount = Math.floor(Math.random() * 900) + 100;
-            document.getElementById('like-count').textContent = likeCount;
-            document.getElementById('video-desc').textContent = "Une nouvelle vidéo chargée avec succès ! 🎬";
-        }
-    </script>
+    }
+
+    function updateCounts() {
+        const list = document.getElementById("commentsList");
+        const count = list.children.length;
+        document.getElementById("commentCount").innerText = count;
+        document.getElementById("commentHeaderCount").innerText = count + (count > 1 ? " commentaires" : " commentaire");
+    }
+</script>
+
 </body>
 </html>
 ```
