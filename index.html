@@ -1,4 +1,4 @@
-```html
+HTML
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -61,36 +61,44 @@
       .icon:active {
           transform: scale(1.2);
       }
+      
+      /* Bouton d'abonnement */
       .follow-btn {
-          width: 24px;
-          height: 24px;
+          width: 22px;
+          height: 22px;
           background-color: #fe2c55;
           border-radius: 50%;
           display: flex;
           justify-content: center;
           align-items: center;
           color: #fff;
-          font-size: 14px;
+          font-size: 13px;
           font-weight: bold;
           cursor: pointer;
           position: absolute;
-          bottom: -8px;
+          bottom: -6px;
           left: 50%;
           transform: translateX(-50%);
-          transition: background-color 0.2s;
       }
       .action-wrapper {
           position: relative;
           margin-bottom: 10px;
       }
       .follow-btn.followed {
-          background-color: #fff;
-          color: #fe2c55;
           display: none;
       }
+
+      /* Style J'aime (Cœur) */
+      .like-icon.active {
+          color: #fe2c55;
+      }
+
+      /* Style Favoris (Ruban) */
       .favoris-icon.active {
           color: #ffcc00;
       }
+
+      /* Modal de commentaires */
       .modal {
           position: absolute;
           bottom: -100%;
@@ -170,23 +178,39 @@
 
 <div class="video-container">
    <div class="sidebar">
+       <!-- Profil avec bouton d'abonnement -->
        <div class="action-wrapper" onclick="toggleFollow()">
            <div class="icon">👤</div>
            <div class="follow-btn" id="followBtn">+</div>
        </div>
 
-       <div class="action-item" onclick="toggleFavorite()">
-           <div class="icon favoris-icon" id="favorisIcon">⭐</div>
-           <span id="favorisText">Favoris</span>
+       <!-- Like (Cœur) -->
+       <div class="action-item" onclick="toggleLike()">
+           <div class="icon like-icon" id="likeIcon">❤️</div>
+           <span id="likeCount">12k</span>
        </div>
 
+       <!-- Commentaires -->
        <div class="action-item" onclick="openComments()">
            <div class="icon">💬</div>
            <span id="commentCount">0</span>
        </div>
+
+       <!-- Favoris (Ruban) -->
+       <div class="action-item" onclick="toggleFavorite()">
+           <div class="icon favoris-icon" id="favorisIcon">🔖</div>
+           <span id="favorisText">Favoris</span>
+       </div>
+
+       <!-- Partage -->
+       <div class="action-item" onclick="shareVideo()">
+           <div class="icon">↗️</div>
+           <span>Partager</span>
+       </div>
    </div>
 </div>
 
+<!-- Fenêtre des commentaires -->
 <div class="modal" id="commentModal">
     <div class="modal-header">
         <span id="commentHeaderCount">0 commentaire</span>
@@ -205,16 +229,18 @@
         btn.classList.add("followed");
     }
 
+    function toggleLike() {
+        const icon = document.getElementById("likeIcon");
+        icon.classList.toggle("active");
+    }
+
     function toggleFavorite() {
         const icon = document.getElementById("favorisIcon");
-        const text = document.getElementById("favorisText");
-        
         icon.classList.toggle("active");
-        if (icon.classList.contains("active")) {
-            text.innerText = "Favori";
-        } else {
-            text.innerText = "Favoris";
-        }
+    }
+
+    function shareVideo() {
+        alert("Lien copié dans le presse-papier !");
     }
 
     function openComments() {
@@ -249,4 +275,3 @@
 
 </body>
 </html>
-```
