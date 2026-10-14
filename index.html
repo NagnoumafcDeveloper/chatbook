@@ -1,4 +1,4 @@
-```html
+HTML
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -31,6 +31,37 @@
       align-items: center;
     }
 
+    /* Catégories tout en haut */
+    .categories {
+      position: absolute;
+      top: 20px;
+      display: flex;
+      gap: 15px;
+      font-weight: bold;
+      font-size: 14px;
+      opacity: 0.9;
+      z-index: 10;
+    }
+
+    .categories span {
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .categories span:hover {
+      opacity: 1;
+      text-decoration: underline;
+    }
+
+    .video-wrapper {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
     .interactions {
       position: absolute;
       right: 15px;
@@ -55,8 +86,12 @@
       color: white;
       cursor: pointer;
       backdrop-filter: blur(5px);
-      transition: background 0.3s;
+      transition: background 0.3s, transform 0.1s;
       position: relative;
+    }
+
+    .icon-btn:active {
+      transform: scale(0.9);
     }
 
     .icon-btn:hover {
@@ -83,46 +118,111 @@
       right: -2px;
       border: 2px solid #0b0f19;
     }
+
+    .video-info {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      right: 80px;
+      z-index: 10;
+    }
+
+    .username {
+      font-weight: bold;
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+
+    .description {
+      font-size: 14px;
+      opacity: 0.9;
+    }
   </style>
 </head>
 <body>
 
   <div class="app-container">
-    <div class="interactions">
-      <button class="icon-btn" id="subscribe-btn">
-        <span>➕</span>
-        <p>Abonner</p>
-        <div class="red-dot"></div>
-      </button>
+    
+    <!-- Texte des catégories tout en haut -->
+    <div class="categories">
+      <span>😄 Humour</span>
+      <span>💪 Motivation</span>
+      <span>👶 Enfants</span>
+    </div>
+
+    <div class="video-wrapper">
       
-      <button class="icon-btn" id="like-btn">
-        <span id="like-icon">🤍</span>
-        <p id="like-count">431</p>
-      </button>
-      
-      <button class="icon-btn">
-        <span>💬</span>
-        <p>0</p>
-      </button>
-      
-      <button class="icon-btn" id="favorite-btn">
-        <span id="favorite-icon">🔖</span>
-        <p>Favoris</p>
-      </button>
-      
-      <button class="icon-btn">
-        <span>🔊</span>
-        <p>Son</p>
-      </button>
-      
-      <button class="icon-btn">
-        <span>🔗</span>
-        <p>Partager</p>
-      </button>
+      <!-- Boutons d'interaction sur le côté droit -->
+      <div class="interactions">
+        
+        <!-- Bouton S'abonner -->
+        <button class="icon-btn" id="subscribe-btn">
+          <span>➕</span>
+          <p id="subscribe-text">Abonner</p>
+          <div class="red-dot" id="red-dot"></div>
+        </button>
+        
+        <!-- Bouton Like (Cœur) -->
+        <button class="icon-btn" id="like-btn">
+          <span id="like-icon">🤍</span>
+          <p id="like-count">431</p>
+        </button>
+        
+        <!-- Bouton Commentaires -->
+        <button class="icon-btn" id="comment-btn">
+          <span>💬</span>
+          <p>0</p>
+        </button>
+        
+        <!-- Bouton Favoris -->
+        <button class="icon-btn" id="favorite-btn">
+          <span id="favorite-icon">🔖</span>
+          <p>Favoris</p>
+        </button>
+        
+        <!-- Bouton Son -->
+        <button class="icon-btn" id="sound-btn">
+          <span>🔊</span>
+          <p>Son</p>
+        </button>
+        
+        <!-- Bouton Partager -->
+        <button class="icon-btn" id="share-btn">
+          <span>🔗</span>
+          <p>Partager</p>
+        </button>
+        
+      </div>
+
+      <div class="video-info">
+        <div class="username">@ChatBookUser</div>
+        <div class="description">Bienvenue sur mon flux vidéo ! 🚀✨</div>
+      </div>
+
     </div>
   </div>
 
   <script>
+    // 1. Gestion du bouton S'abonner
+    const subscribeBtn = document.getElementById('subscribe-btn');
+    const redDot = document.getElementById('red-dot');
+    const subscribeText = document.getElementById('subscribe-text');
+    let isSubscribed = false;
+
+    subscribeBtn.addEventListener('click', () => {
+      isSubscribed = !isSubscribed;
+      if (isSubscribed) {
+        redDot.style.display = 'none';
+        subscribeText.textContent = 'Abonné';
+        subscribeBtn.style.background = 'rgba(255, 59, 48, 0.5)';
+      } else {
+        redDot.style.display = 'block';
+        subscribeText.textContent = 'Abonner';
+        subscribeBtn.style.background = 'rgba(0, 0, 0, 0.4)';
+      }
+    });
+
+    // 2. Gestion du Like (Cœur rouge quand on clique)
     const likeBtn = document.getElementById('like-btn');
     const likeIcon = document.getElementById('like-icon');
     const likeCount = document.getElementById('like-count');
@@ -132,13 +232,14 @@
       isLiked = !isLiked;
       if (isLiked) {
         likeIcon.textContent = '❤️';
-        likeCount.textContent = '432'; 
+        likeCount.textContent = '432';
       } else {
         likeIcon.textContent = '🤍';
         likeCount.textContent = '431';
       }
     });
 
+    // 3. Gestion des Favoris (Devient rouge/actif quand on clique)
     const favoriteBtn = document.getElementById('favorite-btn');
     const favoriteIcon = document.getElementById('favorite-icon');
     let isFavorited = false;
@@ -146,13 +247,14 @@
     favoriteBtn.addEventListener('click', () => {
       isFavorited = !isFavorited;
       if (isFavorited) {
-        favoriteIcon.textContent = '❤️'; 
+        favoriteIcon.textContent = '❤️'; // Change l'icône en cœur rouge pour marquer le favori
+        favoriteBtn.style.background = 'rgba(255, 59, 48, 0.5)';
       } else {
         favoriteIcon.textContent = '🔖';
+        favoriteBtn.style.background = 'rgba(0, 0, 0, 0.4)';
       }
     });
   </script>
 
 </body>
 </html>
-```
