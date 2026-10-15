@@ -32,18 +32,55 @@ HTML
             padding: 15px 20px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
             box-sizing: border-box;
-            background: rgba(18, 18, 18, 0.9);
+            background: rgba(18, 18, 18, 0.95);
             position: sticky;
             top: 0;
             z-index: 10;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         h1 {
             margin: 0;
             font-size: 1.5rem;
             color: var(--primary-color);
+        }
+
+        /* Barre de recherche pour influenceurs et musiciens */
+        .search-box {
+            position: relative;
+            width: 100%;
+        }
+
+        .search-box input {
+            width: 100%;
+            background: #252525;
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 20px;
+            padding: 10px 15px 10px 38px;
+            color: var(--text-color);
+            font-size: 0.9rem;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        .search-box input:focus {
+            border-color: var(--primary-color);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
         }
 
         .categories {
@@ -98,7 +135,7 @@ HTML
 
         .video-container {
             width: 100%;
-            height: 350px;
+            height: 320px;
             position: relative;
             background: #000;
         }
@@ -107,7 +144,7 @@ HTML
             width: 100%;
             height: 100%;
             border: none;
-            pointer-events: none; /* Permet de garder le focus sur la carte */
+            pointer-events: none;
         }
 
         .video-info {
@@ -229,27 +266,35 @@ HTML
 <body>
 
     <header>
-        <h1>ChatBook</h1>
+        <div class="header-top">
+            <h1>ChatBook</h1>
+        </div>
+        <!-- Barre de recherche pour trouver une influenceuse ou un musicien -->
+        <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="searchInput" placeholder="Rechercher une influenceuse, un musicien..." oninput="filterVideos()">
+        </div>
         <div class="categories">
             <button class="category-btn active" onclick="filterCategory('all', this)">Tous</button>
+            <button class="category-btn" onclick="filterCategory('musique', this)">🎵 Musique</button>
+            <button class="category-btn" onclick="filterCategory('influenceuse', this)">✨ Influenceuses</button>
             <button class="category-btn" onclick="filterCategory('humour', this)">😄 Humour</button>
             <button class="category-btn" onclick="filterCategory('motivation', this)">💪 Motivation</button>
-            <button class="category-btn" onclick="filterCategory('enfants', this)">👶 Enfants</button>
         </div>
     </header>
 
     <div class="feed-container" id="feedContainer">
-        <!-- Carte Vidéo : Motivation -->
-        <div class="video-card" data-category="motivation">
+        <!-- Vidéo 1 : Musicien / Dadju -->
+        <div class="video-card" data-category="musique" data-tags="dadju musicien music clip">
             <div class="video-container">
-                <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1&loop=1&playlist=dQw4w9WgXcQ" allow="autoplay"></iframe>
+                <iframe src="https://www.youtube.com/embed/5Uu3k5_Ghjk?autoplay=1&mute=1&loop=1&playlist=5Uu3k5_Ghjk" allow="autoplay"></iframe>
             </div>
             <div class="video-info">
-                <div class="author">@MotivationPro</div>
-                <div class="description">Ne lâche rien, chaque effort compte ! 💪🔥</div>
+                <div class="author">@DadjuOfficiel</div>
+                <div class="description">Live studio exclusif pour les fans de bonne musique 🎤🎶</div>
                 <div class="actions">
-                    <button class="action-btn" onclick="likeVideo(this)">❤️ <span class="like-count">1206</span></button>
-                    <button class="action-btn" onclick="toggleComments(this)">💬 <span class="comment-count">1</span></button>
+                    <button class="action-btn" onclick="likeVideo(this)">❤️ <span class="like-count">3420</span></button>
+                    <button class="action-btn" onclick="toggleComments(this)">💬 <span class="comment-count">12</span></button>
                     <button class="action-btn" onclick="toggleSound(this)">🔊 <span class="sound-status">Son</span></button>
                     <button class="action-btn" onclick="toggleFavorite(this)">🔖 Favori</button>
                     <button class="action-btn" onclick="shareVideo(this)">↗️ Partager</button>
@@ -261,7 +306,7 @@ HTML
                     <button class="close-comments" onclick="toggleComments(this)">✕</button>
                 </div>
                 <div class="comment-list">
-                    <div class="comment-item"><strong>@Moi:</strong> kk</div>
+                    <div class="comment-item"><strong>@Lina:</strong> Incroyable ce son ! 🔥</div>
                 </div>
                 <div class="comment-input-box">
                     <input type="text" placeholder="Ajouter un commentaire..." onkeypress="handleCommentKey(event, this)">
@@ -270,17 +315,48 @@ HTML
             </div>
         </div>
 
-        <!-- Carte Vidéo : Humour -->
-        <div class="video-card" data-category="humour">
+        <!-- Vidéo 2 : Influenceuse -->
+        <div class="video-card" data-category="influenceuse" data-tags="influenceuse mode lifestyle">
             <div class="video-container">
-                <iframe src="https://www.youtube.com/embed/jNQXAC9IVRw?autoplay=1&mute=1&loop=1&playlist=jNQXAC9IVRw" allow="autoplay"></iframe>
+                <iframe src="https://www.youtube.com/embed/3JZ_D3ELwOQ?autoplay=1&mute=1&loop=1&playlist=3JZ_D3ELwOQ" allow="autoplay"></iframe>
             </div>
             <div class="video-info">
-                <div class="author">@RireTotal</div>
-                <div class="description">Quand tu vois un message inattendu 😂</div>
+                <div class="author">@ChloeLifestyle</div>
+                <div class="description">Ma routine skincare et maquillage du matin ✨💅</div>
                 <div class="actions">
-                    <button class="action-btn" onclick="likeVideo(this)">❤️ <span class="like-count">435</span></button>
-                    <button class="action-btn" onclick="toggleComments(this)">💬 <span class="comment-count">0</span></button>
+                    <button class="action-btn" onclick="likeVideo(this)">❤️ <span class="like-count">1840</span></button>
+                    <button class="action-btn" onclick="toggleComments(this)">💬 <span class="comment-count">4</span></button>
+                    <button class="action-btn" onclick="toggleSound(this)">🔊 <span class="sound-status">Son</span></button>
+                    <button class="action-btn" onclick="toggleFavorite(this)">🔖 Favori</button>
+                    <button class="action-btn" onclick="shareVideo(this)">↗️ Partager</button>
+                </div>
+            </div>
+            <div class="comments-panel">
+                <div class="comments-header">
+                    <span>Commentaires</span>
+                    <button class="close-comments" onclick="toggleComments(this)">✕</button>
+                </div>
+                <div class="comment-list">
+                    <div class="comment-item"><strong>@Sarah:</strong> Tu es trop belle ❤️</div>
+                </div>
+                <div class="comment-input-box">
+                    <input type="text" placeholder="Ajouter un commentaire..." onkeypress="handleCommentKey(event, this)">
+                    <button onclick="addComment(this)">Envoyer</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vidéo 3 : Musicien / DJ -->
+        <div class="video-card" data-category="musique" data-tags="musicien dj mix">
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1&loop=1&playlist=dQw4w9WgXcQ" allow="autoplay"></iframe>
+            </div>
+            <div class="video-info">
+                <div class="author">@DJBlz_Music</div>
+                <div class="description">Nouveau mix exclusif pour vous ambiancer toute la nuit 🎧🔥</div>
+                <div class="actions">
+                    <button class="action-btn" onclick="likeVideo(this)">❤️ <span class="like-count">950</span></button>
+                    <button class="action-btn" onclick="toggleComments(this)">💬 <span class="comment-count">2</span></button>
                     <button class="action-btn" onclick="toggleSound(this)">🔊 <span class="sound-status">Son</span></button>
                     <button class="action-btn" onclick="toggleFavorite(this)">🔖 Favori</button>
                     <button class="action-btn" onclick="shareVideo(this)">↗️ Partager</button>
@@ -299,17 +375,17 @@ HTML
             </div>
         </div>
 
-        <!-- Carte Vidéo : Enfants -->
-        <div class="video-card" data-category="enfants">
+        <!-- Vidéo 4 : Influenceuse Beauté / Mode -->
+        <div class="video-card" data-category="influenceuse" data-tags="influenceuse mode defile">
             <div class="video-container">
-                <iframe src="https://www.youtube.com/embed/3JZ_D3ELwOQ?autoplay=1&mute=1&loop=1&playlist=3JZ_D3ELwOQ" allow="autoplay"></iframe>
+                <iframe src="https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&mute=1&loop=1&playlist=jfKfPfyJRdk" allow="autoplay"></iframe>
             </div>
             <div class="video-info">
-                <div class="author">@MiniKids</div>
-                <div class="description">Un moment de pur bonheur au parc 🐶❤️</div>
+                <div class="author">@AwaStyle</div>
+                <div class="description">Mon look de la semaine pour la Fashion Week 💃🏽🌟</div>
                 <div class="actions">
-                    <button class="action-btn" onclick="likeVideo(this)">❤️ <span class="like-count">890</span></button>
-                    <button class="action-btn" onclick="toggleComments(this)">💬 <span class="comment-count">0</span></button>
+                    <button class="action-btn" onclick="likeVideo(this)">❤️ <span class="like-count">2410</span></button>
+                    <button class="action-btn" onclick="toggleComments(this)">💬 <span class="comment-count">8</span></button>
                     <button class="action-btn" onclick="toggleSound(this)">🔊 <span class="sound-status">Son</span></button>
                     <button class="action-btn" onclick="toggleFavorite(this)">🔖 Favori</button>
                     <button class="action-btn" onclick="shareVideo(this)">↗️ Partager</button>
@@ -330,10 +406,27 @@ HTML
     </div>
 
     <script>
+        // Recherche dynamique par nom / tag (influenceuse, musicien, etc.)
+        function filterVideos() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.video-card');
+
+            cards.forEach(card => {
+                const text = card.innerText.toLowerCase();
+                const tags = card.getAttribute('data-tags') || "";
+                if (text.includes(query) || tags.includes(query)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
         // Filtrage par catégorie
         function filterCategory(category, btn) {
             document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
+            document.getElementById('searchInput').value = ""; // Réinitialise la recherche textuelle
 
             const cards = document.querySelectorAll('.video-card');
             cards.forEach(card => {
