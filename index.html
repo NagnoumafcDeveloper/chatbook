@@ -124,10 +124,11 @@ HTML
 
         .actions {
             display: flex;
-            gap: 15px;
+            gap: 12px;
             align-items: center;
             border-top: 1px solid rgba(255,255,255,0.1);
             padding-top: 12px;
+            flex-wrap: wrap;
         }
 
         .action-btn {
@@ -137,8 +138,8 @@ HTML
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 5px;
-            font-size: 0.9rem;
+            gap: 4px;
+            font-size: 0.85rem;
             transition: transform 0.1s ease;
         }
 
@@ -244,6 +245,7 @@ HTML
                     <button class="action-btn" onclick="likeVideo(this)">❤️ <span class="like-count">1206</span></button>
                     <button class="action-btn" onclick="toggleComments(this)">💬 <span class="comment-count">1</span></button>
                     <button class="action-btn" onclick="toggleSound(this)">🔊 <span class="sound-status">Son</span></button>
+                    <button class="action-btn" onclick="toggleFavorite(this)">🔖 Favori</button>
                     <button class="action-btn" onclick="shareVideo(this)">↗️ Partager</button>
                 </div>
             </div>
@@ -273,6 +275,7 @@ HTML
                     <button class="action-btn" onclick="likeVideo(this)">❤️ <span class="like-count">435</span></button>
                     <button class="action-btn" onclick="toggleComments(this)">💬 <span class="comment-count">0</span></button>
                     <button class="action-btn" onclick="toggleSound(this)">🔊 <span class="sound-status">Son</span></button>
+                    <button class="action-btn" onclick="toggleFavorite(this)">🔖 Favori</button>
                     <button class="action-btn" onclick="shareVideo(this)">↗️ Partager</button>
                 </div>
             </div>
@@ -299,6 +302,7 @@ HTML
                     <button class="action-btn" onclick="likeVideo(this)">❤️ <span class="like-count">890</span></button>
                     <button class="action-btn" onclick="toggleComments(this)">💬 <span class="comment-count">0</span></button>
                     <button class="action-btn" onclick="toggleSound(this)">🔊 <span class="sound-status">Son</span></button>
+                    <button class="action-btn" onclick="toggleFavorite(this)">🔖 Favori</button>
                     <button class="action-btn" onclick="shareVideo(this)">↗️ Partager</button>
                 </div>
             </div>
@@ -364,6 +368,17 @@ HTML
             } else {
                 span.textContent = "Son";
                 button.style.color = "var(--text-color)";
+            }
+        }
+
+        // Bouton Favori
+        function toggleFavorite(button) {
+            if (button.dataset.fav === "true") {
+                button.dataset.fav = "false";
+                button.style.color = "var(--text-color)";
+            } else {
+                button.dataset.fav = "true";
+                button.style.color = "#ffcc00"; // Couleur dorée pour le favori
             }
         }
 
