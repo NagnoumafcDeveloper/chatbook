@@ -1,18 +1,4 @@
 HTML
-<!-- Carte Vidéo : Motivation -->
-<div class="video-card" data-category="motivation">
-    <!-- ... -->
-    <div class="actions">
-        <!-- Manque la liaison JavaScript sur cette ligne -->
-        <button class="action-btn">❤️ <span class="like-count">1206</span></button>
-        <!-- ... -->
-    </div>
-</div>
-Pour que le code JavaScript que vous avez déjà inséré au bas du fichier fonctionne sur cet élément, vous devez explicitement ajouter l'attribut onclick="likeVideo(this)" à l'élément <button>.
-
-Voici le code complet et corrigé pour votre fichier index.html. Veuillez remplacer tout le contenu de ce fichier par le code suivant, puis sauvegarder. Cela liera les boutons de j'aime au code que vous avez déjà écrit, permettant ainsi au cœur d'être blanc par défaut et de devenir rouge au clic.
-
-HTML
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -256,7 +242,6 @@ HTML
                 <div class="author">@MotivationPro</div>
                 <div class="description">Ne lâche rien, chaque effort compte ! 💪🔥</div>
                 <div class="actions">
-                    <!-- Ajout explicite de l'attribut onclick="likeVideo(this)" sur cette ligne -->
                     <button class="action-btn" onclick="likeVideo(this)">❤️ <span class="like-count">1206</span></button>
                     <button class="action-btn" onclick="toggleComments(this)">💬 <span class="comment-count">1</span></button>
                     <button class="action-btn" onclick="toggleSound(this)">🔊 <span class="sound-status">Son</span></button>
@@ -287,7 +272,6 @@ HTML
                 <div class="author">@RireTotal</div>
                 <div class="description">Quand tu essaies de cuisiner pour la première fois 😅</div>
                 <div class="actions">
-                    <!-- Ajout explicite de l'attribut onclick="likeVideo(this)" sur cette ligne -->
                     <button class="action-btn" onclick="likeVideo(this)">❤️ <span class="like-count">435</span></button>
                     <button class="action-btn" onclick="toggleComments(this)">💬 <span class="comment-count">0</span></button>
                     <button class="action-btn" onclick="toggleSound(this)">🔊 <span class="sound-status">Son</span></button>
@@ -315,7 +299,6 @@ HTML
                 <div class="author">@MiniKids</div>
                 <div class="description">La découverte d'un chiot pour la toute première fois 🐶❤️</div>
                 <div class="actions">
-                    <!-- Ajout explicite de l'attribut onclick="likeVideo(this)" sur cette ligne -->
                     <button class="action-btn" onclick="likeVideo(this)">❤️ <span class="like-count">890</span></button>
                     <button class="action-btn" onclick="toggleComments(this)">💬 <span class="comment-count">0</span></button>
                     <button class="action-btn" onclick="toggleSound(this)">🔊 <span class="sound-status">Son</span></button>
@@ -353,7 +336,7 @@ HTML
             });
         }
 
-        // Incrémentation des likes
+        // Incrémentation des likes (cœur blanc par défaut, rouge au clic)
         function likeVideo(button) {
             const span = button.querySelector('.like-count');
             let count = parseInt(span.textContent);
@@ -395,7 +378,7 @@ HTML
                 button.style.color = "var(--text-color)";
             } else {
                 button.dataset.fav = "true";
-                button.style.color = "#ffcc00"; // Couleur dorée pour le favori
+                button.style.color = "#ffcc00"; // Couleur dorée
             }
         }
 
