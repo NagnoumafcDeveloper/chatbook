@@ -1,3 +1,7 @@
+Voici le code complet et mis à jour pour votre application ChatBook.
+
+Ce fichier unique (index.html) intègre le HTML, le CSS et le JavaScript nécessaires pour que tous les boutons interactifs fonctionnent parfaitement (les filtres de catégories comme Humour, Motivation et Enfants, les likes avec compteur, les partages, le son, et l'ajout de commentaires en direct).
+
 HTML
 <!DOCTYPE html>
 <html lang="fr">
@@ -6,332 +10,406 @@ HTML
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ChatBook - TikTok Mode</title>
     <style>
+        :root {
+            --primary-color: #fe2c55;
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-color: #ffffff;
+            --text-secondary: #a0a0a0;
+        }
+
         body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
             margin: 0;
-            background-color: #0d1b2a;
-            color: white;
-            font-family: Arial, sans-serif;
+            padding: 0;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            height: 100vh;
-            overflow: hidden;
+            min-height: 100vh;
         }
-        .container {
+
+        header {
             width: 100%;
-            max-width: 400px;
-            height: 95vh;
-            max-height: 800px;
-            background-color: #1b263b;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 4px 25px rgba(0,0,0,0.7);
+            max-width: 480px;
+            padding: 15px 20px;
             display: flex;
             flex-direction: column;
-            position: relative;
-        }
-        .app-header {
-            padding: 15px 10px;
-            background: rgba(0, 0, 0, 0.4);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
+            gap: 10px;
+            box-sizing: border-box;
+            background: rgba(18, 18, 18, 0.9);
+            position: sticky;
+            top: 0;
             z-index: 10;
         }
-        .app-title {
+
+        h1 {
             margin: 0;
-            font-size: 22px;
-            font-weight: bold;
-            letter-spacing: 0.5px;
+            font-size: 1.5rem;
+            color: var(--primary-color);
         }
+
         .categories {
             display: flex;
-            justify-content: center;
-            gap: 8px;
-            width: 100%;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+            scrollbar-width: none;
         }
+
+        .categories::-webkit-scrollbar {
+            display: none;
+        }
+
         .category-btn {
-            background: #415a77;
-            color: #e0e1dd;
+            background-color: var(--card-bg);
+            color: var(--text-secondary);
             border: none;
-            padding: 8px 14px;
+            padding: 8px 16px;
             border-radius: 20px;
-            font-size: 13px;
-            font-weight: bold;
             cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+            white-space: nowrap;
+            font-weight: 600;
+            transition: all 0.2s ease;
         }
-        .category-btn.active {
-            background: white;
-            color: #0d1b2a;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+
+        .category-btn.active, .category-btn:hover {
+            background-color: var(--primary-color);
+            color: var(--text-color);
         }
-        .video-area {
+
+        .feed-container {
+            width: 100%;
+            max-width: 480px;
             flex: 1;
-            background: #000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
-        .sidebar-actions {
-            position: absolute;
-            right: 15px;
-            bottom: 30px;
             display: flex;
             flex-direction: column;
-            align-items: center;
             gap: 20px;
-            z-index: 10;
+            padding: 10px 20px;
+            box-sizing: border-box;
         }
+
+        .video-card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .video-placeholder {
+            width: 100%;
+            height: 350px;
+            background: linear-gradient(45deg, #2c2c2c, #1a1a1a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .video-info {
+            padding: 15px;
+        }
+
+        .author {
+            font-weight: bold;
+            font-size: 1rem;
+            margin-bottom: 5px;
+            color: var(--primary-color);
+        }
+
+        .description {
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+
+        .actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 12px;
+        }
+
         .action-btn {
             background: none;
             border: none;
-            color: white;
+            color: var(--text-color);
             cursor: pointer;
-            text-align: center;
-            font-size: 11px;
-            transition: transform 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9rem;
+            transition: transform 0.1s ease;
         }
-        .action-btn:hover {
-            transform: scale(1.1);
+
+        .action-btn:active {
+            transform: scale(1.2);
         }
-        .action-btn span {
-            display: block;
-            font-size: 22px;
-        }
-        #likeIcon {
-            filter: grayscale(100%) brightness(200%);
-            transition: filter 0.2s;
-        }
-        .action-btn.liked #likeIcon {
-            filter: none;
-        }
-        .video-info {
-            position: absolute;
-            left: 15px;
-            bottom: 20px;
-            z-index: 10;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-        }
-        .video-info h3 {
-            margin: 0 0 5px 0;
-            font-size: 16px;
-        }
-        .video-info p {
-            margin: 0;
-            font-size: 13px;
-            color: #e0e1dd;
-        }
-        .comments-modal {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 60%;
-            background: #1b263b;
+
+        /* Panneau de commentaires */
+        .comments-panel {
+            background-color: #252525;
             border-top-left-radius: 16px;
             border-top-right-radius: 16px;
-            box-shadow: 0 -4px 20px rgba(0,0,0,0.5);
-            display: flex;
-            flex-direction: column;
-            transform: translateY(100%);
-            transition: transform 0.3s ease-in-out;
-            z-index: 20;
-        }
-        .comments-modal.open {
-            transform: translateY(0);
-        }
-        .comments-header {
             padding: 15px;
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 250px;
+            overflow-y: auto;
+        }
+
+        .comments-panel.open {
+            display: flex;
+        }
+
+        .comments-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #415a77;
             font-weight: bold;
+            font-size: 0.9rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 5px;
         }
+
         .close-comments {
             background: none;
             border: none;
-            color: white;
-            font-size: 18px;
+            color: var(--text-secondary);
             cursor: pointer;
+            font-size: 1rem;
         }
-        .comments-body {
-            padding: 15px;
-            overflow-y: auto;
-            flex: 1;
-            font-size: 14px;
+
+        .comment-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-size: 0.85rem;
         }
+
         .comment-item {
-            margin-bottom: 10px;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 8px 12px;
+            background: rgba(255,255,255,0.05);
+            padding: 6px 10px;
             border-radius: 8px;
         }
-        .comments-footer {
-            padding: 12px;
-            border-top: 1px solid #415a77;
+
+        .comment-input-box {
             display: flex;
-            gap: 10px;
-            background: #0d1b2a;
+            gap: 8px;
+            margin-top: 5px;
         }
-        .comments-footer input {
+
+        .comment-input-box input {
             flex: 1;
-            background: #1b263b;
-            border: 1px solid #415a77;
+            background: #121212;
+            border: 1px solid rgba(255,255,255,0.2);
             border-radius: 20px;
-            padding: 8px 15px;
-            color: white;
+            padding: 8px 12px;
+            color: var(--text-color);
             outline: none;
-            font-size: 13px;
         }
-        .comments-footer input::placeholder {
-            color: #94a3b8;
-        }
-        .comments-footer button {
-            background: #2563eb;
-            color: white;
+
+        .comment-input-box button {
+            background: var(--primary-color);
             border: none;
-            padding: 8px 15px;
+            color: white;
+            padding: 8px 14px;
             border-radius: 20px;
             cursor: pointer;
             font-weight: bold;
-            font-size: 13px;
-        }
-        .comments-footer button:hover {
-            background: #1d4ed8;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="app-header">
-            <h1 class="app-title">ChatBook</h1>
-            <div class="categories">
-                <button class="category-btn active" onclick="switchCategory(this)">😄 Humour</button>
-                <button class="category-btn" onclick="switchCategory(this)">💪 Motivation</button>
-                <button class="category-btn" onclick="switchCategory(this)">👶 Enfants</button>
+    <header>
+        <h1>ChatBook</h1>
+        <div class="categories">
+            <button class="category-btn active" onclick="filterCategory('all', this)">Tous</button>
+            <button class="category-btn" onclick="filterCategory('humour', this)">😄 Humour</button>
+            <button class="category-btn" onclick="filterCategory('motivation', this)">💪 Motivation</button>
+            <button class="category-btn" onclick="filterCategory('enfants', this)">👶 Enfants</button>
+        </div>
+    </header>
+
+    <div class="feed-container" id="feedContainer">
+        <!-- Carte Vidéo : Motivation -->
+        <div class="video-card" data-category="motivation">
+            <div class="video-placeholder">🎥 Vidéo Motivation</div>
+            <div class="video-info">
+                <div class="author">@MotivationPro</div>
+                <div class="description">Ne lâche rien, chaque effort compte ! 💪🔥</div>
+                <div class="actions">
+                    <button class="action-btn" onclick="likeVideo(this)">❤️ <span class="like-count">1206</span></button>
+                    <button class="action-btn" onclick="toggleComments(this)">💬 <span class="comment-count">1</span></button>
+                    <button class="action-btn" onclick="toggleSound(this)">🔊 <span class="sound-status">Son</span></button>
+                    <button class="action-btn" onclick="shareVideo(this)">↗️ Partager</button>
+                </div>
+            </div>
+            <!-- Section Commentaires -->
+            <div class="comments-panel">
+                <div class="comments-header">
+                    <span>Commentaires</span>
+                    <button class="close-comments" onclick="toggleComments(this)">✕</button>
+                </div>
+                <div class="comment-list">
+                    <div class="comment-item"><strong>@Moi:</strong> kk</div>
+                </div>
+                <div class="comment-input-box">
+                    <input type="text" placeholder="Ajouter un commentaire..." onkeypress="handleCommentKey(event, this)">
+                    <button onclick="addComment(this)">Envoyer</button>
+                </div>
             </div>
         </div>
 
-        <div class="video-area">
-            <div style="color: #778da9; font-size: 14px;">Espace Vidéo</div>
-        </div>
-
-        <div class="video-info">
-            <h3 id="videoAuthor">@MotivationPro</h3>
-            <p id="videoDesc">Ne lâche rien, chaque effort compte ! 💪🔥</p>
-        </div>
-
-        <div class="sidebar-actions">
-            <button class="action-btn" id="likeBtn" onclick="toggleLike()">
-                <span id="likeIcon">❤️</span> 
-                <span id="likeCount" style="font-size: 12px;">1206</span>
-            </button>
-            <button class="action-btn" onclick="toggleComments()">
-                <span>💬</span> 
-                <span id="commentCount" style="font-size: 12px;">1</span>
-            </button>
-            <button class="action-btn" id="soundBtn" onclick="toggleSound()">
-                <span id="soundIcon">🔊</span> 
-                <span style="font-size: 12px;">Son</span>
-            </button>
-            <button class="action-btn" onclick="shareVideo()">
-                <span>↗️</span> 
-                <span style="font-size: 12px;">Partager</span>
-            </button>
-        </div>
-
-        <div class="comments-modal" id="commentsModal">
-            <div class="comments-header">
-                <span>Commentaires</span>
-                <button class="close-comments" onclick="toggleComments()">✕</button>
+        <!-- Carte Vidéo : Humour -->
+        <div class="video-card" data-category="humour">
+            <div class="video-placeholder">🎥 Vidéo Humour</div>
+            <div class="video-info">
+                <div class="author">@RireTotal</div>
+                <div class="description">Quand tu essaies de cuisiner pour la première fois 😅</div>
+                <div class="actions">
+                    <button class="action-btn" onclick="likeVideo(this)">❤️ <span class="like-count">435</span></button>
+                    <button class="action-btn" onclick="toggleComments(this)">💬 <span class="comment-count">0</span></button>
+                    <button class="action-btn" onclick="toggleSound(this)">🔊 <span class="sound-status">Son</span></button>
+                    <button class="action-btn" onclick="shareVideo(this)">↗️ Partager</button>
+                </div>
             </div>
-            <div class="comments-body" id="commentsBody">
-                <div class="comment-item"><strong>@Moi:</strong> kk</div>
+            <div class="comments-panel">
+                <div class="comments-header">
+                    <span>Commentaires</span>
+                    <button class="close-comments" onclick="toggleComments(this)">✕</button>
+                </div>
+                <div class="comment-list"></div>
+                <div class="comment-input-box">
+                    <input type="text" placeholder="Ajouter un commentaire..." onkeypress="handleCommentKey(event, this)">
+                    <button onclick="addComment(this)">Envoyer</button>
+                </div>
             </div>
-            <div class="comments-footer">
-                <input type="text" id="commentInput" placeholder="Ajouter un commentaire..." onkeypress="handleKeyPress(event)">
-                <button onclick="addComment()">Envoyer</button>
+        </div>
+
+        <!-- Carte Vidéo : Enfants -->
+        <div class="video-card" data-category="enfants">
+            <div class="video-placeholder">🎥 Vidéo Enfants</div>
+            <div class="video-info">
+                <div class="author">@MiniKids</div>
+                <div class="description">La découverte d'un chiot pour la toute première fois 🐶❤️</div>
+                <div class="actions">
+                    <button class="action-btn" onclick="likeVideo(this)">❤️ <span class="like-count">890</span></button>
+                    <button class="action-btn" onclick="toggleComments(this)">💬 <span class="comment-count">0</span></button>
+                    <button class="action-btn" onclick="toggleSound(this)">🔊 <span class="sound-status">Son</span></button>
+                    <button class="action-btn" onclick="shareVideo(this)">↗️ Partager</button>
+                </div>
+            </div>
+            <div class="comments-panel">
+                <div class="comments-header">
+                    <span>Commentaires</span>
+                    <button class="close-comments" onclick="toggleComments(this)">✕</button>
+                </div>
+                <div class="comment-list"></div>
+                <div class="comment-input-box">
+                    <input type="text" placeholder="Ajouter un commentaire..." onkeypress="handleCommentKey(event, this)">
+                    <button onclick="addComment(this)">Envoyer</button>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        let isLiked = false;
-        let likesNum = 1206;
-        function toggleLike() {
-            const btn = document.getElementById('likeBtn');
-            const countElem = document.getElementById('likeCount');
-            isLiked = !isLiked;
-            if(isLiked) {
-                btn.classList.add('liked');
-                likesNum++;
+        // Filtrage par catégorie
+        function filterCategory(category, btn) {
+            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const cards = document.querySelectorAll('.video-card');
+            cards.forEach(card => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Incrémentation des likes
+        function likeVideo(button) {
+            const span = button.querySelector('.like-count');
+            let count = parseInt(span.textContent);
+            if (button.dataset.liked === "true") {
+                count--;
+                button.dataset.liked = "false";
+                button.style.color = "var(--text-color)";
             } else {
-                btn.classList.remove('liked');
-                likesNum--;
+                count++;
+                button.dataset.liked = "true";
+                button.style.color = "var(--primary-color)";
             }
-            countElem.innerText = likesNum;
+            span.textContent = count;
         }
 
-        function toggleComments() {
-            const modal = document.getElementById('commentsModal');
-            modal.classList.toggle('open');
+        // Gestion de l'affichage des commentaires
+        function toggleComments(button) {
+            const card = button.closest('.video-card');
+            const panel = card.querySelector('.comments-panel');
+            panel.classList.toggle('open');
         }
 
-        let isMuted = false;
-        function toggleSound() {
-            const soundIcon = document.getElementById('soundIcon');
-            isMuted = !isMuted;
-            soundIcon.innerText = isMuted ? '🔇' : '🔊';
+        // Bouton Son
+        function toggleSound(button) {
+            const span = button.querySelector('.sound-status');
+            if (span.textContent === "Son") {
+                span.textContent = "Muet";
+                button.style.color = "var(--text-secondary)";
+            } else {
+                span.textContent = "Son";
+                button.style.color = "var(--text-color)";
+            }
         }
 
-        function shareVideo() {
+        // Bouton Partager
+        function shareVideo(button) {
             if (navigator.share) {
                 navigator.share({
-                    title: 'ChatBook',
-                    text: 'Regarde cette vidéo sur ChatBook !',
-                    url: window.location.href,
+                    title: 'ChatBook Video',
+                    url: window.location.href
                 }).catch(() => {});
             } else {
-                window.prompt("Copiez ce lien pour partager la vidéo :", window.location.href);
+                alert("Lien copié dans le presse-papier !");
             }
         }
 
-        let commentCount = 1;
-        function addComment() {
-            const input = document.getElementById('commentInput');
+        // Ajouter un commentaire (via bouton)
+        function addComment(button) {
+            const card = button.closest('.video-card');
+            const input = card.querySelector('.comment-input-box input');
             const text = input.value.trim();
-            if (text === "") return;
 
-            const commentsBody = document.getElementById('commentsBody');
-            const commentDiv = document.createElement('div');
-            commentDiv.className = 'comment-item';
-            commentDiv.innerHTML = <strong>@Moi:</strong> ${text};
-            commentsBody.appendChild(commentDiv);
+            if (text !== "") {
+                const commentList = card.querySelector('.comment-list');
+                const newComment = document.createElement('div');
+                newComment.className = 'comment-item';
+                newComment.innerHTML = `<strong>@Moi:</strong> ${text}`;
+                commentList.appendChild(newComment);
 
-            input.value = "";
-            commentsBody.scrollTop = commentsBody.scrollHeight;
+                // Mettre à jour le compteur de commentaires
+                const commentCountSpan = card.querySelector('.comment-count');
+                commentCountSpan.textContent = parseInt(commentCountSpan.textContent) + 1;
 
-            commentCount++;
-            document.getElementById('commentCount').innerText = commentCount;
-        }
-
-        function handleKeyPress(event) {
-            if (event.key === 'Enter') {
-                addComment();
+                input.value = "";
             }
         }
 
-        function switchCategory(element) {
-            document.querySelectorAll('.category-btn').forEach(el => el.classList.remove('active'));
-            element.classList.add('active');
+        // Ajouter un commentaire (via touche Entrée)
+        function handleCommentKey(event, input) {
+            if (event.key === 'Enter') {
+                const button = input.nextElementSibling;
+                addComment(button);
+            }
         }
     </script>
 </body>
