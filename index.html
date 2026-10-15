@@ -53,33 +53,33 @@ HTML
         }
 
         .search-box {
-            display: flex;
-            align-items: center;
-            background: #252525;
-            border: 1px solid rgba(255,255,255,0.15);
-            border-radius: 20px;
-            padding: 8px 15px;
-            gap: 10px;
-            box-sizing: border-box;
+            position: relative;
             width: 100%;
         }
 
-        .search-box:focus-within {
+        .search-box input {
+            width: 100%;
+            background: #252525;
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 20px;
+            padding: 10px 15px 10px 38px;
+            color: var(--text-color);
+            font-size: 0.9rem;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        .search-box input:focus {
             border-color: var(--primary-color);
         }
 
         .search-icon {
-            font-size: 0.9rem;
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
             color: var(--text-secondary);
-        }
-
-        .search-box input {
-            flex: 1;
-            background: transparent;
-            border: none;
-            color: var(--text-color);
             font-size: 0.9rem;
-            outline: none;
         }
 
         .categories {
@@ -265,16 +265,16 @@ HTML
 
     <header>
         <div class="header-top">
-            <h1>ChatBook[cite: 3]</h1>
+            <h1>ChatBook</h1>
         </div>
         <div class="search-box">
             <span class="search-icon">🔍</span>
-            <input type="text" id="searchInput" placeholder="Rechercher" oninput="filterVideos()">
+            <input type="text" id="searchInput" placeholder="Rechercher une vidéo..." oninput="filterVideos()">
         </div>
         <div class="categories">
-            <button class="category-btn active" onclick="filterCategory('all', this)">Tous[cite: 3]</button>
-            <button class="category-btn" onclick="filterCategory('humour', this)">😄 Humour[cite: 3]</button>
-            <button class="category-btn" onclick="filterCategory('motivation', this)">💪 Motivation[cite: 3]</button>
+            <button class="category-btn active" onclick="filterCategory('all', this)">Tous</button>
+            <button class="category-btn" onclick="filterCategory('humour', this)">😄 Humour</button>
+            <button class="category-btn" onclick="filterCategory('motivation', this)">💪 Motivation</button>
         </div>
     </header>
 
@@ -285,25 +285,27 @@ HTML
                 <video src="https://assets.mixkit.co/videos/preview/mixkit-woman-doing-exercises-in-a-park-41656-large.mp4" autoplay loop muted playsinline controls></video>
             </div>
             <div class="video-info">
-                <div class="author">@MotivationPro[cite: 3]</div>
-                <div class="description">Ne lâche rien, chaque effort compte ! 💪🔥[cite: 3]</div>
+                <div class="author">@MotivationPro</div>
+                <div class="description">Ne lâche rien, chaque effort compte ! 💪🔥</div>
                 <div class="actions">
-                    <button class="action-btn" onclick="likeVideo(this)">❤️ <span class="like-count">1206</span>[cite: 3]</button>
-                    <button class="action-btn" onclick="toggleComments(this)">💬 <span class="comment-count">0</span></button>
-                    <button class="action-btn" onclick="toggleSound(this)">🔊 <span class="sound-status">Son</span>[cite: 3]</button>
-                    <button class="action-btn" onclick="toggleFavorite(this)">🔖 Favori[cite: 3]</button>
-                    <button class="action-btn" onclick="shareVideo(this)">↗️ Partager[cite: 3]</button>
+                    <button class="action-btn" onclick="likeVideo(this)">❤️ <span class="like-count">1206</span></button>
+                    <button class="action-btn" onclick="toggleComments(this)">💬 <span class="comment-count">1</span></button>
+                    <button class="action-btn" onclick="toggleSound(this)">🔊 <span class="sound-status">Son</span></button>
+                    <button class="action-btn" onclick="toggleFavorite(this)">🔖 Favori</button>
+                    <button class="action-btn" onclick="shareVideo(this)">↗️ Partager</button>
                 </div>
             </div>
             <div class="comments-panel">
                 <div class="comments-header">
-                    <span>Commentaires[cite: 3]</span>
-                    <button class="close-comments" onclick="toggleComments(this)">✕[cite: 3]</button>
+                    <span>Commentaires</span>
+                    <button class="close-comments" onclick="toggleComments(this)">✕</button>
                 </div>
-                <div class="comment-list"></div>
+                <div class="comment-list">
+                    <div class="comment-item"><strong>@Moi:</strong> Top la vidéo !</div>
+                </div>
                 <div class="comment-input-box">
                     <input type="text" placeholder="Ajouter un commentaire..." onkeypress="handleCommentKey(event, this)">
-                    <button onclick="addComment(this)">Envoyer[cite: 3]</button>
+                    <button onclick="addComment(this)">Envoyer</button>
                 </div>
             </div>
         </div>
@@ -314,25 +316,25 @@ HTML
                 <video src="https://assets.mixkit.co/videos/preview/mixkit-happy-man-laughing-while-looking-at-his-phone-41908-large.mp4" autoplay loop muted playsinline controls></video>
             </div>
             <div class="video-info">
-                <div class="author">@RireTotal[cite: 3]</div>
-                <div class="description">Quand tu vois un message inattendu 😂[cite: 3]</div>
+                <div class="author">@RireTotal</div>
+                <div class="description">Quand tu vois un message inattendu 😂</div>
                 <div class="actions">
-                    <button class="action-btn" onclick="likeVideo(this)">❤️ <span class="like-count">435</span>[cite: 3]</button>
-                    <button class="action-btn" onclick="toggleComments(this)">💬 <span class="comment-count">0</span>[cite: 3]</button>
-                    <button class="action-btn" onclick="toggleSound(this)">🔊 <span class="sound-status">Son</span>[cite: 3]</button>
-                    <button class="action-btn" onclick="toggleFavorite(this)">🔖 Favori[cite: 3]</button>
-                    <button class="action-btn" onclick="shareVideo(this)">↗️ Partager[cite: 3]</button>
+                    <button class="action-btn" onclick="likeVideo(this)">❤️ <span class="like-count">435</span></button>
+                    <button class="action-btn" onclick="toggleComments(this)">💬 <span class="comment-count">0</span></button>
+                    <button class="action-btn" onclick="toggleSound(this)">🔊 <span class="sound-status">Son</span></button>
+                    <button class="action-btn" onclick="toggleFavorite(this)">🔖 Favori</button>
+                    <button class="action-btn" onclick="shareVideo(this)">↗️ Partager</button>
                 </div>
             </div>
             <div class="comments-panel">
                 <div class="comments-header">
-                    <span>Commentaires[cite: 3]</span>
-                    <button class="close-comments" onclick="toggleComments(this)">✕[cite: 3]</button>
+                    <span>Commentaires</span>
+                    <button class="close-comments" onclick="toggleComments(this)">✕</button>
                 </div>
                 <div class="comment-list"></div>
                 <div class="comment-input-box">
                     <input type="text" placeholder="Ajouter un commentaire..." onkeypress="handleCommentKey(event, this)">
-                    <button onclick="addComment(this)">Envoyer[cite: 3]</button>
+                    <button onclick="addComment(this)">Envoyer</button>
                 </div>
             </div>
         </div>
@@ -356,6 +358,12 @@ HTML
                 }
             });
         }
+
+        document.getElementById('searchInput').addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                filterVideos();
+            }
+        });
 
         // Filtrage par catégorie
         function filterCategory(category, btn) {
