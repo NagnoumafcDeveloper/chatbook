@@ -103,11 +103,11 @@ HTML
             background: #000;
         }
 
-        .video-card video {
+        .video-container iframe {
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            display: block;
+            border: none;
+            pointer-events: none; /* Permet de garder le focus sur la carte */
         }
 
         .video-info {
@@ -242,7 +242,7 @@ HTML
         <!-- Carte Vidéo : Motivation -->
         <div class="video-card" data-category="motivation">
             <div class="video-container">
-                <video src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" autoplay loop muted playsinline crossorigin="anonymous"></video>
+                <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1&loop=1&playlist=dQw4w9WgXcQ" allow="autoplay"></iframe>
             </div>
             <div class="video-info">
                 <div class="author">@MotivationPro</div>
@@ -250,7 +250,7 @@ HTML
                 <div class="actions">
                     <button class="action-btn" onclick="likeVideo(this)">❤️ <span class="like-count">1206</span></button>
                     <button class="action-btn" onclick="toggleComments(this)">💬 <span class="comment-count">1</span></button>
-                    <button class="action-btn" onclick="toggleSound(this, event)">🔊 <span class="sound-status">Son</span></button>
+                    <button class="action-btn" onclick="toggleSound(this)">🔊 <span class="sound-status">Son</span></button>
                     <button class="action-btn" onclick="toggleFavorite(this)">🔖 Favori</button>
                     <button class="action-btn" onclick="shareVideo(this)">↗️ Partager</button>
                 </div>
@@ -273,7 +273,7 @@ HTML
         <!-- Carte Vidéo : Humour -->
         <div class="video-card" data-category="humour">
             <div class="video-container">
-                <video src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4" autoplay loop muted playsinline crossorigin="anonymous"></video>
+                <iframe src="https://www.youtube.com/embed/jNQXAC9IVRw?autoplay=1&mute=1&loop=1&playlist=jNQXAC9IVRw" allow="autoplay"></iframe>
             </div>
             <div class="video-info">
                 <div class="author">@RireTotal</div>
@@ -281,7 +281,7 @@ HTML
                 <div class="actions">
                     <button class="action-btn" onclick="likeVideo(this)">❤️ <span class="like-count">435</span></button>
                     <button class="action-btn" onclick="toggleComments(this)">💬 <span class="comment-count">0</span></button>
-                    <button class="action-btn" onclick="toggleSound(this, event)">🔊 <span class="sound-status">Son</span></button>
+                    <button class="action-btn" onclick="toggleSound(this)">🔊 <span class="sound-status">Son</span></button>
                     <button class="action-btn" onclick="toggleFavorite(this)">🔖 Favori</button>
                     <button class="action-btn" onclick="shareVideo(this)">↗️ Partager</button>
                 </div>
@@ -302,7 +302,7 @@ HTML
         <!-- Carte Vidéo : Enfants -->
         <div class="video-card" data-category="enfants">
             <div class="video-container">
-                <video src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4" autoplay loop muted playsinline crossorigin="anonymous"></video>
+                <iframe src="https://www.youtube.com/embed/3JZ_D3ELwOQ?autoplay=1&mute=1&loop=1&playlist=3JZ_D3ELwOQ" allow="autoplay"></iframe>
             </div>
             <div class="video-info">
                 <div class="author">@MiniKids</div>
@@ -310,7 +310,7 @@ HTML
                 <div class="actions">
                     <button class="action-btn" onclick="likeVideo(this)">❤️ <span class="like-count">890</span></button>
                     <button class="action-btn" onclick="toggleComments(this)">💬 <span class="comment-count">0</span></button>
-                    <button class="action-btn" onclick="toggleSound(this, event)">🔊 <span class="sound-status">Son</span></button>
+                    <button class="action-btn" onclick="toggleSound(this)">🔊 <span class="sound-status">Son</span></button>
                     <button class="action-btn" onclick="toggleFavorite(this)">🔖 Favori</button>
                     <button class="action-btn" onclick="shareVideo(this)">↗️ Partager</button>
                 </div>
@@ -368,18 +368,14 @@ HTML
             panel.classList.toggle('open');
         }
 
-        // Bouton Son (active/désactive réellement le son de la vidéo)
-        function toggleSound(button, event) {
-            const card = button.closest('.video-card');
-            const video = card.querySelector('video');
-
-            video.muted = !video.muted;
-
-            if (video.muted) {
-                button.innerHTML = '🔇 <span class="sound-status">Muet</span>';
+        // Bouton Son
+        function toggleSound(button) {
+            const span = button.querySelector('.sound-status');
+            if (span.textContent === "Son") {
+                span.textContent = "Muet";
                 button.style.color = "var(--text-secondary)";
             } else {
-                button.innerHTML = '🔊 <span class="sound-status">Son</span>';
+                span.textContent = "Son";
                 button.style.color = "var(--text-color)";
             }
         }
