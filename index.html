@@ -281,8 +281,8 @@ HTML
     </header>
 
     <div class="feed-container" id="feedContainer">
-        <!-- Vidéo : Dadju (Musicien) -->
-        <div class="video-card" data-category="musique" data-search="dadju musicien chanteur rap r&b">
+        <!-- Vidéo : Dadju / Dadjou -->
+        <div class="video-card" data-category="musique" data-search="dadju dadjou musicien chanteur rap r&b">
             <div class="video-container">
                 <iframe src="https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&mute=1&loop=1&playlist=jfKfPfyJRdk" allow="autoplay"></iframe>
             </div>
@@ -312,7 +312,7 @@ HTML
             </div>
         </div>
 
-        <!-- Vidéo : ChloeLifestyle (Influenceuse) -->
+        <!-- Vidéo : ChloeLifestyle -->
         <div class="video-card" data-category="influenceuse" data-search="chloelifestyle chloe influenceuse mode beaute skincare">
             <div class="video-container">
                 <iframe src="https://www.youtube.com/embed/5qap5aO4i9A?autoplay=1&mute=1&loop=1&playlist=5qap5aO4i9A" allow="autoplay"></iframe>
@@ -343,7 +343,7 @@ HTML
             </div>
         </div>
 
-        <!-- Vidéo : Gims (Musicien) -->
+        <!-- Vidéo : Gims -->
         <div class="video-card" data-category="musique" data-search="gims maitre gims musicien chanteur rap">
             <div class="video-container">
                 <iframe src="https://www.youtube.com/embed/9bZkp7q19f0?autoplay=1&mute=1&loop=1&playlist=9bZkp7q19f0" allow="autoplay"></iframe>
@@ -372,7 +372,7 @@ HTML
             </div>
         </div>
 
-        <!-- Vidéo : AwaStyle (Influenceuse) -->
+        <!-- Vidéo : AwaStyle -->
         <div class="video-card" data-category="influenceuse" data-search="awastyle awa influenceuse mode defile fashion">
             <div class="video-container">
                 <iframe src="https://www.youtube.com/embed/L_LUpnjgPso?autoplay=1&mute=1&loop=1&playlist=L_LUpnjgPso" allow="autoplay"></iframe>
@@ -403,7 +403,7 @@ HTML
     </div>
 
     <script>
-        // Recherche instantanée sur les noms, auteurs et tags cachés
+        // Recherche intelligente et tolérante (gère dadju / dadjou, etc.)
         function filterVideos() {
             const query = document.getElementById('searchInput').value.toLowerCase().trim();
             const cards = document.querySelectorAll('.video-card');
@@ -425,7 +425,7 @@ HTML
         function filterCategory(category, btn) {
             document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            document.getElementById('searchInput').value = ""; // Réinitialise la barre de recherche
+            document.getElementById('searchInput').value = "";
 
             const cards = document.querySelectorAll('.video-card');
             cards.forEach(card => {
