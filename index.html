@@ -52,7 +52,6 @@ HTML
             color: var(--primary-color);
         }
 
-        /* Barre de recherche pour influenceurs et musiciens */
         .search-box {
             position: relative;
             width: 100%;
@@ -188,7 +187,6 @@ HTML
             transform: scale(1.2);
         }
 
-        /* Panneau de commentaires */
         .comments-panel {
             background-color: #252525;
             border-top-left-radius: 16px;
@@ -269,7 +267,6 @@ HTML
         <div class="header-top">
             <h1>ChatBook</h1>
         </div>
-        <!-- Barre de recherche pour trouver une influenceuse ou un musicien -->
         <div class="search-box">
             <span class="search-icon">🔍</span>
             <input type="text" id="searchInput" placeholder="Rechercher une influenceuse, un musicien..." oninput="filterVideos()">
@@ -284,10 +281,10 @@ HTML
     </header>
 
     <div class="feed-container" id="feedContainer">
-        <!-- Vidéo 1 : Musicien / Dadju -->
-        <div class="video-card" data-category="musique" data-tags="dadju musicien music clip">
+        <!-- Vidéo : Dadju (Musicien) -->
+        <div class="video-card" data-category="musique" data-search="dadju musicien chanteur rap r&b">
             <div class="video-container">
-                <iframe src="https://www.youtube.com/embed/5Uu3k5_Ghjk?autoplay=1&mute=1&loop=1&playlist=5Uu3k5_Ghjk" allow="autoplay"></iframe>
+                <iframe src="https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&mute=1&loop=1&playlist=jfKfPfyJRdk" allow="autoplay"></iframe>
             </div>
             <div class="video-info">
                 <div class="author">@DadjuOfficiel</div>
@@ -315,10 +312,10 @@ HTML
             </div>
         </div>
 
-        <!-- Vidéo 2 : Influenceuse -->
-        <div class="video-card" data-category="influenceuse" data-tags="influenceuse mode lifestyle">
+        <!-- Vidéo : ChloeLifestyle (Influenceuse) -->
+        <div class="video-card" data-category="influenceuse" data-search="chloelifestyle chloe influenceuse mode beaute skincare">
             <div class="video-container">
-                <iframe src="https://www.youtube.com/embed/3JZ_D3ELwOQ?autoplay=1&mute=1&loop=1&playlist=3JZ_D3ELwOQ" allow="autoplay"></iframe>
+                <iframe src="https://www.youtube.com/embed/5qap5aO4i9A?autoplay=1&mute=1&loop=1&playlist=5qap5aO4i9A" allow="autoplay"></iframe>
             </div>
             <div class="video-info">
                 <div class="author">@ChloeLifestyle</div>
@@ -346,14 +343,14 @@ HTML
             </div>
         </div>
 
-        <!-- Vidéo 3 : Musicien / DJ -->
-        <div class="video-card" data-category="musique" data-tags="musicien dj mix">
+        <!-- Vidéo : Gims (Musicien) -->
+        <div class="video-card" data-category="musique" data-search="gims maitre gims musicien chanteur rap">
             <div class="video-container">
-                <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1&loop=1&playlist=dQw4w9WgXcQ" allow="autoplay"></iframe>
+                <iframe src="https://www.youtube.com/embed/9bZkp7q19f0?autoplay=1&mute=1&loop=1&playlist=9bZkp7q19f0" allow="autoplay"></iframe>
             </div>
             <div class="video-info">
-                <div class="author">@DJBlz_Music</div>
-                <div class="description">Nouveau mix exclusif pour vous ambiancer toute la nuit 🎧🔥</div>
+                <div class="author">@MaitreGims</div>
+                <div class="description">Gros freestyle en direct de Paris 🎧🔥</div>
                 <div class="actions">
                     <button class="action-btn" onclick="likeVideo(this)">❤️ <span class="like-count">950</span></button>
                     <button class="action-btn" onclick="toggleComments(this)">💬 <span class="comment-count">2</span></button>
@@ -375,10 +372,10 @@ HTML
             </div>
         </div>
 
-        <!-- Vidéo 4 : Influenceuse Beauté / Mode -->
-        <div class="video-card" data-category="influenceuse" data-tags="influenceuse mode defile">
+        <!-- Vidéo : AwaStyle (Influenceuse) -->
+        <div class="video-card" data-category="influenceuse" data-search="awastyle awa influenceuse mode defile fashion">
             <div class="video-container">
-                <iframe src="https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&mute=1&loop=1&playlist=jfKfPfyJRdk" allow="autoplay"></iframe>
+                <iframe src="https://www.youtube.com/embed/L_LUpnjgPso?autoplay=1&mute=1&loop=1&playlist=L_LUpnjgPso" allow="autoplay"></iframe>
             </div>
             <div class="video-info">
                 <div class="author">@AwaStyle</div>
@@ -406,15 +403,17 @@ HTML
     </div>
 
     <script>
-        // Recherche dynamique par nom / tag (influenceuse, musicien, etc.)
+        // Recherche instantanée sur les noms, auteurs et tags cachés
         function filterVideos() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
             const cards = document.querySelectorAll('.video-card');
 
             cards.forEach(card => {
-                const text = card.innerText.toLowerCase();
-                const tags = card.getAttribute('data-tags') || "";
-                if (text.includes(query) || tags.includes(query)) {
+                const searchData = card.getAttribute('data-search') || "";
+                const authorText = card.querySelector('.author').textContent.toLowerCase();
+                const descText = card.querySelector('.description').textContent.toLowerCase();
+
+                if (searchData.includes(query) || authorText.includes(query) || descText.includes(query) || query === "") {
                     card.style.display = 'flex';
                 } else {
                     card.style.display = 'none';
@@ -426,7 +425,7 @@ HTML
         function filterCategory(category, btn) {
             document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            document.getElementById('searchInput').value = ""; // Réinitialise la recherche textuelle
+            document.getElementById('searchInput').value = ""; // Réinitialise la barre de recherche
 
             const cards = document.querySelectorAll('.video-card');
             cards.forEach(card => {
@@ -438,7 +437,7 @@ HTML
             });
         }
 
-        // Incrémentation des likes (cœur blanc par défaut, rouge au clic)
+        // Incrémentation des likes
         function likeVideo(button) {
             const span = button.querySelector('.like-count');
             let count = parseInt(span.textContent);
@@ -480,7 +479,7 @@ HTML
                 button.style.color = "var(--text-color)";
             } else {
                 button.dataset.fav = "true";
-                button.style.color = "#ffcc00"; // Couleur dorée
+                button.style.color = "#ffcc00";
             }
         }
 
@@ -509,7 +508,6 @@ HTML
                 newComment.innerHTML = `<strong>@Moi:</strong> ${text}`;
                 commentList.appendChild(newComment);
 
-                // Mettre à jour le compteur de commentaires
                 const commentCountSpan = card.querySelector('.comment-count');
                 commentCountSpan.textContent = parseInt(commentCountSpan.textContent) + 1;
 
