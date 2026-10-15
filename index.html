@@ -139,11 +139,11 @@ HTML
             background: #000;
         }
 
-        .video-container iframe {
+        .video-container video {
             width: 100%;
             height: 100%;
-            border: none;
-            pointer-events: none;
+            object-fit: cover;
+            display: block;
         }
 
         .video-info {
@@ -281,10 +281,10 @@ HTML
     </header>
 
     <div class="feed-container" id="feedContainer">
-        <!-- Vidéo : Dadju / Dadjou -->
+        <!-- Carte : Dadju / Musicien -->
         <div class="video-card" data-category="musique" data-search="dadju dadjou musicien chanteur rap r&b">
             <div class="video-container">
-                <iframe src="https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&mute=1&loop=1&playlist=jfKfPfyJRdk" allow="autoplay"></iframe>
+                <video src="https://assets.mixkit.co/videos/preview/mixkit-man-playing-guitar-in-a-studio-41907-large.mp4" autoplay loop muted playsinline></video>
             </div>
             <div class="video-info">
                 <div class="author">@DadjuOfficiel</div>
@@ -292,7 +292,7 @@ HTML
                 <div class="actions">
                     <button class="action-btn" onclick="likeVideo(this)">❤️ <span class="like-count">3420</span></button>
                     <button class="action-btn" onclick="toggleComments(this)">💬 <span class="comment-count">12</span></button>
-                    <button class="action-btn" onclick="toggleSound(this)">🔊 <span class="sound-status">Son</span></button>
+                    <button class="action-btn" onclick="toggleSound(this, event)">🔊 <span class="sound-status">Son</span></button>
                     <button class="action-btn" onclick="toggleFavorite(this)">🔖 Favori</button>
                     <button class="action-btn" onclick="shareVideo(this)">↗️ Partager</button>
                 </div>
@@ -312,10 +312,10 @@ HTML
             </div>
         </div>
 
-        <!-- Vidéo : ChloeLifestyle -->
+        <!-- Carte : ChloeLifestyle / Influenceuse -->
         <div class="video-card" data-category="influenceuse" data-search="chloelifestyle chloe influenceuse mode beaute skincare">
             <div class="video-container">
-                <iframe src="https://www.youtube.com/embed/5qap5aO4i9A?autoplay=1&mute=1&loop=1&playlist=5qap5aO4i9A" allow="autoplay"></iframe>
+                <video src="https://assets.mixkit.co/videos/preview/mixkit-woman-doing-exercises-in-a-park-41656-large.mp4" autoplay loop muted playsinline></video>
             </div>
             <div class="video-info">
                 <div class="author">@ChloeLifestyle</div>
@@ -323,7 +323,7 @@ HTML
                 <div class="actions">
                     <button class="action-btn" onclick="likeVideo(this)">❤️ <span class="like-count">1840</span></button>
                     <button class="action-btn" onclick="toggleComments(this)">💬 <span class="comment-count">4</span></button>
-                    <button class="action-btn" onclick="toggleSound(this)">🔊 <span class="sound-status">Son</span></button>
+                    <button class="action-btn" onclick="toggleSound(this, event)">🔊 <span class="sound-status">Son</span></button>
                     <button class="action-btn" onclick="toggleFavorite(this)">🔖 Favori</button>
                     <button class="action-btn" onclick="shareVideo(this)">↗️ Partager</button>
                 </div>
@@ -343,10 +343,10 @@ HTML
             </div>
         </div>
 
-        <!-- Vidéo : Gims -->
+        <!-- Carte : Gims / Musicien -->
         <div class="video-card" data-category="musique" data-search="gims maitre gims musicien chanteur rap">
             <div class="video-container">
-                <iframe src="https://www.youtube.com/embed/9bZkp7q19f0?autoplay=1&mute=1&loop=1&playlist=9bZkp7q19f0" allow="autoplay"></iframe>
+                <video src="https://assets.mixkit.co/videos/preview/mixkit-dj-mixing-music-in-a-club-43306-large.mp4" autoplay loop muted playsinline></video>
             </div>
             <div class="video-info">
                 <div class="author">@MaitreGims</div>
@@ -354,7 +354,7 @@ HTML
                 <div class="actions">
                     <button class="action-btn" onclick="likeVideo(this)">❤️ <span class="like-count">950</span></button>
                     <button class="action-btn" onclick="toggleComments(this)">💬 <span class="comment-count">2</span></button>
-                    <button class="action-btn" onclick="toggleSound(this)">🔊 <span class="sound-status">Son</span></button>
+                    <button class="action-btn" onclick="toggleSound(this, event)">🔊 <span class="sound-status">Son</span></button>
                     <button class="action-btn" onclick="toggleFavorite(this)">🔖 Favori</button>
                     <button class="action-btn" onclick="shareVideo(this)">↗️ Partager</button>
                 </div>
@@ -372,10 +372,10 @@ HTML
             </div>
         </div>
 
-        <!-- Vidéo : AwaStyle -->
+        <!-- Carte : AwaStyle / Influenceuse -->
         <div class="video-card" data-category="influenceuse" data-search="awastyle awa influenceuse mode defile fashion">
             <div class="video-container">
-                <iframe src="https://www.youtube.com/embed/L_LUpnjgPso?autoplay=1&mute=1&loop=1&playlist=L_LUpnjgPso" allow="autoplay"></iframe>
+                <video src="https://assets.mixkit.co/videos/preview/mixkit-young-woman-posing-for-the-camera-in-a-studio-42995-large.mp4" autoplay loop muted playsinline></video>
             </div>
             <div class="video-info">
                 <div class="author">@AwaStyle</div>
@@ -383,7 +383,7 @@ HTML
                 <div class="actions">
                     <button class="action-btn" onclick="likeVideo(this)">❤️ <span class="like-count">2410</span></button>
                     <button class="action-btn" onclick="toggleComments(this)">💬 <span class="comment-count">8</span></button>
-                    <button class="action-btn" onclick="toggleSound(this)">🔊 <span class="sound-status">Son</span></button>
+                    <button class="action-btn" onclick="toggleSound(this, event)">🔊 <span class="sound-status">Son</span></button>
                     <button class="action-btn" onclick="toggleFavorite(this)">🔖 Favori</button>
                     <button class="action-btn" onclick="shareVideo(this)">↗️ Partager</button>
                 </div>
@@ -403,7 +403,7 @@ HTML
     </div>
 
     <script>
-        // Recherche intelligente et tolérante (gère dadju / dadjou, etc.)
+        // Recherche instantanée et intelligente (fonctionne dès qu'on tape, et s'adapte aux touches comme Entrée)
         function filterVideos() {
             const query = document.getElementById('searchInput').value.toLowerCase().trim();
             const cards = document.querySelectorAll('.video-card');
@@ -420,6 +420,13 @@ HTML
                 }
             });
         }
+
+        // Permet de valider aussi avec la touche "Entrée" sur le clavier
+        document.getElementById('searchInput').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                filterVideos();
+            }
+        });
 
         // Filtrage par catégorie
         function filterCategory(category, btn) {
@@ -461,13 +468,17 @@ HTML
         }
 
         // Bouton Son
-        function toggleSound(button) {
-            const span = button.querySelector('.sound-status');
-            if (span.textContent === "Son") {
-                span.textContent = "Muet";
+        function toggleSound(button, event) {
+            const card = button.closest('.video-card');
+            const video = card.querySelector('video');
+
+            video.muted = !video.muted;
+
+            if (video.muted) {
+                button.innerHTML = '🔇 <span class="sound-status">Muet</span>';
                 button.style.color = "var(--text-secondary)";
             } else {
-                span.textContent = "Son";
+                button.innerHTML = '🔊 <span class="sound-status">Son</span>';
                 button.style.color = "var(--text-color)";
             }
         }
