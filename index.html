@@ -284,7 +284,7 @@ HTML
         <!-- Carte : Dadju -->
         <div class="video-card" data-category="musique" data-search="dadju dadjou musicien chanteur rap r&b">
             <div class="video-container">
-                <iframe src="https://www.youtube-nocookie.com/embed/jfKfPfyJRdk?autoplay=1&mute=1&loop=1&playlist=jfKfPfyJRdk" allow="autoplay"></iframe>
+                <iframe src="https://www.youtube-nocookie.com/embed/5Uu3k5_Ghjk?autoplay=1&mute=1&loop=1&playlist=5Uu3k5_Ghjk" allow="autoplay"></iframe>
             </div>
             <div class="video-info">
                 <div class="author">@DadjuOfficiel</div>
@@ -403,7 +403,7 @@ HTML
     </div>
 
     <script>
-        // Recherche instantanée et intelligente
+        // Recherche instantanée et par touche Entrée
         function filterVideos() {
             const query = document.getElementById('searchInput').value.toLowerCase().trim();
             const cards = document.querySelectorAll('.video-card');
@@ -420,6 +420,13 @@ HTML
                 }
             });
         }
+
+        // Écouteur pour la touche Entrée
+        document.getElementById('searchInput').addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                filterVideos();
+            }
+        });
 
         // Filtrage par catégorie
         function filterCategory(category, btn) {
