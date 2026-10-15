@@ -96,14 +96,13 @@ HTML
             flex-direction: column;
         }
 
-        .video-placeholder {
+        /* Style pour les vraies balises vidéo */
+        .video-card video {
             width: 100%;
             height: 350px;
-            background: linear-gradient(45deg, #2c2c2c, #1a1a1a);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
+            object-fit: cover;
+            background-color: #000;
+            display: block;
         }
 
         .video-info {
@@ -237,14 +236,14 @@ HTML
     <div class="feed-container" id="feedContainer">
         <!-- Carte Vidéo : Motivation -->
         <div class="video-card" data-category="motivation">
-            <div class="video-placeholder">🎥 Vidéo Motivation</div>
+            <video src="https://www.w3schools.com/html/mov_bbb.mp4" autoplay loop muted playsinline></video>
             <div class="video-info">
                 <div class="author">@MotivationPro</div>
                 <div class="description">Ne lâche rien, chaque effort compte ! 💪🔥</div>
                 <div class="actions">
                     <button class="action-btn" onclick="likeVideo(this)">❤️ <span class="like-count">1206</span></button>
                     <button class="action-btn" onclick="toggleComments(this)">💬 <span class="comment-count">1</span></button>
-                    <button class="action-btn" onclick="toggleSound(this)">🔊 <span class="sound-status">Son</span></button>
+                    <button class="action-btn" onclick="toggleSound(this, event)">🔊 <span class="sound-status">Son</span></button>
                     <button class="action-btn" onclick="toggleFavorite(this)">🔖 Favori</button>
                     <button class="action-btn" onclick="shareVideo(this)">↗️ Partager</button>
                 </div>
@@ -267,14 +266,14 @@ HTML
 
         <!-- Carte Vidéo : Humour -->
         <div class="video-card" data-category="humour">
-            <div class="video-placeholder">🎥 Vidéo Humour</div>
+            <video src="https://www.w3schools.com/html/movie.mp4" autoplay loop muted playsinline></video>
             <div class="video-info">
                 <div class="author">@RireTotal</div>
                 <div class="description">Quand tu essaies de cuisiner pour la première fois 😅</div>
                 <div class="actions">
                     <button class="action-btn" onclick="likeVideo(this)">❤️ <span class="like-count">435</span></button>
                     <button class="action-btn" onclick="toggleComments(this)">💬 <span class="comment-count">0</span></button>
-                    <button class="action-btn" onclick="toggleSound(this)">🔊 <span class="sound-status">Son</span></button>
+                    <button class="action-btn" onclick="toggleSound(this, event)">🔊 <span class="sound-status">Son</span></button>
                     <button class="action-btn" onclick="toggleFavorite(this)">🔖 Favori</button>
                     <button class="action-btn" onclick="shareVideo(this)">↗️ Partager</button>
                 </div>
@@ -294,14 +293,14 @@ HTML
 
         <!-- Carte Vidéo : Enfants -->
         <div class="video-card" data-category="enfants">
-            <div class="video-placeholder">🎥 Vidéo Enfants</div>
+            <video src="https://www.w3schools.com/html/mov_bbb.mp4" autoplay loop muted playsinline></video>
             <div class="video-info">
                 <div class="author">@MiniKids</div>
                 <div class="description">La découverte d'un chiot pour la toute première fois 🐶❤️</div>
                 <div class="actions">
                     <button class="action-btn" onclick="likeVideo(this)">❤️ <span class="like-count">890</span></button>
                     <button class="action-btn" onclick="toggleComments(this)">💬 <span class="comment-count">0</span></button>
-                    <button class="action-btn" onclick="toggleSound(this)">🔊 <span class="sound-status">Son</span></button>
+                    <button class="action-btn" onclick="toggleSound(this, event)">🔊 <span class="sound-status">Son</span></button>
                     <button class="action-btn" onclick="toggleFavorite(this)">🔖 Favori</button>
                     <button class="action-btn" onclick="shareVideo(this)">↗️ Partager</button>
                 </div>
@@ -359,10 +358,15 @@ HTML
             panel.classList.toggle('open');
         }
 
-        // Bouton Son (passe de 🔊 Son à 🔇 Muet)
-        function toggleSound(button) {
+        // Bouton Son (active/désactive réellement le son de la vidéo)
+        function toggleSound(button, event) {
+            const card = button.closest('.video-card');
+            const video = card.querySelector('video');
             const span = button.querySelector('.sound-status');
-            if (span.textContent === "Son") {
+
+            video.muted = !video.muted;
+
+            if (video.muted) {
                 button.innerHTML = '🔇 <span class="sound-status">Muet</span>';
                 button.style.color = "var(--text-secondary)";
             } else {
