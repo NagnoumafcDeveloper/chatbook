@@ -1,4 +1,3 @@
-HTML
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -96,14 +95,22 @@ HTML
             flex-direction: column;
         }
 
-        .video-placeholder {
+        /* Conteneur vidéo adapté au format vertical */
+        .video-wrapper {
             width: 100%;
-            height: 350px;
-            background: linear-gradient(45deg, #2c2c2c, #1a1a1a);
+            height: 450px;
+            background: #000000;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
+            cursor: pointer;
+        }
+
+        .video-wrapper video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .video-info {
@@ -147,7 +154,6 @@ HTML
             transform: scale(1.2);
         }
 
-        /* Panneau de commentaires */
         .comments-panel {
             background-color: #252525;
             border-top-left-radius: 16px;
@@ -235,25 +241,28 @@ HTML
     </header>
 
     <div class="feed-container" id="feedContainer">
-        <!-- Carte Vidéo : Motivation -->
+        
+        <!-- Carte Vidéo 1 : Motivation -->
         <div class="video-card" data-category="motivation">
-            <div class="video-placeholder">🎥 Vidéo Motivation</div>
+            <div class="video-wrapper" onclick="togglePlayPause(this)">
+                <!-- Remplacer exemple.mp4 par le chemin réel de votre fichier vidéo -->
+                <video src="motivation.mp4" loop muted playsinline></video>
+            </div>
             <div class="video-info">
                 <div class="author">@MotivationPro</div>
                 <div class="description">Ne lâche rien, chaque effort compte ! 💪🔥</div>
                 <div class="actions">
                     <button class="action-btn" onclick="likeVideo(this)">❤️ <span class="like-count">1206</span></button>
                     <button class="action-btn" onclick="toggleComments(this)">💬 <span class="comment-count">1</span></button>
-                    <button class="action-btn" onclick="toggleSound(this)">🔊 <span class="sound-status">Son</span></button>
-                    <button class="action-btn" onclick="toggleFavorite(this)">🔖 Favori</button>
+                    <button class="action-btn" onclick="toggleSound(this)">🔇 <span class="sound-status">Muet</span></button>
+                    <button class="action-btn" onclick="toggleFavorite(this)">🔖 <span>Favori</span></button>
                     <button class="action-btn" onclick="shareVideo(this)">↗️ Partager</button>
                 </div>
             </div>
-            <!-- Section Commentaires -->
             <div class="comments-panel">
                 <div class="comments-header">
                     <span>Commentaires</span>
-                    <button class="close-comments" onclick="toggleComments(this)">✕</button>
+                    <button class="close-comments" onclick="closeCommentsPanel(this)">✕</button>
                 </div>
                 <div class="comment-list">
                     <div class="comment-item"><strong>@Moi:</strong> kk</div>
@@ -265,163 +274,27 @@ HTML
             </div>
         </div>
 
-        <!-- Carte Vidéo : Humour -->
+        <!-- Carte Vidéo 2 : Humour -->
         <div class="video-card" data-category="humour">
-            <div class="video-placeholder">🎥 Vidéo Humour</div>
+            <div class="video-wrapper" onclick="togglePlayPause(this)">
+                <video src="humour.mp4" loop muted playsinline></video>
+            </div>
             <div class="video-info">
-                <div class="author">@RireTotal</div>
-                <div class="description">Quand tu essaies de cuisiner pour la première fois 😅</div>
+                <div class="author">@DroleDeVie</div>
+                <div class="description">Quand j'essaie de coder sans boire de café ☕😂</div>
                 <div class="actions">
-                    <button class="action-btn" onclick="likeVideo(this)">❤️ <span class="like-count">435</span></button>
+                    <button class="action-btn" onclick="likeVideo(this)">❤️ <span class="like-count">854</span></button>
                     <button class="action-btn" onclick="toggleComments(this)">💬 <span class="comment-count">0</span></button>
-                    <button class="action-btn" onclick="toggleSound(this)">🔊 <span class="sound-status">Son</span></button>
-                    <button class="action-btn" onclick="toggleFavorite(this)">🔖 Favori</button>
+                    <button class="action-btn" onclick="toggleSound(this)">🔇 <span class="sound-status">Muet</span></button>
+                    <button class="action-btn" onclick="toggleFavorite(this)">🔖 <span>Favori</span></button>
                     <button class="action-btn" onclick="shareVideo(this)">↗️ Partager</button>
                 </div>
             </div>
             <div class="comments-panel">
                 <div class="comments-header">
                     <span>Commentaires</span>
-                    <button class="close-comments" onclick="toggleComments(this)">✕</button>
+                    <button class="close-comments" onclick="closeCommentsPanel(this)">✕</button>
                 </div>
                 <div class="comment-list"></div>
                 <div class="comment-input-box">
                     <input type="text" placeholder="Ajouter un commentaire..." onkeypress="handleCommentKey(event, this)">
-                    <button onclick="addComment(this)">Envoyer</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Carte Vidéo : Enfants -->
-        <div class="video-card" data-category="enfants">
-            <div class="video-placeholder">🎥 Vidéo Enfants</div>
-            <div class="video-info">
-                <div class="author">@MiniKids</div>
-                <div class="description">La découverte d'un chiot pour la toute première fois 🐶❤️</div>
-                <div class="actions">
-                    <button class="action-btn" onclick="likeVideo(this)">❤️ <span class="like-count">890</span></button>
-                    <button class="action-btn" onclick="toggleComments(this)">💬 <span class="comment-count">0</span></button>
-                    <button class="action-btn" onclick="toggleSound(this)">🔊 <span class="sound-status">Son</span></button>
-                    <button class="action-btn" onclick="toggleFavorite(this)">🔖 Favori</button>
-                    <button class="action-btn" onclick="shareVideo(this)">↗️ Partager</button>
-                </div>
-            </div>
-            <div class="comments-panel">
-                <div class="comments-header">
-                    <span>Commentaires</span>
-                    <button class="close-comments" onclick="toggleComments(this)">✕</button>
-                </div>
-                <div class="comment-list"></div>
-                <div class="comment-input-box">
-                    <input type="text" placeholder="Ajouter un commentaire..." onkeypress="handleCommentKey(event, this)">
-                    <button onclick="addComment(this)">Envoyer</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Filtrage par catégorie
-        function filterCategory(category, btn) {
-            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-
-            const cards = document.querySelectorAll('.video-card');
-            cards.forEach(card => {
-                if (category === 'all' || card.dataset.category === category) {
-                    card.style.display = 'flex';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        }
-
-        // Incrémentation des likes
-        function likeVideo(button) {
-            const span = button.querySelector('.like-count');
-            let count = parseInt(span.textContent);
-            if (button.dataset.liked === "true") {
-                count--;
-                button.dataset.liked = "false";
-                button.style.color = "var(--text-color)";
-            } else {
-                count++;
-                button.dataset.liked = "true";
-                button.style.color = "var(--primary-color)";
-            }
-            span.textContent = count;
-        }
-
-        // Gestion de l'affichage des commentaires
-        function toggleComments(button) {
-            const card = button.closest('.video-card');
-            const panel = card.querySelector('.comments-panel');
-            panel.classList.toggle('open');
-        }
-
-        // Bouton Son
-        function toggleSound(button) {
-            const span = button.querySelector('.sound-status');
-            if (span.textContent === "Son") {
-                span.textContent = "Muet";
-                button.style.color = "var(--text-secondary)";
-            } else {
-                span.textContent = "Son";
-                button.style.color = "var(--text-color)";
-            }
-        }
-
-        // Bouton Favori
-        function toggleFavorite(button) {
-            if (button.dataset.fav === "true") {
-                button.dataset.fav = "false";
-                button.style.color = "var(--text-color)";
-            } else {
-                button.dataset.fav = "true";
-                button.style.color = "#ffcc00"; // Couleur dorée pour le favori
-            }
-        }
-
-        // Bouton Partager
-        function shareVideo(button) {
-            if (navigator.share) {
-                navigator.share({
-                    title: 'ChatBook Video',
-                    url: window.location.href
-                }).catch(() => {});
-            } else {
-                alert("Lien copié dans le presse-papier !");
-            }
-        }
-
-        // Ajouter un commentaire (via bouton)
-        function addComment(button) {
-            const card = button.closest('.video-card');
-            const input = card.querySelector('.comment-input-box input');
-            const text = input.value.trim();
-
-            if (text !== "") {
-                const commentList = card.querySelector('.comment-list');
-                const newComment = document.createElement('div');
-                newComment.className = 'comment-item';
-                newComment.innerHTML = <strong>@Moi:</strong> ${text};
-                commentList.appendChild(newComment);
-
-                // Mettre à jour le compteur de commentaires
-                const commentCountSpan = card.querySelector('.comment-count');
-                commentCountSpan.textContent = parseInt(commentCountSpan.textContent) + 1;
-
-                input.value = "";
-            }
-        }
-
-        // Ajouter un commentaire (via touche Entrée)
-        function handleCommentKey(event, input) {
-            if (event.key === 'Enter') {
-                const button = input.nextElementSibling;
-                addComment(button);
-            }
-        }
-    </script>
-</body>
-</html>
