@@ -13,25 +13,27 @@ body{background:#000;color:#fff;display:flex;height:100vh;overflow:hidden}
 .menu{margin-top:14px;display:flex;flex-direction:column;gap:2px}
 .menu a{padding:10px 8px;border-radius:8px;display:flex;gap:10px;cursor:pointer}.menu a.active{color:#fe2c55;font-weight:700}
 .btn-red{background:#fe2c55;color:#fff;border:none;border-radius:6px;padding:12px;font-weight:700;margin-top:15px;width:100%;cursor:pointer}
-.center{flex:1;display:flex;justify-content:center;align-items:center;gap:16px}
+.center{flex:1;display:flex;justify-content:center;align-items:center;gap:18px}
 .video-box{position:relative;width:360px;height:82vh;background:#111;border-radius:10px;overflow:hidden}
 .video-box video{width:100%;height:100%;object-fit:cover}
 .video-info{position:absolute;left:10px;bottom:10px}
-.right-actions{display:flex;flex-direction:column;gap:14px;align-items:center}
+.right-actions{display:flex;flex-direction:column;align-items:center;gap:16px}
+.item{display:flex;flex-direction:column;align-items:center;justify-content:center;width:60px;cursor:pointer}
 .pp{width:52px;height:52px;border-radius:50%;position:relative;border:2px solid #fff}
 .pp img{width:100%;height:100%;object-fit:cover;border-radius:50%}
-.plus{position:absolute;top:-7px;left:50%;transform:translateX(-50%);background:#fe2c55;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;border:2px solid #000;z-index:5;cursor:pointer}
-.action{width:50px;height:50px;background:transparent;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:30px;cursor:pointer;transition:0.15s}
-.action:active{transform:scale(0.85)}
-.action.liked span{color:#fe2c55!important}
-.action.saved span{color:#ffcc00!important}
-.count{font-size:12px;font-weight:700;margin-top:2px}
+.plus{position:absolute;top:-7px;left:50%;transform:translateX(-50%);background:#fe2c55;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;border:2px solid #000;z-index:5}
+.icon{font-size:32px;line-height:1;display:flex;justify-content:center;align-items:center;width:50px;height:50px;background:transparent}
+.icon.liked{color:#fe2c55}
+.icon.saved{color:#ffcc00}
+.count{font-size:13px;font-weight:700;text-align:center;width:100%;margin-top:2px}
 .comment-panel{display:none;position:absolute;left:0;right:0;bottom:0;background:#1a1a1a;border-radius:16px 16px 0 0;padding:12px;max-height:55%;z-index:20;flex-direction:column}
 .comment-list{flex:1;overflow-y:auto;margin-bottom:8px;display:flex;flex-direction:column;gap:8px}
 .comment-item{background:#2a2a2a;padding:8px 10px;border-radius:12px;font-size:13px}
 .comment-input{display:flex;gap:8px}
 .comment-input input{flex:1;padding:10px 12px;border-radius:20px;border:none;outline:none}
 .comment-input button{background:#fe2c55;color:#fff;border:none;padding:10px 14px;border-radius:20px;font-weight:700}
+.share-panel{display:none;position:absolute;left:0;right:0;bottom:0;background:#1a1a1a;border-radius:16px 16px 0 0;padding:16px;z-index:25;flex-direction:column;gap:10px}
+.share-option{background:#2a2a2a;padding:12px;border-radius:10px;display:flex;align-items:center;gap:10px;cursor:pointer}
 @media(max-width:900px){.left{display:none}.video-box{width:100vw;max-width:400px;height:88vh}}
 </style>
 </head>
@@ -53,7 +55,7 @@ body{background:#000;color:#fff;display:flex;height:100vh;overflow:hidden}
 <script>
 let myPhoto = localStorage.getItem('chatbook_myPhoto') || 'https://i.pravatar.cc/150?img=32';
 let data=[
- {url:"https://www.w3schools.com/html/mov_bbb.mp4",user:"SENEGALESEBOYZ SN",desc:"💔 #humoursenegal",likes:37700,comsList:["Trop fort 😂"],favs:7256,shares:345,photo:myPhoto,liked:false},
+ {url:"https://www.w3schools.com/html/mov_bbb.mp4",user:"SENEGALESEBOYZ SN",desc:"💔 #humoursenegal",likes:37700,comsList:["Trop fort 😂","Bien fait"],favs:7256,shares:346,photo:myPhoto,liked:false},
  {url:"https://www.w3schools.com/html/movie.mp4",user:"@dakar_comedy",desc:"WEUH 😳 #senegal",likes:45200,comsList:[],favs:5400,shares:812,photo:"https://i.pravatar.cc/150?img=12",liked:false},
 ];
 let idx=0; let saved=new Set(); let isMuted=true; let followed=new Set();
@@ -65,17 +67,24 @@ function show(i){
   <div class="video-info"><b>${v.user}</b><p>${v.desc}</p></div>
   <div class="comment-panel" id="cPanel">
     <div style="display:flex;justify-content:space-between;margin-bottom:8px"><b>Commentaires (${v.comsList.length})</b><span onclick="closeCom()" style="cursor:pointer">✕</span></div>
-    <div class="comment-list" id="cList">${v.comsList.map(c=>`<div class="comment-item">${c}</div>`).join('')||'<div style="color:#888;font-size:12px">Pas de commentaires</div>'}</div>
+    <div class="comment-list" id="cList">${v.comsList.map(c=>`<div class="comment-item">${c}</div>`).join('')||'<div style="color:#888">Pas de commentaires</div>'}</div>
     <div class="comment-input"><input id="cInput" placeholder="Ajouter un commentaire..."><button onclick="sendCom()">Envoyer</button></div>
-  </div>`;
+  </div>
+  <div class="share-panel" id="sPanel">
+    <div style="display:flex;justify-content:space-between"><b>Partager</b><span onclick="closeShare()" style="cursor:pointer">✕</span></div>
+    <div class="share-option" onclick="doShare('whatsapp')">🟢 WhatsApp</div>
+    <div class="share-option" onclick="doShare('facebook')">🔵 Facebook</div>
+    <div class="share-option" onclick="doShare('copy')">🔗 Copier le lien</div>
+  </div>
+ `;
 
  document.getElementById('actions').innerHTML=`
-  <div class="pp"><img src="${v.photo}"><div class="plus" onclick="followUser(${i})" id="plusBtn">${followed.has(i)?'✓':'​+'}</div></div>
-  <div onclick="like(${i})"><div class="action ${v.liked?'liked':''}"><span>${v.liked?'❤️':'🤍'}</span></div><div class="count">${fmt(v.likes)}</div></div>
-  <div onclick="openCom()"><div class="action"><span>💬</span></div><div class="count">${v.comsList.length}</div></div>
-  <div onclick="saveV(${i})"><div class="action ${saved.has(i)?'saved':''}"><span>${saved.has(i)?'★':'☆'}</span></div><div class="count">${v.favs}</div></div>
-  <div onclick="shareV()"><div class="action"><span>↗️</span></div><div class="count">${v.shares}</div></div>
-  <div onclick="togSound()"><div class="action"><span>${isMuted?'🔇':'🔊'}</span></div></div>
+  <div class="item"><div class="pp"><img src="${v.photo}"><div class="plus" onclick="followUser(${i})">${followed.has(i)?'✓':'+'}</div></div></div>
+  <div class="item" onclick="like(${i})"><div class="icon ${v.liked?'liked':''}">${v.liked?'❤️':'🤍'}</div><div class="count">${fmt(v.likes)}</div></div>
+  <div class="item" onclick="openCom()"><div class="icon">💬</div><div class="count">${v.comsList.length}</div></div>
+  <div class="item" onclick="saveV(${i})"><div class="icon ${saved.has(i)?'saved':''}">${saved.has(i)?'★':'☆'}</div><div class="count">${v.favs}</div></div>
+  <div class="item" onclick="openShare()"><div class="icon">↗️</div><div class="count">${v.shares}</div></div>
+  <div class="item" onclick="togSound()"><div class="icon">${isMuted?'🔇':'🔊'}</div></div>
  `;
  let vid=document.getElementById('vid'); if(vid) vid.play().catch(()=>{});
 }
@@ -83,14 +92,19 @@ function togglePlay(){let v=document.getElementById('vid');v.paused?v.play():v.p
 function togSound(){isMuted=!isMuted;show(idx);}
 function like(i){data[i].liked=!data[i].liked;data[i].liked?data[i].likes++:data[i].likes--;show(i);}
 function saveV(i){saved.has(i)?saved.delete(i):saved.add(i);show(i);}
-function shareV(){navigator.clipboard.writeText(location.href);alert('Lien copié!');data[idx].shares++;show(idx);}
-function followUser(i){
- if(followed.has(i)){followed.delete(i);}else{followed.add(i);}
- show(i);
-}
+function followUser(i){followed.has(i)?followed.delete(i):followed.add(i);show(i);}
 function openCom(){document.getElementById('cPanel').style.display='flex';}
 function closeCom(){document.getElementById('cPanel').style.display='none';}
 function sendCom(){let inp=document.getElementById('cInput');let t=inp.value.trim();if(!t)return;data[idx].comsList.push(t);inp.value='';show(idx);openCom();}
+function openShare(){document.getElementById('sPanel').style.display='flex';}
+function closeShare(){document.getElementById('sPanel').style.display='none';}
+function doShare(type){
+ let url=location.href;
+ if(type=='whatsapp'){window.open('https://wa.me/?text='+encodeURIComponent(url));}
+ else if(type=='facebook'){window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(url));}
+ else {navigator.clipboard.writeText(url);alert('Lien copié!');}
+ data[idx].shares++; closeShare(); show(idx);
+}
 document.getElementById('up').addEventListener('change',function(){let f=this.files[0];if(!f)return;let u=URL.createObjectURL(f);data.unshift({url:u,user:"@moi",desc:"Ma vidéo",likes:0,comsList:[],favs:0,shares:0,photo:myPhoto,liked:false});idx=0;show(0);});
 document.addEventListener('wheel',e=>{if(e.deltaY>0)idx=Math.min(data.length-1,idx+1);else idx=Math.max(0,idx-1);show(idx);});
 show(0);
