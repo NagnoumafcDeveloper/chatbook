@@ -1,57 +1,53 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>ChatBook</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#fe2c55">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
 <link rel="apple-touch-icon" href="https://i.pravatar.cc/192?img=32">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
 body{background:#000;color:#fff;display:flex;height:100vh;overflow:hidden}
-.left{width:240px;background:#000;padding:16px;border-right:1px solid #111;flex-shrink:0}
-.logo{font-size:28px;font-weight:900;padding:0 0 18px 6px}
+.left{width:240px;background:#000;padding:16px;border-right:1px solid #111}
+.logo{font-size:28px;font-weight:900;margin-bottom:18px}
 .search{background:#1e1e1e;border-radius:22px;padding:11px 14px;display:flex;gap:8px;margin-bottom:18px}
 .search input{background:transparent;border:none;outline:none;color:#fff;width:100%}
-.menu{display:flex;flex-direction:column;gap:4px}
-.menu a{padding:10px 8px;border-radius:8px;display:flex;gap:12px;cursor:pointer;font-size:15px;color:#fff}
+.menu a{padding:10px 8px;display:flex;gap:12px;cursor:pointer;color:#fff}
 .menu a.active{color:#fe2c55;font-weight:700}
-.btn-red{background:#fe2c55;color:#fff;border:none;border-radius:8px;padding:12px;font-weight:700;margin-top:18px;width:100%}
+.btn-red{background:#fe2c55;color:#fff;border:none;border-radius:8px;padding:12px;width:100%;font-weight:700;margin-top:18px}
 .center{flex:1;display:flex;justify-content:center;align-items:center;gap:18px;background:#000}
-.video-box{position:relative;width:360px;height:84vh;background:#111;border-radius:8px;overflow:hidden;flex-shrink:0}
+.video-box{position:relative;width:360px;height:84vh;background:#111;border-radius:8px;overflow:hidden}
 .video-box video{width:100%;height:100%;object-fit:cover}
-.video-info{position:absolute;left:12px;bottom:12px;z-index:2;line-height:1.3}
-.video-info b{font-size:15px}
-.video-info p{font-size:13px;margin-top:4px}
+.video-info{position:absolute;left:12px;bottom:12px;z-index:2}
 .right-actions{display:flex;flex-direction:column;align-items:center;gap:4px}
-.item{display:flex;flex-direction:column;align-items:center;width:62px;cursor:pointer;margin-bottom:2px}
-.pp{width:52px;height:52px;border-radius:50%;position:relative;border:2px solid #fff;overflow:hidden;background:#222}
+.item{display:flex;flex-direction:column;align-items:center;width:62px;cursor:pointer}
+.pp{width:52px;height:52px;border-radius:50%;border:2px solid #fff;overflow:hidden;position:relative;background:#222}
 .pp img{width:100%;height:100%;object-fit:cover}
-.plus{position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);background:#fe2c55;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#fff;border:2px solid #000}
-.icon{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;background:#2e2e2e;color:#fff}
+.plus{position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);background:#fe2c55;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;border:2px solid #000}
+.icon{width:48px;height:48px;border-radius:50%;background:#2e2e2e;color:#fff;display:flex;align-items:center;justify-content:center;font-size:24px}
 .icon.liked{color:#fe2c55}
 .icon.star-saved{color:#ffcc00;background:#3d3600}
-.count{font-size:12px;font-weight:700;margin-top:4px;color:#fff}
-.share-panel{display:none;position:absolute;left:0;right:0;bottom:0;background:#fff;color:#000;border-radius:16px 16px 0 0;z-index:30;flex-direction:column;max-height:75%;overflow:hidden}
-.share-header{display:flex;justify-content:space-between;align-items:center;padding:14px;border-bottom:1px solid #eee}
-.share-header b{flex:1;text-align:center;font-size:16px}
-.s-btn{background:#f2f2f2;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-weight:700}
-.users-row{display:flex;gap:14px;overflow-x:auto;padding:12px 14px}
-.users-row::-webkit-scrollbar{display:none}
+.count{font-size:12px;font-weight:700;margin-top:4px}
+.share-panel{display:none;position:absolute;left:0;right:0;bottom:0;background:#fff;color:#000;border-radius:16px 16px 0 0;z-index:30;max-height:75%;overflow:auto}
+.share-header{display:flex;justify-content:space-between;padding:14px;border-bottom:1px solid #eee;align-items:center}
+.share-header b{flex:1;text-align:center}
+.s-btn{background:#f2f2f2;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.users-row{display:flex;gap:14px;overflow-x:auto;padding:12px}
 .user-chip{flex:0 0 64px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer}
-.user-chip img{width:56px;height:56px;border-radius:50%;object-fit:cover}
-.user-chip span{font-size:11px;text-align:center;width:64px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.user-chip img{width:56px;height:56px;border-radius:50%}
+.user-chip span{font-size:11px;width:64px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center}
 .share-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;padding:14px}
 .share-opt{display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer}
 .share-circle{width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center}
-.share-opt span{font-size:11px;color:#000;text-align:center;line-height:1.1}
-.comment-panel{display:none;position:absolute;left:0;right:0;bottom:0;background:#121212;border-radius:16px 16px 0 0;padding:12px;max-height:50%;z-index:20;flex-direction:column;border-top:1px solid #222}
-.comment-item{background:#222;padding:8px 12px;border-radius:12px;font-size:13px;color:#fff;margin-bottom:4px}
+.share-opt span{font-size:11px;text-align:center;color:#000}
+.comment-panel{display:none;position:absolute;left:0;right:0;bottom:0;background:#121212;border-radius:16px 16px 0 0;padding:12px;max-height:50%;z-index:20;flex-direction:column}
+.comment-item{background:#222;padding:8px 12px;border-radius:12px;font-size:13px;margin-bottom:4px}
 .comment-input{display:flex;gap:8px;margin-top:8px}
-.comment-input input{flex:1;padding:10px 14px;border-radius:20px;border:none;outline:none;background:#2a2a2a;color:#fff}
-.comment-input button{background:#fe2c55;color:#fff;border:none;padding:10px 16px;border-radius:20px;font-weight:700;cursor:pointer}
+.comment-input input{flex:1;padding:10px 14px;border-radius:20px;border:none;background:#2a2a2a;color:#fff;outline:none}
+.comment-input button{background:#fe2c55;color:#fff;border:none;padding:10px 16px;border-radius:20px;font-weight:700}
 @media(max-width:900px){.left{display:none}.video-box{width:92vw;max-width:360px}}
 </style>
 </head>
@@ -63,11 +59,9 @@ body{background:#000;color:#fff;display:flex;height:100vh;overflow:hidden}
 <a class="active">🏠 Pour toi</a>
 <a>🧭 Explorer</a>
 <a>👥 Suivis</a>
-<a>🎬 Mini-dramas</a>
 <a>📺 LIVE</a>
 <a onclick="document.getElementById('up').click()">➕ Importer</a>
 <a>👤 Profil</a>
-<a>⋯ Plus</a>
 </div>
 <button class="btn-red">Se connecter</button>
 </div>
@@ -77,51 +71,41 @@ body{background:#000;color:#fff;display:flex;height:100vh;overflow:hidden}
 </div>
 <input type="file" id="up" accept="video/*" hidden>
 <script>
-let chatUsers=[
- {name:"Dr.Michael.v",img:"https://i.pravatar.cc/100?img=5"},
- {name:"TDF",img:"https://i.pravatar.cc/100?img=6"},
- {name:"A.Wahabe",img:"https://i.pravatar.cc/100?img=8"},
- {name:"Oustaz Diane",img:"https://i.pravatar.cc/100?img=11"},
-];
-let data=[
- {url:"https://www.w3schools.com/html/mov_bbb.mp4",user:"SENEGALESEBOYZ SN",desc:"💔 💔 #humoursenegal",likes:37700,comsList:["WEUH 😳😳"],favs:7256,shares:345,photo:"https://i.pravatar.cc/150?img=12",liked:false,coms:1354},
- {url:"https://www.w3schools.com/html/movie.mp4",user:"@dakar_comedy",desc:"WEUH 😳",likes:45200,comsList:[],favs:5400,shares:812,photo:"https://i.pravatar.cc/150?img=8",liked:false,coms:892},
-];
-let idx=0, saved=new Set(), isMuted=true;
+let chatUsers=[{name:"Dr.Michael.v",img:"https://i.pravatar.cc/100?img=5"},{name:"TDF",img:"https://i.pravatar.cc/100?img=6"},{name:"A.Wahabe",img:"https://i.pravatar.cc/100?img=8"},{name:"Oustaz Diane",img:"https://i.pravatar.cc/100?img=11"}];
+let data=[{url:"https://www.w3schools.com/html/mov_bbb.mp4",user:"SENEGALESEBOYZ SN",desc:"💔 #humoursenegal",likes:37700,comsList:["WEUH 😳"],favs:7256,shares:345,photo:"https://i.pravatar.cc/150?img=12",liked:false,coms:1354},{url:"https://www.w3schools.com/html/movie.mp4",user:"@dakar_comedy",desc:"WEUH 😳",likes:45200,comsList:[],favs:5400,shares:812,photo:"https://i.pravatar.cc/150?img=8",liked:false,coms:892}];
+let idx=0,saved=new Set(),isMuted=true;
 function fmt(n){return n>=1000?(n/1000).toFixed(1)+'K':n}
 function show(i){
- let v=data[i];
- document.getElementById('vbox').innerHTML=`
-  <video src="${v.url}" loop id="vid" onclick="this.paused?this.play():this.pause()" ${isMuted?'muted':''} autoplay playsinline></video>
-  <div class="video-info"><b>${v.user}</b><p>${v.desc}</p><div style="margin-top:8px;background:rgba(255,255,255,0.15);padding:4px 8px;border-radius:4px;display:inline-block;font-size:11px">Contenu promotionnel</div></div>
-  <div class="comment-panel" id="cPanel">
-    <div style="display:flex;justify-content:space-between;color:#fff"><b>Commentaires (${v.comsList.length})</b><span onclick="closeCom()" style="cursor:pointer;font-size:18px">✕</span></div>
-    <div id="cList" style="flex:1;overflow:auto;margin:8px 0">${v.comsList.map(c=>`<div class="comment-item">${c}</div>`).join('')||'<span style="color:#888;font-size:12px">Pas encore de commentaires</span>'}</div>
-    <div class="comment-input"><input id="cInput" placeholder="Ajouter..."><button onclick="sendCom()">Envoyer</button></div>
-  </div>
-  <div class="share-panel" id="sPanel">
-    <div class="share-header"><div class="s-btn">🔍</div><b>Envoyer à</b><div class="s-btn" onclick="closeShare()">✕</div></div>
-    <div class="users-row">${chatUsers.map(u=>`<div class="user-chip" onclick="sendToUser('${u.name}')"><img src="${u.img}"><span>${u.name}</span></div>`).join('')}</div>
-    <div class="share-grid">
-      <div class="share-opt" onclick="doShare('republish')"><div class="share-circle" style="background:#FEE500"><span style="font-size:24px">🔄</span></div><span>Republier</span></div>
-      <div class="share-opt" onclick="doShare('copy')"><div class="share-circle" style="background:#0A84FF"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></div><span>Copier le lien</span></div>
-      <div class="share-opt" onclick="doShare('messenger')"><div class="share-circle" style="background:#0084FF"><svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.5 2 2 6 2 10.6c0 2.5 1.2 4.7 3.1 6.2V21l3.8-2.1c1.3 0.4 2.7.6 4.1.6 5.5 0 10-4 10-9S17.5 2 12 2z"/></svg></div><span>Messenger</span></div>
-      <div class="share-opt" onclick="doShare('whatsapp')"><div class="share-circle" style="background:#25D366"><svg width="28" height="28" viewBox="0 0 32 32" fill="white"><path d="M16 3C9.4 3 4 8.1 4 14.4c0 2.2.6 4.3 1.7 6.1L4 29l8.7-2.2c1.8 1 3.8 1.5 5.9 1.5 6.6 0 12-5.1 12-11.4S22.6 3 16 3zm0 20.6c-1.9 0-3.7-.5-5.3-1.4l-.4-.2-5.2 1.3 1.4-4.9-.2-.4A9.4 9.4 0 0 1 6.5 14.4C6.5 9.5 10.7 5.6 16 5.6S25.5 9.5 25.5 14.4 21.3 23.6 16 23.6zm5.2-6.9c-.3-.1-1.7-.8-2-1-.3-.1-.5-.1-.7.1-.2.2-.8 1-1 1.1-.2.2-.4.2-.7.1-.3-.1-1.2-.4-2.3-1.4-.9-.7-1.4-1.6-1.6-1.9-.2-.2 0-.4.1-.5l.5-.5c.1-.1.2-.3.2-.4 0-.1 0-.3-.1-.4 0-.1-.7-1.6-1-2.1-.2-.5-.4-.7-.4h-.6c-.2 0-.5 0-.8.4-.3.3-1 1-1 2.3s1 2.7 1.2 2.9c.1.2 2 3.1 5 4.2.7.3 1.2.4 1.6.3.5-.1 1.7-.7 1.9-1.3.2-.6.2-1.1.1-1.2 0-.1-.3-.2-.6-.3z"/></svg></div><span>WhatsApp</span></div>
-      <div class="share-opt" onclick="doShare('snap')"><div class="share-circle" style="background:#FFFC00"><svg width="26" height="26" viewBox="0 0 24 24" fill="white" stroke="black" stroke-width="1.2"><path d="M12 2.5c-3.5 0-6 2.2-6 5 0.9.6 1.1.6 1.1.6-.3 1.3-.6 1.3-.6-.8.7-1.5 1-1.5 1.5.4.5 1.9 1.3.4.1-.5.4-1.9-1.2.5.3.9.6 1.1 1.4.7.2 1.2.5 1.7.3.5.8.7 1.4.7h.6c.6 0 1.1-.2 1.4-.7.3-.5.1-1.5-1.7.2-.4.6-.7 1.1-1.5.2.8.7.9 1.2.3.5.9.1 1.3-.4 0-.5-.7-.8-1.5 0 0.7.3 1.3.6 0 0.6-.2.6-1.1 0-2.8-2.5-5-6-5z"/></svg></div><span>Snapchat</span></div>
-      <div class="share-opt" onclick="doShare('wabusiness')"><div class="share-circle" style="background:#128C7E"><svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.5 2 2 6 2 10.6c0 2.5 1.2 4.7 3.1 6.2V21l3.8-2.1c1.3 0.4 2.7.6 4.1.6 5.5 0 10-4 10-9S17.5 2 12 2zm0 14.5c-1 0-2-.2-2.8-.6l-.2-.1-1.7.4.4-1.6-.1-.1a4.5 4.5 0 0 1-.7-2.4c0-2.5 2.1-4.6 4.7-4.6s4.7 2.1 4.7 4.6-2.1 4.6-4.7 4.6z"/></svg></div><span>WA Business</span></div>
-    </div>
-  </div>
- `;
- let isSaved = saved.has(i);
- document.getElementById('actions').innerHTML=`
-  <div class="item"><div class="pp"><img src="${v.photo}"><div class="plus">+</div></div></div>
-  <div class="item" onclick="like(${i})"><div class="icon ${v.liked?'liked':''}">${v.liked?'❤️':'🤍'}</div><div class="count">${fmt(v.likes)}</div></div>
-  <div class="item" onclick="openCom()"><div class="icon">💬</div><div class="count">${v.coms}</div></div>
-  <div class="item" onclick="saveV(${i})"><div class="icon ${isSaved?'star-saved':''}">${isSaved?'★':'☆'}</div><div class="count">${fmt(v.favs)}</div></div>
-  <div class="item" onclick="openShare()"><div class="icon">↗️</div><div class="count">${v.shares}</div></div>
-  <div class="item" onclick="togSound()"><div class="icon">${isMuted?'🔇':'🔊'}</div></div>
- `;
- let vid=document.getElementById('vid'); if(vid) vid.play().catch(()=>{});
+let v=data[i];
+document.getElementById('vbox').innerHTML=`
+<video src="${v.url}" loop id="vid" onclick="this.paused?this.play():this.pause()" ${isMuted?'muted':''} autoplay playsinline></video>
+<div class="video-info"><b>${v.user}</b><p>${v.desc}</p></div>
+<div class="comment-panel" id="cPanel">
+<div style="display:flex;justify-content:space-between"><b>Commentaires</b><span onclick="closeCom()" style="cursor:pointer">✕</span></div>
+<div style="flex:1;overflow:auto;margin:8px 0">${v.comsList.map(c=>`<div class="comment-item">${c}</div>`).join('')||'<span style="color:#888">Pas de coms</span>'}</div>
+<div class="comment-input"><input id="cInput" placeholder="Ajouter..."><button onclick="sendCom()">Envoyer</button></div>
+</div>
+<div class="share-panel" id="sPanel">
+<div class="share-header"><div class="s-btn">🔍</div><b>Envoyer à</b><div class="s-btn" onclick="closeShare()">✕</div></div>
+<div class="users-row">${chatUsers.map(u=>`<div class="user-chip" onclick="sendToUser('${u.name}')"><img src="${u.img}"><span>${u.name}</span></div>`).join('')}</div>
+<div class="share-grid">
+<div class="share-opt" onclick="doShare('republish')"><div class="share-circle" style="background:#FEE500">🔄</div><span>Republier</span></div>
+<div class="share-opt" onclick="doShare('copy')"><div class="share-circle" style="background:#0A84FF">🔗</div><span>Copier le lien</span></div>
+<div class="share-opt" onclick="doShare('messenger')"><div class="share-circle" style="background:#0084FF">💬</div><span>Messenger</span></div>
+<div class="share-opt" onclick="doShare('whatsapp')"><div class="share-circle" style="background:#25D366">🟢</div><span>WhatsApp</span></div>
+<div class="share-opt" onclick="doShare('snap')"><div class="share-circle" style="background:#FFFC00">👻</div><span>Snapchat</span></div>
+<div class="share-opt" onclick="doShare('wabusiness')"><div class="share-circle" style="background:#128C7E">🏢</div><span>WA Business</span></div>
+</div>
+</div>`;
+let isSaved=saved.has(i);
+document.getElementById('actions').innerHTML=`
+<div class="item"><div class="pp"><img src="${v.photo}"><div class="plus">+</div></div></div>
+<div class="item" onclick="like(${i})"><div class="icon ${v.liked?'liked':''}">${v.liked?'❤️':'🤍'}</div><div class="count">${fmt(v.likes)}</div></div>
+<div class="item" onclick="openCom()"><div class="icon">💬</div><div class="count">${v.coms}</div></div>
+<div class="item" onclick="saveV(${i})"><div class="icon ${isSaved?'star-saved':''}">${isSaved?'★':'☆'}</div><div class="count">${fmt(v.favs)}</div></div>
+<div class="item" onclick="openShare()"><div class="icon">↗️</div><div class="count">${v.shares}</div></div>
+<div class="item" onclick="togSound()"><div class="icon">${isMuted?'🔇':'🔊'}</div></div>`;
+let vid=document.getElementById('vid');if(vid)vid.play().catch(()=>{});
 }
 function togSound(){isMuted=!isMuted;show(idx);}
 function like(i){data[i].liked=!data[i].liked;data[i].liked?data[i].likes++:data[i].likes--;show(i);}
@@ -131,20 +115,15 @@ function closeCom(){document.getElementById('cPanel').style.display='none';}
 function sendCom(){let inp=document.getElementById('cInput');let t=inp.value.trim();if(!t)return;data[idx].comsList.push(t);inp.value='';show(idx);openCom();}
 function openShare(){document.getElementById('sPanel').style.display='flex';}
 function closeShare(){document.getElementById('sPanel').style.display='none';}
-function sendToUser(name){alert('Envoyé à '+name+' ✅ sur ChatBook');closeShare();data[idx].shares++;show(idx);}
+function sendToUser(name){alert('Envoyé à '+name+' ✅');closeShare();data[idx].shares++;show(idx);}
 function doShare(type){
- let url=window.location.href;
- let txt="Regarde cette vidéo sur ChatBook: "+url;
- if(type=='whatsapp'){window.open('https://wa.me/?text='+encodeURIComponent(txt),'_blank');}
- else if(type=='wabusiness'){window.open('https://wa.me/?text='+encodeURIComponent(txt),'_blank');}
- else if(type=='messenger'){window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(url),'_blank');}
- else if(type=='snap'){if(navigator.clipboard){navigator.clipboard.writeText(url).then(()=>alert('Lien copié, colle dans Snapchat ✅'))}else{prompt('Copie:',url)}}
- else if(type=='copy'){if(navigator.clipboard){navigator.clipboard.writeText(url).then(()=>alert('Lien copié ✅')).catch(()=>prompt('Copie:',url));}else{prompt('Copie:',url);}}
- else if(type=='republish'){alert('Republié sur ton profil ✅');}
- data[idx].shares++;closeShare();show(idx);
+let url=location.href;let txt="Regarde sur ChatBook: "+url;
+if(type=='whatsapp'){window.open('https://wa.me/?text='+encodeURIComponent(txt),'_blank');}
+else if(type=='messenger'){window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(url),'_blank');}
+else if(type=='copy'){navigator.clipboard.writeText(url).then(()=>alert('Lien copié ✅'));}
+else{alert('Republié ✅');}
+data[idx].shares++;closeShare();show(idx);
 }
-document.getElementById('up').addEventListener('change',function(){let f=this.files[0];if(!f)return;let u=URL.createObjectURL(f);data.unshift({url:u,user:"@moi",desc:"Ma vidéo",likes:0,comsList:[],favs:0,shares:0,photo:'https://i.pravatar.cc/150?img=32',liked:false,coms:0});idx=0;show(0);});
-document.addEventListener('wheel',e=>{if(e.deltaY>0)idx=Math.min(data.length-1,idx+1);else idx=Math.max(0,idx-1);show(idx);});
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js')}
 show(0);
 </script>
