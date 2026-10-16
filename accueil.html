@@ -3,14 +3,6 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>ChatBook</title>
 <link rel="stylesheet" href="css/style.css">
-<style>
-.actions{right:10px;bottom:20px;gap:20px}
-.act{cursor:pointer;text-align:center}
-.act.icon{font-size:32px;line-height:32px;color:#fff;filter:drop-shadow(0 2px 3px #000);transition:0.15s;background:none!important;width:auto!important;height:auto!important;border-radius:0!important}
-.act.liked.icon{color:#fe2c55;transform:scale(1.15)}
-.act.saved.icon{color:#ffcc00}
-.act span{font-size:11px;color:#fff;text-shadow:0 1px 2px #000;margin-top:2px;display:block}
-</style>
 </head><body>
 <div class="header"><div class="logo"><span>Chat</span>Book</div>
 <div class="search">🔍 <input placeholder="Rechercher" oninput="doSearch(this.value)"></div>
@@ -37,7 +29,6 @@ function render(arr){
      <div class="act" onclick="shareV(${i})"><div class="icon">↗️</div><span>Partage</span></div>
      <div class="act" onclick="togSound(${i})"><div class="icon" id="s${i}">🔇</div><span>Son</span></div>
    </div>
-   <div class="comment-box" id="cb${i}" style="display:none;position:absolute;bottom:0;left:0;right:0;background:#1a1a1a;padding:8px;gap:6px"><input id="ci${i}" placeholder="Commenter..." style="flex:1;padding:8px 12px;border-radius:20px;border:none"><button onclick="sendCom(${i})" style="background:#fe2c55;border:none;color:#fff;padding:8px 12px;border-radius:20px">OK</button></div>
   </div>`;
  });
 }
@@ -45,8 +36,7 @@ function format(n){return n>=1000?(n/1000).toFixed(1)+'k':n}
 function togSound(i){let v=document.getElementById('vid'+i);v.muted=!v.muted;document.getElementById('s'+i).textContent=v.muted?'🔇':'🔊';}
 function like(i){let el=document.getElementById('like'+i);let ic=el.querySelector('.icon');let lc=document.getElementById('lc'+i);if(el.classList.contains('liked')){el.classList.remove('liked');ic.textContent='🤍';data[i].likes--;}else{el.classList.add('liked');ic.textContent='❤️';data[i].likes++;}lc.textContent=format(data[i].likes);}
 function saveV(i){let el=document.getElementById('save'+i);let ic=el.querySelector('.icon');if(saved.has(i)){saved.delete(i);el.classList.remove('saved');ic.textContent='☆';}else{saved.add(i);el.classList.add('saved');ic.textContent='★';}}
-function openCom(i){let b=document.getElementById('cb'+i);b.style.display=b.style.display==='flex'?'none':'flex';}
-function sendCom(i){let inp=document.getElementById('ci'+i);if(!inp.value)return;data[i].coms.push(inp.value);document.getElementById('cnum'+i).textContent=data[i].coms.length;inp.value='';openCom(i);}
+function openCom(i){let t=prompt('Ajouter un commentaire:');if(t){data[i].coms.push(t);document.getElementById('cnum'+i).textContent=data[i].coms.length;}}
 function shareV(i){if(navigator.share){navigator.share({text:data[i].desc,url:location.href});}else{alert('Lien copié!');}}
 function fil(c,b){document.querySelectorAll('.cat').forEach(x=>x.classList.remove('active'));b.classList.add('active');if(c=='tous')render(data);else render(data.filter(d=>d.cat==c));}
 function doSearch(q){q=q.toLowerCase();render(data.filter(d=>d.user.toLowerCase().includes(q)||d.desc.toLowerCase().includes(q)));}
