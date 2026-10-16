@@ -1,12 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ChatBook - Vidéos Sénégal</title>
-  
-  <!-- PWA - C'est ça qui manquait ! -->
+  <title>ChatBook - L'app vidéos 100% sénégalaise</title>
+
+  <!-- PWA OBLIGATOIRE - C'est ça qui manquait -->
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#fe2c55">
-  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+  <link rel="icon" type="image/png" href="icon-192.png">
   <link rel="apple-touch-icon" href="icon-512.png">
 
-  <!-- ton ancien code continue après ici... -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { background:#000; color:#fff; margin:0; font-family:Arial; }
+  </style>
+</head>
+<body>
+  <div class="flex h-screen">
+    <!-- MENU GAUCHE -->
+    <div class="w-64 p-4 border-r border-gray-800 hidden md:block">
+      <h1 class="text-2xl font-bold mb-6">ChatBook</h1>
+      <input placeholder="Rechercher" class="bg-gray-900 rounded-full px-4 py-2 w-full mb-4 text-sm"/>
+      <div class="space-y-4 text-sm">
+        <div class="text-[#fe2c55] font-bold">🏠 Pour toi</div>
+        <div>🧭 Explorer</div>
+        <div>👥 Suivis</div>
+        <div>📺 LIVE</div>
+        <div>➕ Importer</div>
+        <div>👤 Profil</div>
+      </div>
+      <button class="bg-[#fe2c55] w-full mt-6 py-2 rounded text-white font-bold">Se connecter</button>
+    </div>
+
+    <!-- VIDEO CENTRE -->
+    <div class="flex-1 flex justify-center items-center bg-black">
+      <div class="relative w-[350px] h-[90vh] bg-gray-900 rounded-xl overflow-hidden">
+        <video autoplay loop muted playsinline class="w-full h-full object-cover" src="https://www.w3schools.com/html/mov_bbb.mp4"></video>
+        <div class="absolute bottom-4 left-3">
+          <p class="font-bold text-sm">SENEGALESEBOYZ SN</p>
+          <p class="text-xs">#humoursenegal</p>
+        </div>
+        <div class="absolute right-2 bottom-20 flex flex-col gap-4">
+          <div class="w-10 h-10 bg-white rounded-full"></div>
+          <div class="text-center">❤️<br><span class="text-xs">37.7K</span></div>
+          <div class="text-center">💬<br><span class="text-xs">1354</span></div>
+          <div class="text-center">⭐<br><span class="text-xs">7.3K</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SERVICE WORKER POUR PWA -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js');
+    }
+  </script>
+</body>
+</html>
