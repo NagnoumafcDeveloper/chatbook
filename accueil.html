@@ -6,35 +6,45 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
 body{background:#000;color:#fff;display:flex;height:100vh;overflow:hidden}
-.left{width:240px;background:#000;padding:12px;border-right:1px solid #222}
-.logo{font-size:26px;font-weight:900;padding:8px 0 15px 8px}.logo span{color:#fe2c55}
+.left{width:220px;background:#000;padding:12px;border-right:1px solid #222}
+.logo{font-size:24px;font-weight:900;padding:8px 0 15px 8px}.logo span{color:#fe2c55}
 .search{background:#1e1e1e;border-radius:22px;padding:10px 12px;display:flex;gap:8px}
 .search input{background:transparent;border:none;outline:none;color:#fff;width:100%}
 .menu{margin-top:14px;display:flex;flex-direction:column;gap:2px}
-.menu a{padding:10px 8px;border-radius:8px;display:flex;gap:10px;cursor:pointer}.menu a.active{color:#fe2c55;font-weight:700}
-.btn-red{background:#fe2c55;color:#fff;border:none;border-radius:6px;padding:12px;font-weight:700;margin-top:15px;width:100%;cursor:pointer}
-.center{flex:1;display:flex;justify-content:center;align-items:center;gap:18px}
-.video-box{position:relative;width:360px;height:82vh;background:#111;border-radius:10px;overflow:hidden}
+.menu a{padding:9px 8px;border-radius:8px;display:flex;gap:10px;cursor:pointer;font-size:14px}.menu a.active{color:#fe2c55;font-weight:700}
+.btn-red{background:#fe2c55;color:#fff;border:none;border-radius:6px;padding:11px;font-weight:700;margin-top:12px;width:100%}
+.center{flex:1;display:flex;justify-content:center;align-items:center;gap:12px}
+.video-box{position:relative;width:340px;height:80vh;background:#111;border-radius:10px;overflow:hidden}
 .video-box video{width:100%;height:100%;object-fit:cover}
 .video-info{position:absolute;left:10px;bottom:10px}
-.right-actions{display:flex;flex-direction:column;align-items:center;gap:16px}
-.item{display:flex;flex-direction:column;align-items:center;justify-content:center;width:60px;cursor:pointer}
-.pp{width:52px;height:52px;border-radius:50%;position:relative;border:2px solid #fff}
+.right-actions{display:flex;flex-direction:column;align-items:center;gap:10px}
+.item{display:flex;flex-direction:column;align-items:center;width:52px;cursor:pointer}
+.pp{width:44px;height:44px;border-radius:50%;position:relative;border:2px solid #fff}
 .pp img{width:100%;height:100%;object-fit:cover;border-radius:50%}
-.plus{position:absolute;top:-7px;left:50%;transform:translateX(-50%);background:#fe2c55;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;border:2px solid #000;z-index:5}
-.icon{font-size:32px;line-height:1;display:flex;justify-content:center;align-items:center;width:50px;height:50px;background:transparent}
-.icon.liked{color:#fe2c55}
-.icon.saved{color:#ffcc00}
-.count{font-size:13px;font-weight:700;text-align:center;width:100%;margin-top:2px}
-.comment-panel{display:none;position:absolute;left:0;right:0;bottom:0;background:#1a1a1a;border-radius:16px 16px 0 0;padding:12px;max-height:55%;z-index:20;flex-direction:column}
-.comment-list{flex:1;overflow-y:auto;margin-bottom:8px;display:flex;flex-direction:column;gap:8px}
-.comment-item{background:#2a2a2a;padding:8px 10px;border-radius:12px;font-size:13px}
+.plus{position:absolute;top:-6px;left:50%;transform:translateX(-50%);background:#fe2c55;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;border:2px solid #000;z-index:5}
+.icon{font-size:26px;width:42px;height:42px;display:flex;align-items:center;justify-content:center;background:transparent;line-height:1}
+.icon.liked{color:#fe2c55}.icon.saved{color:#ffcc00}
+.count{font-size:11px;font-weight:700;text-align:center;width:100%;margin-top:1px;color:#ddd}
+/* MENU PARTAGE COMME TA CAPTURE */
+.share-panel{display:none;position:absolute;left:0;right:0;bottom:0;background:#fff;color:#000;border-radius:18px 18px 0 0;padding:12px 12px 20px;z-index:30;flex-direction:column;max-height:75%;overflow-y:auto}
+.share-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.share-header b{flex:1;text-align:center;font-size:16px}
+.share-search{position:absolute;left:12px;background:#f0f0f0;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.users-row{display:flex;gap:12px;overflow-x:auto;padding-bottom:10px;margin-bottom:10px;border-bottom:1px solid #eee}
+.user-chip{display:flex;flex-direction:column;align-items:center;min-width:60px;gap:4px}
+.user-chip img{width:52px;height:52px;border-radius:50%;object-fit:cover}
+.user-chip span{font-size:10px;text-align:center;line-height:1.1;width:60px;overflow:hidden}
+.share-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.share-opt{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer}
+.share-circle{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px}
+.share-opt span{font-size:11px;text-align:center}
+.comment-panel{display:none;position:absolute;left:0;right:0;bottom:0;background:#1a1a1a;border-radius:16px 16px 0 0;padding:12px;max-height:50%;z-index:20;flex-direction:column}
+.comment-list{flex:1;overflow-y:auto;margin-bottom:8px;display:flex;flex-direction:column;gap:6px}
+.comment-item{background:#2a2a2a;padding:7px 10px;border-radius:12px;font-size:12px}
 .comment-input{display:flex;gap:8px}
-.comment-input input{flex:1;padding:10px 12px;border-radius:20px;border:none;outline:none}
-.comment-input button{background:#fe2c55;color:#fff;border:none;padding:10px 14px;border-radius:20px;font-weight:700}
-.share-panel{display:none;position:absolute;left:0;right:0;bottom:0;background:#1a1a1a;border-radius:16px 16px 0 0;padding:16px;z-index:25;flex-direction:column;gap:10px}
-.share-option{background:#2a2a2a;padding:12px;border-radius:10px;display:flex;align-items:center;gap:10px;cursor:pointer}
-@media(max-width:900px){.left{display:none}.video-box{width:100vw;max-width:400px;height:88vh}}
+.comment-input input{flex:1;padding:9px 12px;border-radius:20px;border:none;outline:none}
+.comment-input button{background:#fe2c55;color:#fff;border:none;padding:9px 14px;border-radius:20px;font-weight:700}
+@media(max-width:900px){.left{display:none}.video-box{width:95vw;max-width:360px;height:85vh}}
 </style>
 </head>
 <body>
@@ -55,26 +65,45 @@ body{background:#000;color:#fff;display:flex;height:100vh;overflow:hidden}
 <script>
 let myPhoto = localStorage.getItem('chatbook_myPhoto') || 'https://i.pravatar.cc/150?img=32';
 let data=[
- {url:"https://www.w3schools.com/html/mov_bbb.mp4",user:"SENEGALESEBOYZ SN",desc:"💔 #humoursenegal",likes:37700,comsList:["Trop fort 😂","Bien fait"],favs:7256,shares:346,photo:myPhoto,liked:false},
- {url:"https://www.w3schools.com/html/movie.mp4",user:"@dakar_comedy",desc:"WEUH 😳 #senegal",likes:45200,comsList:[],favs:5400,shares:812,photo:"https://i.pravatar.cc/150?img=12",liked:false},
+ {url:"https://www.w3schools.com/html/mov_bbb.mp4",user:"SENEGALESEBOYZ SN",desc:"💔 #humoursenegal",likes:37700,comsList:["Trop fort 😂"],favs:7256,shares:346,photo:myPhoto,liked:false},
+ {url:"https://www.w3schools.com/html/movie.mp4",user:"@dakar_comedy",desc:"WEUH 😳",likes:45200,comsList:[],favs:5400,shares:812,photo:"https://i.pravatar.cc/150?img=12",liked:false},
 ];
 let idx=0; let saved=new Set(); let isMuted=true; let followed=new Set();
+let chatUsers=[
+ {name:"Mawa Mingo",img:"https://i.pravatar.cc/100?img=5"},
+ {name:"kami.kamissa",img:"https://i.pravatar.cc/100?img=6"},
+ {name:"PC Øfficiel",img:"https://i.pravatar.cc/100?img=8"},
+ {name:"Vieux Töriô 224",img:"https://i.pravatar.cc/100?img=11"},
+ {name:"Mc Lamine Coach",img:"https://i.pravatar.cc/100?img=15"},
+];
 function fmt(n){return n>=1000?(n/1000).toFixed(1)+'K':n}
 function show(i){
  let v=data[i];
  document.getElementById('vbox').innerHTML=`
   <video src="${v.url}" loop id="vid" onclick="togglePlay()" ${isMuted?'muted':''} autoplay playsinline></video>
   <div class="video-info"><b>${v.user}</b><p>${v.desc}</p></div>
+
   <div class="comment-panel" id="cPanel">
     <div style="display:flex;justify-content:space-between;margin-bottom:8px"><b>Commentaires (${v.comsList.length})</b><span onclick="closeCom()" style="cursor:pointer">✕</span></div>
-    <div class="comment-list" id="cList">${v.comsList.map(c=>`<div class="comment-item">${c}</div>`).join('')||'<div style="color:#888">Pas de commentaires</div>'}</div>
+    <div class="comment-list" id="cList">${v.comsList.map(c=>`<div class="comment-item">${c}</div>`).join('')||'<div style="color:#888;font-size:12px">Pas de commentaires</div>'}</div>
     <div class="comment-input"><input id="cInput" placeholder="Ajouter un commentaire..."><button onclick="sendCom()">Envoyer</button></div>
   </div>
+
   <div class="share-panel" id="sPanel">
-    <div style="display:flex;justify-content:space-between"><b>Partager</b><span onclick="closeShare()" style="cursor:pointer">✕</span></div>
-    <div class="share-option" onclick="doShare('whatsapp')">🟢 WhatsApp</div>
-    <div class="share-option" onclick="doShare('facebook')">🔵 Facebook</div>
-    <div class="share-option" onclick="doShare('copy')">🔗 Copier le lien</div>
+    <div class="share-header"><div class="share-search">🔍</div><b>Envoyer à</b><span onclick="closeShare()" style="font-size:20px;cursor:pointer">✕</span></div>
+    <div class="users-row">${chatUsers.map(u=>`<div class="user-chip" onclick="sendToUser('${u.name}')"><img src="${u.img}"><span>${u.name}</span></div>`).join('')}</div>
+    <div class="share-grid">
+      <div class="share-opt" onclick="doShare('repost')"><div class="share-circle" style="background:#ffeb3b">🔁</div><span>Republier</span></div>
+      <div class="share-opt" onclick="doShare('copy')"><div class="share-circle" style="background:#2196f3;color:#fff">🔗</div><span>Copier le lien</span></div>
+      <div class="share-opt" onclick="doShare('messenger')"><div class="share-circle" style="background:#0084ff;color:#fff">💬</div><span>Messenger</span></div>
+      <div class="share-opt" onclick="doShare('whatsapp')"><div class="share-circle" style="background:#25d366;color:#fff">🟢</div><span>WhatsApp</span></div>
+      <div class="share-opt" onclick="doShare('whatsapp_biz')"><div class="share-circle" style="background:#25d366">📱</div><span>WA Business</span></div>
+      <div class="share-opt" onclick="doShare('snap')"><div class="share-circle" style="background:#fffc00">👻</div><span>Snapchat Chat</span></div>
+      <div class="share-opt" onclick="doShare('report')"><div class="share-circle" style="background:#eee">🚩</div><span>Signaler</span></div>
+      <div class="share-opt" onclick="doShare('notint')"><div class="share-circle" style="background:#eee">💔</div><span>Pas intéressé(e)</span></div>
+      <div class="share-opt" onclick="doShare('story')"><div class="share-circle" style="background:#eee">➕</div><span>Ajouter à la Story</span></div>
+      <div class="share-opt" onclick="doShare('promo')"><div class="share-circle" style="background:#eee">🔥</div><span>Promouvoir</span></div>
+    </div>
   </div>
  `;
 
@@ -98,11 +127,14 @@ function closeCom(){document.getElementById('cPanel').style.display='none';}
 function sendCom(){let inp=document.getElementById('cInput');let t=inp.value.trim();if(!t)return;data[idx].comsList.push(t);inp.value='';show(idx);openCom();}
 function openShare(){document.getElementById('sPanel').style.display='flex';}
 function closeShare(){document.getElementById('sPanel').style.display='none';}
+function sendToUser(name){alert('Envoyé à '+name+' ✅');closeShare();data[idx].shares++;show(idx);}
 function doShare(type){
  let url=location.href;
- if(type=='whatsapp'){window.open('https://wa.me/?text='+encodeURIComponent(url));}
- else if(type=='facebook'){window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(url));}
- else {navigator.clipboard.writeText(url);alert('Lien copié!');}
+ if(type=='whatsapp')window.open('https://wa.me/?text='+encodeURIComponent(url));
+ else if(type=='messenger')window.open('https://www.messenger.com/t/'+encodeURIComponent(url));
+ else if(type=='copy'){navigator.clipboard.writeText(url);alert('Lien copié!');}
+ else if(type=='repost'){alert('Republié sur ton profil ✅');}
+ else {alert('Partagé ✅');}
  data[idx].shares++; closeShare(); show(idx);
 }
 document.getElementById('up').addEventListener('change',function(){let f=this.files[0];if(!f)return;let u=URL.createObjectURL(f);data.unshift({url:u,user:"@moi",desc:"Ma vidéo",likes:0,comsList:[],favs:0,shares:0,photo:myPhoto,liked:false});idx=0;show(0);});
