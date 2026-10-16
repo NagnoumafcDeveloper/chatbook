@@ -6,10 +6,8 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
 body{background:#000;color:#fff;display:flex;height:100vh;overflow:hidden}
-/* MENU GAUCHE COMME TA PHOTO */
 .left{width:240px;background:#000;padding:12px 10px;display:flex;flex-direction:column;gap:4px;border-right:1px solid #222}
-.logo{font-size:26px;font-weight:900;padding:8px 0 15px 8px}
-.logo span{color:#fe2c55}
+.logo{font-size:26px;font-weight:900;padding:8px 0 15px 8px}.logo span{color:#fe2c55}
 .search{background:#1e1e1e;border-radius:22px;padding:10px 12px;display:flex;gap:8px;color:#888}
 .search input{background:transparent;border:none;outline:none;color:#fff;width:100%}
 .menu{margin-top:14px;display:flex;flex-direction:column;gap:2px}
@@ -17,58 +15,53 @@ body{background:#000;color:#fff;display:flex;height:100vh;overflow:hidden}
 .menu a.active{color:#fe2c55;font-weight:700}
 .menu a:hover{background:#121212}
 .btn-red{background:#fe2c55;color:#fff;border:none;border-radius:6px;padding:12px;font-weight:700;margin-top:15px;cursor:pointer}
-/* CENTRE VIDEO */
 .center{flex:1;display:flex;justify-content:center;align-items:center;gap:16px;background:#000;position:relative}
 .video-box{position:relative;width:360px;height:80vh;background:#111;border-radius:8px;overflow:hidden}
 .video-box video{width:100%;height:100%;object-fit:cover}
 .video-info{position:absolute;left:10px;bottom:10px;right:10px}
-.video-info b{font-size:15px}
-.video-info p{font-size:13px;margin-top:4px}
+.video-info b{font-size:15px}.video-info p{font-size:13px;margin-top:4px}
 .tag{background:#2a2a2a;font-size:11px;padding:4px 8px;border-radius:4px;display:inline-block;margin-top:6px}
-/* BOUTONS DROITE COMME TA PHOTO */
-.right-actions{display:flex;flex-direction:column;gap:8px;align-items:center}
-.pp{width:48px;height:48px;border-radius:50%;background:#333;position:relative;overflow:hidden}
+.right-actions{display:flex;flex-direction:column;gap:6px;align-items:center}
+.pp{width:48px;height:48px;border-radius:50%;background:#333;position:relative;overflow:hidden;border:2px solid #fff}
 .pp img{width:100%;height:100%;object-fit:cover}
-.plus{position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);background:#fe2c55;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;border:2px solid #000}
-.action{width:48px;height:48px;background:#2a2a2a;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer}
-.action.liked{background:#fe2c55}
-.action.saved{background:#ffc107;color:#000}
-.count{font-size:12px;font-weight:700;margin-top:-2px}
+.plus{position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);background:#fe2c55;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;border:2px solid #000;cursor:pointer}
+.action{width:48px;height:48px;background:#2a2a2a;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;cursor:pointer;transition:0.15s}
+.action.liked{color:#fe2c55}
+.action.saved{color:#ffcc00}
+.count{font-size:12px;font-weight:700;margin-top:2px}
 .top-right{position:absolute;top:10px;right:12px;display:flex;gap:8px}
 .top-right button{background:#2a2a2a;border:none;color:#fff;padding:8px 14px;border-radius:20px;font-size:13px}
-.top-right.red{background:#fe2c55}
-@media(max-width:900px){.left{display:none}.video-box{width:100%;max-width:400px;height:85vh}.center{padding:0 10px}}
+@media(max-width:900px){.left{display:none}.video-box{width:100%;max-width:400px;height:85vh}}
 </style>
 </head>
 <body>
 <div class="left">
 <div class="logo"><span>Chat</span>Book</div>
-<div class="search">🔍 <input placeholder="Rechercher" oninput="doSearch(this.value)"></div>
+<div class="search">🔍 <input placeholder="Rechercher"></div>
 <div class="menu">
-<a class="active">🏠 Pour toi</a>
-<a>🧭 Explorer</a>
-<a>👥 Suivis</a>
-<a>🎬 Mini-dramas</a>
-<a>📺 LIVE</a>
+<a class="active">🏠 Pour toi</a><a>🧭 Explorer</a><a>👥 Suivis</a><a>🎬 Mini-dramas</a><a>📺 LIVE</a>
 <a onclick="document.getElementById('up').click()">➕ Importer</a>
-<a onclick="location.href='inscription.html'">👤 Profil</a>
-<a>⋯ Plus</a>
+<a onclick="location.href='inscription.html'">👤 Profil</a><a>⋯ Plus</a>
 <button class="btn-red" onclick="location.href='inscription.html'">Se connecter</button>
 </div>
 </div>
 
-<div class="center" id="center">
+<div class="center">
 <div class="video-box" id="vbox"></div>
 <div class="right-actions" id="actions"></div>
-<div class="top-right"><button>Obtenir de...</button><button>Obtenir l'a...</button><button class="red">Se connecter</button></div>
 </div>
 
 <input type="file" id="up" accept="video/*" hidden onchange="addV(this)">
+<input type="file" id="photoUp" accept="image/*" hidden onchange="changePhoto(this)">
 
 <script>
+// Récupère les vrais utilisateurs inscrits depuis inscription.html
+let users = JSON.parse(localStorage.getItem('chatbook_users') || '[]');
+let myPhoto = localStorage.getItem('chatbook_myPhoto') || 'https://i.pravatar.cc/150?img=5';
+
 let data=[
- {url:"https://www.w3schools.com/html/mov_bbb.mp4",user:"SENEGALESEBOYZ SN",desc:"💔💔 #humoursenegal",likes:37700,coms:1354,favs:7256,shares:345,photo:"https://i.pravatar.cc/100?img=5"},
- {url:"https://www.w3schools.com/html/movie.mp4",user:"@dakar_comedy",desc:"WEUH 😳😳 #senegal",likes:45200,coms:2100,favs:5400,shares:812,photo:"https://i.pravatar.cc/100?img=12"},
+ {url:"https://www.w3schools.com/html/mov_bbb.mp4",user:"SENEGALESEBOYZ SN",desc:"💔💔 #humoursenegal",likes:37700,coms:1354,favs:7256,shares:345,photo: users[0]?.photo || myPhoto},
+ {url:"https://www.w3schools.com/html/movie.mp4",user:"@dakar_comedy",desc:"WEUH 😳😳 #senegal",likes:45200,coms:2100,favs:5400,shares:812,photo: users[1]?.photo || "https://i.pravatar.cc/150?img=12"},
 ];
 let idx=0;
 let saved=new Set();
@@ -78,29 +71,39 @@ function show(i){
  document.getElementById('vbox').innerHTML=`
   <video src="${v.url}" loop autoplay muted playsinline id="vid" onclick="this.paused?this.play():this.pause()"></video>
   <div class="video-info"><b>${v.user}</b><p>${v.desc}</p><span class="tag">Contenu promotionnel</span></div>`;
+
+ let isSaved = saved.has(i);
  document.getElementById('actions').innerHTML=`
-  <div class="pp"><img src="${v.photo}"><div class="plus">+</div></div>
-  <div onclick="like(${i})"><div class="action ${document.getElementById('like'+i)?.classList.contains('liked')?'liked':''}" id="actLike"><div>🤍</div></div><div class="count" id="lc">${fmt(v.likes)}</div></div>
-  <div onclick="commenter()"><div class="action"><div>💬</div></div><div class="count">${v.coms}</div></div>
-  <div onclick="saveV(${i})"><div class="action" id="actSave"><div>🔖</div></div><div class="count">${v.favs}</div></div>
-  <div onclick="shareV()"><div class="action"><div>➤</div></div><div class="count">${v.shares}</div></div>
+  <div class="pp" onclick="document.getElementById('photoUp').click()" title="Changer photo"><img src="${v.photo}" id="pp1"><div class="plus">+</div></div>
+  <div onclick="like(${i})"><div class="action ${data[i].liked?'liked':''}" id="actLike"><span>${data[i].liked?'❤️':'🤍'}</span></div><div class="count" id="lc">${fmt(v.likes)}</div></div>
+  <div onclick="commenter()"><div class="action"><span>💬</span></div><div class="count">${v.coms}</div></div>
+  <div onclick="saveV(${i})"><div class="action ${isSaved?'saved':''}" id="actSave"><span id="starIcon">${isSaved?'★':'☆'}</span></div><div class="count">${v.favs}</div></div>
+  <div onclick="shareV()"><div class="action"><span>➤</span></div><div class="count">${v.shares}</div></div>
   <div class="pp" style="margin-top:8px"><img src="${v.photo}"></div>`;
 }
 function like(i){
- let el=document.getElementById('actLike');
- let liked=el.classList.contains('liked');
- if(liked){el.classList.remove('liked');el.innerHTML='<div>🤍</div>';data[i].likes--;}else{el.classList.add('liked');el.innerHTML='<div>❤️</div>';data[i].likes++;}
- document.getElementById('lc').textContent=fmt(data[i].likes);
+ data[i].liked=!data[i].liked;
+ if(data[i].liked)data[i].likes++;else data[i].likes--;
+ show(i);
 }
 function saveV(i){
- let el=document.getElementById('actSave');
- if(saved.has(i)){saved.delete(i);el.classList.remove('saved');}else{saved.add(i);el.classList.add('saved');}
+ if(saved.has(i)){saved.delete(i);}else{saved.add(i);}
+ show(i);
 }
 function commenter(){let t=prompt('Commentaire:');if(t){data[idx].coms++;show(idx);}}
-function shareV(){if(navigator.share)navigator.share({url:location.href});else alert('Lien copié');}
-function addV(inp){let f=inp.files[0];if(!f)return;let u=URL.createObjectURL(f);data.unshift({url:u,user:"@moi",desc:"Ma vidéo #chatbook",likes:0,coms:0,favs:0,shares:0,photo:"https://i.pravatar.cc/100?img=8"});idx=0;show(0);}
-document.addEventListener('wheel',e=>{if(e.deltaY>0){idx=Math.min(data.length-1,idx+1);}else{idx=Math.max(0,idx-1);}show(idx);});
-function doSearch(q){q=q.toLowerCase();let f=data.filter(d=>d.user.toLowerCase().includes(q));if(f.length){data=f;idx=0;show(0);}}
+function shareV(){alert('Lien copié: '+location.href);}
+function addV(inp){let f=inp.files[0];if(!f)return;let u=URL.createObjectURL(f);data.unshift({url:u,user:"@moi",desc:"Ma vidéo #chatbook",likes:0,coms:0,favs:0,shares:0,photo:myPhoto});idx=0;show(0);}
+function changePhoto(inp){
+ let f=inp.files[0];if(!f)return;
+ let r=new FileReader();
+ r.onload=e=>{
+   myPhoto=e.target.result;
+   localStorage.setItem('chatbook_myPhoto',myPhoto);
+   data[idx].photo=myPhoto;
+   show(idx);
+ };
+ r.readAsDataURL(f);
+}
 show(0);
 </script>
 </body>
