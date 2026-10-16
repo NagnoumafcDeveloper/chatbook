@@ -8,11 +8,6 @@
 body{background:#000;color:#fff;display:flex;height:100vh;overflow:hidden}
 .left{width:220px;background:#000;padding:12px;border-right:1px solid #222}
 .logo{font-size:24px;font-weight:900;padding:8px 0 15px 8px}.logo span{color:#fe2c55}
-.search{background:#1e1e1e;border-radius:22px;padding:10px 12px;display:flex;gap:8px}
-.search input{background:transparent;border:none;outline:none;color:#fff;width:100%}
-.menu{margin-top:14px;display:flex;flex-direction:column;gap:2px}
-.menu a{padding:9px 8px;border-radius:8px;display:flex;gap:10px;cursor:pointer;font-size:14px}.menu a.active{color:#fe2c55;font-weight:700}
-.btn-red{background:#fe2c55;color:#fff;border:none;border-radius:6px;padding:11px;font-weight:700;margin-top:12px;width:100%}
 .center{flex:1;display:flex;justify-content:center;align-items:center;gap:12px}
 .video-box{position:relative;width:340px;height:80vh;background:#111;border-radius:10px;overflow:hidden}
 .video-box video{width:100%;height:100%;object-fit:cover}
@@ -25,20 +20,21 @@ body{background:#000;color:#fff;display:flex;height:100vh;overflow:hidden}
 .icon{font-size:26px;width:42px;height:42px;display:flex;align-items:center;justify-content:center}
 .icon.liked{color:#fe2c55}.icon.saved{color:#ffcc00}
 .count{font-size:11px;font-weight:700;text-align:center;width:100%;margin-top:1px;color:#ddd}
-.share-panel{display:none;position:absolute;left:0;right:0;bottom:0;background:#fff;color:#000;border-radius:20px 20px 0 0;z-index:30;flex-direction:column;max-height:78%;overflow:hidden}
+
+/* PARTAGE - TOUT EN SVG, PAS D'IMAGE EXTERNE */
+.share-panel{display:none;position:absolute;left:0;right:0;bottom:0;background:#fff;color:#000;border-radius:20px 20px 0 0;z-index:30;flex-direction:column;max-height:80%;overflow:hidden}
 .share-header{display:flex;justify-content:space-between;align-items:center;padding:14px}
 .share-header b{flex:1;text-align:center;font-size:16px;font-weight:700}
 .share-search,.share-close{background:#f2f2f2;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer}
-.users-row{display:flex;gap:14px;overflow-x:auto;padding:0 14px 12px;scrollbar-width:none}
+.users-row{display:flex;gap:14px;overflow-x:auto;padding:0 14px 12px}
 .users-row::-webkit-scrollbar{display:none}
 .user-chip{display:flex;flex-direction:column;align-items:center;min-width:64px;gap:6px;cursor:pointer}
 .user-chip img{width:56px;height:56px;border-radius:50%;object-fit:cover}
 .user-chip span{font-size:11px;text-align:center;width:64px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
 .share-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;padding:14px;overflow-y:auto}
 .share-opt{display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer}
-.share-circle{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#fff}
-.share-circle img{width:100%;height:100%;object-fit:cover}
-.share-opt span{font-size:11px;text-align:center;color:#000}
+.share-circle{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.share-opt span{font-size:11px;text-align:center;color:#000;line-height:1.1}
 .comment-panel{display:none;position:absolute;left:0;right:0;bottom:0;background:#1a1a1a;border-radius:16px 16px 0 0;padding:12px;max-height:50%;z-index:20;flex-direction:column}
 .comment-list{flex:1;overflow-y:auto;margin-bottom:8px;display:flex;flex-direction:column;gap:6px}
 .comment-item{background:#2a2a2a;padding:7px 10px;border-radius:12px;font-size:12px;color:#fff}
@@ -51,17 +47,11 @@ body{background:#000;color:#fff;display:flex;height:100vh;overflow:hidden}
 <body>
 <div class="left">
 <div class="logo"><span>Chat</span>Book</div>
-<div class="search">🔍 <input placeholder="Rechercher"></div>
-<div class="menu"><a class="active">🏠 Pour toi</a><a>🧭 Explorer</a><a>👥 Suivis</a><a onclick="document.getElementById('up').click()">➕ Importer</a></div>
-<button class="btn-red">Se connecter</button>
-</div>
-
 <div class="center">
 <div class="video-box" id="vbox"></div>
 <div class="right-actions" id="actions"></div>
 </div>
-
-<input type="file" id="up" accept="video/*" hidden>
+</div>
 
 <script>
 let myPhoto = localStorage.getItem('chatbook_myPhoto') || 'https://i.pravatar.cc/150?img=32';
@@ -69,7 +59,7 @@ let chatUsers=[
  {name:"Dr.Michael.v",img:"https://i.pravatar.cc/100?img=5"},
  {name:"TDF",img:"https://i.pravatar.cc/100?img=6"},
  {name:"A.Wahabe",img:"https://i.pravatar.cc/100?img=8"},
- {name:"Oustaz Diane DDR",img:"https://i.pravatar.cc/100?img=11"},
+ {name:"Oustaz Diane",img:"https://i.pravatar.cc/100?img=11"},
 ];
 let data=[
  {url:"https://www.w3schools.com/html/mov_bbb.mp4",user:"SENEGALESEBOYZ SN",desc:"💔 #humoursenegal",likes:37700,comsList:["Trop fort 😂"],favs:7256,shares:346,photo:myPhoto,liked:false},
@@ -83,24 +73,35 @@ function show(i){
   <div class="video-info"><b>${v.user}</b><p>${v.desc}</p></div>
   <div class="comment-panel" id="cPanel">
     <div style="display:flex;justify-content:space-between;margin-bottom:8px;color:#fff"><b>Commentaires</b><span onclick="closeCom()" style="cursor:pointer">✕</span></div>
-    <div class="comment-list" id="cList">${v.comsList.map(c=>`<div class="comment-item">${c}</div>`).join('')}</div>
+    <div class="comment-list">${v.comsList.map(c=>`<div class="comment-item">${c}</div>`).join('')}</div>
     <div class="comment-input"><input id="cInput" placeholder="Ajouter..."><button onclick="sendCom()">Envoyer</button></div>
   </div>
   <div class="share-panel" id="sPanel">
     <div class="share-header"><div class="share-search">🔍</div><b>Envoyer à</b><div class="share-close" onclick="closeShare()">✕</div></div>
     <div class="users-row">${chatUsers.map(u=>`<div class="user-chip" onclick="sendToUser('${u.name}')"><img src="${u.img}"><span>${u.name}</span></div>`).join('')}</div>
     <div class="share-grid">
-      <div class="share-opt" onclick="doShare('republish')"><div class="share-circle"><img src="republish.png"></div><span>Republier</span></div>
-      <div class="share-opt" onclick="doShare('copy')"><div class="share-circle"><img src="copylink.png"></div><span>Copier le lien</span></div>
-      <div class="share-opt" onclick="doShare('messenger')"><div class="share-circle"><img src="messenger.png"></div><span>Messenger</span></div>
-      <div class="share-opt" onclick="doShare('whatsapp')"><div class="share-circle"><img src="whatsapp.png"></div><span>WhatsApp</span></div>
-      <div class="share-opt" onclick="doShare('wabusiness')"><div class="share-circle"><img src="wabusiness.png"></div><span>WA Business</span></div>
-      <div class="share-opt" onclick="doShare('snap')"><div class="share-circle"><img src="snapchat.png"></div><span>Snapchat Chat</span></div>
-      <div class="share-opt" onclick="doShare('prom')"><div class="share-circle" style="background:#f1f1f1">🔥</div><span>Promouvoir</span></div>
-      <div class="share-opt" onclick="doShare('duo')"><div class="share-circle" style="background:#f1f1f1">👥</div><span>Duo</span></div>
+      <div class="share-opt" onclick="doShare('republish')">
+        <div class="share-circle" style="background:#FEE500"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></div><span>Republier</span>
+      </div>
+      <div class="share-opt" onclick="doShare('copy')">
+        <div class="share-circle" style="background:#0084FF"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></div><span>Copier le lien</span>
+      </div>
+      <div class="share-opt" onclick="doShare('messenger')">
+        <div class="share-circle" style="background:#0084FF"><svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.14 2 10.94c0 2.7 1.33 5.11 3.42 6.69v3.13L9.25 18.7a11.1 11.1 0 0 0 2.75.37c5.52 0 10-4.14 10-9.13S17.52 2 12 2zm1.4 12.5l-2.5-2.66-4.88 2.66 5.36-5.71 2.5 2.66 4.88-2.66-5.36 5.71z"/></svg></div><span>Messenger</span>
+      </div>
+      <div class="share-opt" onclick="doShare('whatsapp')">
+        <div class="share-circle" style="background:#25D366"><svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3 1 1-2.9-.2-.3A8 8 0 1 1 12 20zm4.5-6c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1-.2.2-.6.8-.8.9-.1.2-.3.2-.5.1-.2-.1-1-.4-1.9-1.2a7.2 7.2 0 0 1-1.3-1.6c-.1-.2 0-.4.1-.5l.4-.4c.1-.1.2-.3.2-.4 0-.2 0-.3-.1-.4 0-.1-.5-1.2-.7-1.6-.2-.4-.4-.4-.5-.4h-.4c-.2 0-.4 0-.6.3-.2.2-.8.8-.8 1.9s.8 2.2 1 2.3c.1.2 1.7 2.6 4.1 3.6.6.3 1.4 1.4.5.6.2 1.1.2 1.5.1.5-.1 1.4-.6 1.6-1.1.2-.6.2-1.1-1.1 0-.1-.2-.2-.4-.3z"/></svg></div><span>WhatsApp</span>
+      </div>
+      <div class="share-opt" onclick="doShare('wabusiness')">
+        <div class="share-circle" style="background:#128C7E"><svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2z M12 20a8 8 0 0 1-4.1-1.1l-.3-.2-3 1 1-2.9-.2-.3A8 8 0 1 1 12 20z"/><path d="M14.5 16c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1-.2.2-.6.8-.8.9-.1.2-.3.2-.5.1-.2-.1-1-.4-1.9-1.2a7.2 7.2 0 0 1-1.3-1.6c-.1-.2 0-.4.1-.5l.4-.4c.1-.1.2-.3.2-.4 0-.2 0-.3-.1-.4 0-.1-.5-1.2-.7-1.6-.2-.4-.4-.4-.5-.4h-.4c-.2 0-.4 0-.6.3-.2.2-.8.8-.8 1.9s.8 2.2 1 2.3c.1.2 1.7 2.6 4.1 3.6.6.3 1.4 1.4.5.6.2 1.1.2 1.5.1.5-.1 1.4-.6 1.6-1.1.2-.6.2-1.1-1.1 0-.1-.2-.2-.4-.3z" fill="#128C7E"/></svg></div><span>WA Business</span>
+      </div>
+      <div class="share-opt" onclick="doShare('snap')">
+        <div class="share-circle" style="background:#FFFC00"><svg width="28" height="28" viewBox="0 0 24 24" fill="white" stroke="black" stroke-width="0.8"><path d="M12 2C8 2 5 4.5 5 7.5c0 1.3 1.7.3 1.7S4 9.5 3 10.5c0 0.5.8 1.8 1 0 0-1.3.9-2 2.2 0 0 1.2-.2 2.4-.4-.1.4-.1.8.2 1.3.3.7 1 1.2 2.2 1.5.5.1.9.2 1.4.2h.4c.5 0.9-.1 1.4-.2 1.2-.3 1.9-.8 2.2-1.5.3-.5.3-.9.2-1.3 1.2.2 2.4.4 2.4.4-.7-1.3-2-2.2-2-2.2 1.3-.2 1.8-1 1.8-1-1-1-2.3-1.3-2.3-1.3S19 8.5 19 7.5C19 4.5 16 2 12 2z"/></svg></div><span>Snapchat Chat</span>
+      </div>
     </div>
   </div>
  `;
+
  document.getElementById('actions').innerHTML=`
   <div class="item"><div class="pp"><img src="${v.photo}"><div class="plus" onclick="followUser(${i})">${followed.has(i)?'✓':'+'}</div></div></div>
   <div class="item" onclick="like(${i})"><div class="icon ${v.liked?'liked':''}">${v.liked?'❤️':'🤍'}</div><div class="count">${fmt(v.likes)}</div></div>
@@ -121,9 +122,25 @@ function closeCom(){document.getElementById('cPanel').style.display='none';}
 function sendCom(){let inp=document.getElementById('cInput');let t=inp.value.trim();if(!t)return;data[idx].comsList.push(t);inp.value='';show(idx);openCom();}
 function openShare(){document.getElementById('sPanel').style.display='flex';}
 function closeShare(){document.getElementById('sPanel').style.display='none';}
-function sendToUser(name){alert('Envoyé à '+name+' ✅');closeShare();}
-function doShare(type){let url=location.href;if(type=='whatsapp')window.open('https://wa.me/?text='+encodeURIComponent(url));else if(type=='copy'){navigator.clipboard.writeText(url);alert('Lien copié!');}else alert(type+' ✅');data[idx].shares++;closeShare();show(idx);}
-document.getElementById('up').addEventListener('change',function(){let f=this.files[0];if(!f)return;let u=URL.createObjectURL(f);data.unshift({url:u,user:"@moi",desc:"Ma vidéo",likes:0,comsList:[],favs:0,shares:0,photo:myPhoto,liked:false});idx=0;show(0);});
+function sendToUser(name){
+ if(navigator.share){navigator.share({title:'ChatBook',text:'Regarde cette vidéo',url:location.href}).catch(()=>{});}
+ else{alert('Envoyé à '+name+' ✅');}
+ closeShare(); data[idx].shares++; show(idx);
+}
+function doShare(type){
+ let url=location.href;
+ let text="Regarde cette vidéo ChatBook "+url;
+ if(type=='whatsapp'){window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank');}
+ else if(type=='wabusiness'){window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank');}
+ else if(type=='messenger'){window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(url),'_blank');}
+ else if(type=='snap'){window.open('https://www.snapchat.com/scan?attachmentUrl='+encodeURIComponent(url),'_blank');}
+ else if(type=='copy'){
+   if(navigator.clipboard){navigator.clipboard.writeText(url).then(()=>alert('Lien copié ✅')).catch(()=>prompt('Copie ce lien:',url));}
+   else{prompt('Copie ce lien:',url);}
+ }
+ else{alert('Republié sur ton profil ✅');}
+ data[idx].shares++; closeShare(); show(idx);
+}
 show(0);
 </script>
 </body>
