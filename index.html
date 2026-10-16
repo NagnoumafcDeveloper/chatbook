@@ -1,39 +1,121 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ChatBook</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ChatBook - Accueil</title>
 <style>
-body{background:#2563eb;display:flex;justify-content:center;align-items:center;height:100vh;margin:0;font-family:Arial}
-.card{background:white;width:90%;max-width:380px;border-radius:20px;padding:28px 22px}
-h1{color:#0a7cff;text-align:center;margin:0}
-p{color:#888;text-align:center;font-size:14px;margin:8px 0 20px}
-input{width:100%;padding:14px;margin-bottom:12px;border:none;background:#f1f5f9;border-radius:10px;box-sizing:border-box}
-button.btn{width:100%;background:#22c55e;color:white;border:none;padding:13px;border-radius:10px;font-weight:bold;cursor:pointer}
-a{color:#0a7cff;text-align:center;display:block;margin-top:16px;font-size:13px;text-decoration:none}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+body{background:#000;color:#fff;height:100vh;overflow:hidden;display:flex;flex-direction:column}
+.header{padding:12px;background:#000;border-bottom:1px solid #1a1a1a}
+.logo{font-size:22px;font-weight:900}.logo span{color:#fe2c55}
+.search{background:#1e1e1e;border-radius:25px;padding:10px 14px;display:flex;gap:8px;margin-top:10px}
+.search input{background:transparent;border:none;color:#fff;width:100%;outline:none}
+.cats{display:flex;gap:8px;margin-top:10px;overflow-x:auto}
+.cats::-webkit-scrollbar{display:none}
+.cat{padding:7px 15px;border-radius:20px;background:#2a2a2a;border:none;color:#fff;white-space:nowrap;cursor:pointer}
+.cat.active{background:#fe2c55}
+.feed{flex:1;overflow-y:scroll;scroll-snap-type:y mandatory}
+.vid-box{height:100%;scroll-snap-align:start;position:relative;background:#111;display:flex;justify-content:center}
+.vid-box video{height:100%;width:100%;object-fit:cover}
+.overlay{position:absolute;inset:0;background:linear-gradient(transparent 40%, rgba(0,0,0,0.7));pointer-events:none}
+.info{position:absolute;left:12px;bottom:15px;z-index:2;max-width:65%}
+.info b{font-size:15px}.info p{font-size:12px;margin-top:4px}
+.actions{position:absolute;right:10px;bottom:25px;z-index:2;display:flex;flex-direction:column;gap:20px}
+.act{display:flex;flex-direction:column;align-items:center;cursor:pointer}
+.act div{width:45px;height:45px;background:rgba(255,255,255,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px}
+.act.liked div{background:#fe2c55}
+.act span{font-size:11px;margin-top:4px}
+.sound{position:absolute;top:15px;right:15px;z-index:3;background:rgba(0,0,0,0.6);border:none;color:#fff;width:38px;height:38px;border-radius:50%;font-size:18px;cursor:pointer}
+.bottom{height:60px;background:#000;border-top:1px solid #222;display:flex;justify-content:space-around;align-items:center}
+.nav{color:#777;background:none;border:none;display:flex;flex-direction:column;align-items:center;font-size:10px;cursor:pointer}
+.nav.active{color:#fff}
 </style>
 </head>
 <body>
-<div class="card">
-<h1>ChatBook</h1>
-<p>C'est rapide et facile.</p>
-<input id="prenom" placeholder="Prénom">
-<input id="nom" placeholder="Nom">
-<input id="email" placeholder="Numéro ou e-mail">
-<input id="pass" type="password" placeholder="Mot de passe">
-<button class="btn" onclick="go()">S'inscrire</button>
-<a href="#">Vous avez déjà un compte?</a>
+
+<div class="header">
+  <div class="logo"><span>Chat</span>Book</div>
+  <div class="search">🔍 <input id="search" placeholder="Rechercher une vidéo ou créateur..." oninput="searchVid(this.value)"></div>
+  <div class="cats">
+    <button class="cat active" onclick="filterCat('tous',this)">Tous</button>
+    <button class="cat" onclick="filterCat('humour',this)">😂 Humour</button>
+    <button class="cat" onclick="filterCat('motivation',this)">💪 Motivation</button>
+    <button class="cat" onclick="filterCat('musique',this)">🎵 Musique</button>
+  </div>
 </div>
+
+<div class="feed" id="feed"></div>
+
+<div class="bottom">
+  <button class="nav active">⌂<br>Accueil</button>
+  <button class="nav">⌕<br>Recherche</button>
+  <button class="nav" onclick="document.getElementById('file').click()">⊕<br>Publier</button>
+  <button class="nav" onclick="window.location.href='index.html'">◎<br>Profil</button>
+</div>
+
+<input type="file" id="file" accept="video/*" style="display:none" onchange="newVideo(this)">
+
 <script>
-function go(){
-  let p=document.getElementById('prenom').value;
-  let n=document.getElementById('nom').value;
-  let e=document.getElementById('email').value;
-  let m=document.getElementById('pass').value;
-  if(!p||!n||!e||!m){alert("Remplis tout");return}
-  alert("Compte créé : "+p+" "+n);
+let videos = [
+  {url:"https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4", user:"@dakar_comedy", cat:"humour", likes:"12.3k", desc:"Quand tu dis que t'as pas d'argent 😂 #humour"},
+  {url:"https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4", user:"@motivation_sn", cat:"motivation", likes:"45k", desc:"Ne lâche jamais 💪 travaille en silence"},
+  {url:"https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4", user:"@sabar_dance", cat:"musique", likes:"89k", desc:"Nouveau son 🔥 tu valides?"},
+];
+
+const feed = document.getElementById('feed');
+
+function render(list){
+  feed.innerHTML="";
+  list.forEach((v,i)=>{
+    feed.innerHTML+=`
+    <div class="vid-box">
+      <video src="${v.url}" loop playsinline id="v${i}" onclick="this.paused?this.play():this.pause()"></video>
+      <div class="overlay"></div>
+      <button class="sound" id="s${i}" onclick="toggleSound(${i})">🔊</button>
+      <div class="info"><b>${v.user}</b><p>${v.desc}</p></div>
+      <div class="actions">
+        <div class="act" onclick="this.classList.toggle('liked')"><div>❤️</div><span>${v.likes}</span></div>
+        <div class="act"><div>💬</div><span>234</span></div>
+        <div class="act" onclick="navigator.clipboard.writeText('${v.url}');alert('Lien copié')"><div>↗️</div><span>Partage</span></div>
+      </div>
+    </div>`;
+  });
+  setTimeout(autoPlay,300);
 }
+function toggleSound(i){
+  let vid=document.getElementById('v'+i);
+  vid.muted=!vid.muted;
+  document.getElementById('s'+i).textContent=vid.muted?"🔇":"🔊";
+}
+function filterCat(cat,btn){
+  document.querySelectorAll('.cat').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  if(cat=='tous') render(videos); else render(videos.filter(v=>v.cat==cat));
+}
+function searchVid(q){
+  q=q.toLowerCase();
+  render(videos.filter(v=>v.user.toLowerCase().includes(q)||v.desc.toLowerCase().includes(q)));
+}
+function autoPlay(){
+  let obs=new IntersectionObserver(e=>{
+    e.forEach(en=>{
+      let vid=en.target.querySelector('video');
+      if(en.isIntersecting) vid.play().catch(()=>{});
+      else vid.pause();
+    });
+  },{threshold:0.6});
+  document.querySelectorAll('.vid-box').forEach(b=>obs.observe(b));
+}
+function newVideo(input){
+  let file=input.files[0];
+  if(!file) return;
+  let url=URL.createObjectURL(file);
+  videos.unshift({url:url, user:"@moi", cat:"tous", likes:"0", desc:"Ma nouvelle vidéo 🔥"});
+  render(videos);
+}
+
+render(videos);
 </script>
 </body>
 </html>
