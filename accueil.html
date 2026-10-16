@@ -22,22 +22,24 @@ body{background:#000;color:#fff;display:flex;height:100vh;overflow:hidden}
 .pp{width:44px;height:44px;border-radius:50%;position:relative;border:2px solid #fff}
 .pp img{width:100%;height:100%;object-fit:cover;border-radius:50%}
 .plus{position:absolute;top:-6px;left:50%;transform:translateX(-50%);background:#fe2c55;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;border:2px solid #000;z-index:5}
-.icon{font-size:26px;width:42px;height:42px;display:flex;align-items:center;justify-content:center;background:transparent;line-height:1}
+.icon{font-size:26px;width:42px;height:42px;display:flex;align-items:center;justify-content:center}
 .icon.liked{color:#fe2c55}.icon.saved{color:#ffcc00}
 .count{font-size:11px;font-weight:700;text-align:center;width:100%;margin-top:1px;color:#ddd}
-/* MENU PARTAGE COMME TA CAPTURE */
-.share-panel{display:none;position:absolute;left:0;right:0;bottom:0;background:#fff;color:#000;border-radius:18px 18px 0 0;padding:12px 12px 20px;z-index:30;flex-direction:column;max-height:75%;overflow-y:auto}
-.share-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-.share-header b{flex:1;text-align:center;font-size:16px}
-.share-search{position:absolute;left:12px;background:#f0f0f0;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center}
-.users-row{display:flex;gap:12px;overflow-x:auto;padding-bottom:10px;margin-bottom:10px;border-bottom:1px solid #eee}
-.user-chip{display:flex;flex-direction:column;align-items:center;min-width:60px;gap:4px}
-.user-chip img{width:52px;height:52px;border-radius:50%;object-fit:cover}
-.user-chip span{font-size:10px;text-align:center;line-height:1.1;width:60px;overflow:hidden}
-.share-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-.share-opt{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer}
-.share-circle{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px}
-.share-opt span{font-size:11px;text-align:center}
+/* PARTAGE CORRIGÉ - AMIS BIEN VISIBLES */
+.share-panel{display:none;position:absolute;left:0;right:0;bottom:0;background:#fff;color:#000;border-radius:20px 20px 0 0;padding:0;z-index:30;flex-direction:column;max-height:78%;overflow:hidden}
+.share-header{display:flex;justify-content:space-between;align-items:center;padding:14px 14px 6px;position:relative}
+.share-header b{flex:1;text-align:center;font-size:16px;font-weight:700}
+.share-search{background:#f2f2f2;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.share-close{width:32px;height:32px;background:#f2f2f2;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px}
+.users-row{display:flex;gap:14px;overflow-x:auto;padding:12px 14px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.users-row::-webkit-scrollbar{display:none}
+.user-chip{display:flex;flex-direction:column;align-items:center;min-width:64px;gap:6px;cursor:pointer}
+.user-chip img{width:56px;height:56px;border-radius:50%;object-fit:cover;border:1px solid #eee}
+.user-chip span{font-size:11px;text-align:center;line-height:1.1;width:64px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.share-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;padding:14px;overflow-y:auto}
+.share-opt{display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer}
+.share-circle{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px}
+.share-opt span{font-size:11px;text-align:center;line-height:1.1}
 .comment-panel{display:none;position:absolute;left:0;right:0;bottom:0;background:#1a1a1a;border-radius:16px 16px 0 0;padding:12px;max-height:50%;z-index:20;flex-direction:column}
 .comment-list{flex:1;overflow-y:auto;margin-bottom:8px;display:flex;flex-direction:column;gap:6px}
 .comment-item{background:#2a2a2a;padding:7px 10px;border-radius:12px;font-size:12px}
@@ -64,18 +66,23 @@ body{background:#000;color:#fff;display:flex;height:100vh;overflow:hidden}
 
 <script>
 let myPhoto = localStorage.getItem('chatbook_myPhoto') || 'https://i.pravatar.cc/150?img=32';
+// Les vrais amis qui se sont inscrits sur ChatBook
+let storedUsers = JSON.parse(localStorage.getItem('chatbook_users') || '[]');
+let chatUsers = storedUsers.length? storedUsers.map((u,i)=>({name:u.name||'Ami '+(i+1),img:u.photo||`https://i.pravatar.cc/100?img=${10+i}`})) : [
+ {name:"Dr.Michael.v",img:"https://i.pravatar.cc/100?img=5"},
+ {name:"TDF",img:"https://i.pravatar.cc/100?img=6"},
+ {name:"A.Wahabe",img:"https://i.pravatar.cc/100?img=8"},
+ {name:"Oustaz Diane DDR",img:"https://i.pravatar.cc/100?img=11"},
+ {name:"Univers D'Afrique",img:"https://i.pravatar.cc/100?img=15"},
+ {name:"Mawa Mingo",img:"https://i.pravatar.cc/100?img=32"},
+ {name:"Gb Media",img:"https://i.pravatar.cc/100?img=20"},
+];
+
 let data=[
  {url:"https://www.w3schools.com/html/mov_bbb.mp4",user:"SENEGALESEBOYZ SN",desc:"💔 #humoursenegal",likes:37700,comsList:["Trop fort 😂"],favs:7256,shares:346,photo:myPhoto,liked:false},
  {url:"https://www.w3schools.com/html/movie.mp4",user:"@dakar_comedy",desc:"WEUH 😳",likes:45200,comsList:[],favs:5400,shares:812,photo:"https://i.pravatar.cc/150?img=12",liked:false},
 ];
 let idx=0; let saved=new Set(); let isMuted=true; let followed=new Set();
-let chatUsers=[
- {name:"Mawa Mingo",img:"https://i.pravatar.cc/100?img=5"},
- {name:"kami.kamissa",img:"https://i.pravatar.cc/100?img=6"},
- {name:"PC Øfficiel",img:"https://i.pravatar.cc/100?img=8"},
- {name:"Vieux Töriô 224",img:"https://i.pravatar.cc/100?img=11"},
- {name:"Mc Lamine Coach",img:"https://i.pravatar.cc/100?img=15"},
-];
 function fmt(n){return n>=1000?(n/1000).toFixed(1)+'K':n}
 function show(i){
  let v=data[i];
@@ -90,19 +97,19 @@ function show(i){
   </div>
 
   <div class="share-panel" id="sPanel">
-    <div class="share-header"><div class="share-search">🔍</div><b>Envoyer à</b><span onclick="closeShare()" style="font-size:20px;cursor:pointer">✕</span></div>
-    <div class="users-row">${chatUsers.map(u=>`<div class="user-chip" onclick="sendToUser('${u.name}')"><img src="${u.img}"><span>${u.name}</span></div>`).join('')}</div>
+    <div class="share-header"><div class="share-search">🔍</div><b>Envoyer à</b><div class="share-close" onclick="closeShare()">✕</div></div>
+    <div class="users-row" id="usersRow">${chatUsers.map(u=>`<div class="user-chip" onclick="sendToUser('${u.name}')"><img src="${u.img}"><span>${u.name}</span></div>`).join('')}</div>
     <div class="share-grid">
       <div class="share-opt" onclick="doShare('repost')"><div class="share-circle" style="background:#ffeb3b">🔁</div><span>Republier</span></div>
-      <div class="share-opt" onclick="doShare('copy')"><div class="share-circle" style="background:#2196f3;color:#fff">🔗</div><span>Copier le lien</span></div>
-      <div class="share-opt" onclick="doShare('messenger')"><div class="share-circle" style="background:#0084ff;color:#fff">💬</div><span>Messenger</span></div>
-      <div class="share-opt" onclick="doShare('whatsapp')"><div class="share-circle" style="background:#25d366;color:#fff">🟢</div><span>WhatsApp</span></div>
-      <div class="share-opt" onclick="doShare('whatsapp_biz')"><div class="share-circle" style="background:#25d366">📱</div><span>WA Business</span></div>
+      <div class="share-opt" onclick="doShare('copy')"><div class="share-circle" style="background:#0084ff;color:#fff">🔗</div><span>Copier le lien</span></div>
+      <div class="share-opt" onclick="doShare('messenger')"><div class="share-circle" style="background:#0084ff;color:#fff">✈️</div><span>Messenger</span></div>
+      <div class="share-opt" onclick="doShare('whatsapp')"><div class="share-circle" style="background:#25d366;color:#fff">💬</div><span>WhatsApp</span></div>
+      <div class="share-opt" onclick="doShare('wa_biz')"><div class="share-circle" style="background:#25d366">📞</div><span>WA Business</span></div>
       <div class="share-opt" onclick="doShare('snap')"><div class="share-circle" style="background:#fffc00">👻</div><span>Snapchat Chat</span></div>
-      <div class="share-opt" onclick="doShare('report')"><div class="share-circle" style="background:#eee">🚩</div><span>Signaler</span></div>
-      <div class="share-opt" onclick="doShare('notint')"><div class="share-circle" style="background:#eee">💔</div><span>Pas intéressé(e)</span></div>
-      <div class="share-opt" onclick="doShare('story')"><div class="share-circle" style="background:#eee">➕</div><span>Ajouter à la Story</span></div>
-      <div class="share-opt" onclick="doShare('promo')"><div class="share-circle" style="background:#eee">🔥</div><span>Promouvoir</span></div>
+      <div class="share-opt" onclick="doShare('promo')"><div class="share-circle" style="background:#f2f2f2">🔥</div><span>Promouvoir</span></div>
+      <div class="share-opt" onclick="doShare('duo')"><div class="share-circle" style="background:#f2f2f2">👥</div><span>Duo</span></div>
+      <div class="share-opt" onclick="doShare('collage')"><div class="share-circle" style="background:#f2f2f2">🎞️</div><span>Collage</span></div>
+      <div class="share-opt" onclick="doShare('group')"><div class="share-circle" style="background:#f2f2f2">👨‍👩‍👧</div><span>Créer un groupe</span></div>
     </div>
   </div>
  `;
@@ -127,13 +134,12 @@ function closeCom(){document.getElementById('cPanel').style.display='none';}
 function sendCom(){let inp=document.getElementById('cInput');let t=inp.value.trim();if(!t)return;data[idx].comsList.push(t);inp.value='';show(idx);openCom();}
 function openShare(){document.getElementById('sPanel').style.display='flex';}
 function closeShare(){document.getElementById('sPanel').style.display='none';}
-function sendToUser(name){alert('Envoyé à '+name+' ✅');closeShare();data[idx].shares++;show(idx);}
+function sendToUser(name){alert('Envoyé à '+name+' ✅ sur ChatBook');closeShare();data[idx].shares++;show(idx);}
 function doShare(type){
  let url=location.href;
  if(type=='whatsapp')window.open('https://wa.me/?text='+encodeURIComponent(url));
- else if(type=='messenger')window.open('https://www.messenger.com/t/'+encodeURIComponent(url));
  else if(type=='copy'){navigator.clipboard.writeText(url);alert('Lien copié!');}
- else if(type=='repost'){alert('Republié sur ton profil ✅');}
+ else if(type=='repost'){alert('Republié ✅');}
  else {alert('Partagé ✅');}
  data[idx].shares++; closeShare(); show(idx);
 }
