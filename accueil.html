@@ -1,67 +1,65 @@
 <!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ChatBook - Accueil</title>
+<html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>ChatBook</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
-body{background:#000;color:#fff;height:100vh;display:flex;flex-direction:column}
-.header{padding:12px;background:#000}
-.logo{font-size:22px;font-weight:900}.logo span{color:#fe2c55}
-.search{background:#1e1e1e;border-radius:25px;padding:10px 14px;margin-top:10px}
-.search input{background:transparent;border:none;color:#fff;width:100%;outline:none}
-.cats{display:flex;gap:8px;margin-top:10px}
-.cat{padding:7px 14px;border-radius:20px;background:#2a2a2a;border:none;color:#fff;cursor:pointer}.cat.active{background:#fe2c55}
-.feed{flex:1;overflow-y:auto;background:#000}
-.box{position:relative;width:100%;height:75vh;background:#111;margin-bottom:2px;display:flex;align-items:center;justify-content:center}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}body{background:#000;color:#fff;height:100vh;display:flex;flex-direction:column}
+.header{padding:12px}.logo{font-weight:900;font-size:22px}.logo span{color:#fe2c55}
+.search{background:#1e1e1e;border-radius:20px;padding:10px 12px;margin-top:10px}.search input{background:transparent;border:none;color:#fff;width:100%;outline:none}
+.cats{display:flex;gap:6px;margin-top:10px;overflow-x:auto}.cat{padding:6px 12px;border-radius:15px;background:#2a2a2a;border:none;color:#fff}
+.cat.active{background:#fe2c55}
+.feed{flex:1;overflow-y:auto}.box{position:relative;height:78vh;background:#111;margin-bottom:2px}
 .box video{width:100%;height:100%;object-fit:cover}
-.info{position:absolute;left:10px;bottom:10px;z-index:2}
-.sound{position:absolute;top:10px;right:10px;z-index:3;background:rgba(0,0,0,0.6);border:none;color:#fff;width:36px;height:36px;border-radius:50%}
-.like{position:absolute;right:10px;bottom:10px;display:flex;flex-direction:column;gap:15px;text-align:center}
-.like div{width:42px;height:42px;background:rgba(255,255,255,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center}
-.bottom{height:55px;background:#000;border-top:1px solid #222;display:flex;justify-content:space-around;align-items:center}
-.nav{color:#777;background:none;border:none;font-size:10px}.nav.active{color:#fff}
-</style>
-</head>
+.top-right{position:absolute;top:10px;right:10px;display:flex;gap:8px}
+.icon-btn{background:rgba(0,0,0,0.6);border:none;color:#fff;width:36px;height:36px;border-radius:50%;font-size:18px}
+.info{position:absolute;left:10px;bottom:50px;right:90px}
+.actions{position:absolute;right:8px;bottom:10px;display:flex;flex-direction:column;gap:18px;align-items:center}
+.act{display:flex;flex-direction:column;align-items:center;cursor:pointer}
+.act div{width:44px;height:44px;background:rgba(255,255,255,0.18);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px}
+.act.liked div{background:#fe2c55}.act.saved div{background:#ffc107;color:#000}
+.act span{font-size:11px;margin-top:3px}
+.bottom{height:55px;border-top:1px solid #222;display:flex;justify-content:space-around;align-items:center}
+.nav{color:#777;background:none;border:none;font-size:11px}.nav.active{color:#fff}
+.comment-box{display:none;position:absolute;bottom:0;left:0;right:0;background:#1a1a1a;padding:8px;gap:6px}
+.comment-box input{flex:1;padding:8px 12px;border-radius:20px;border:none;outline:none}
+</style></head>
 <body>
-<div class="header">
-  <div class="logo"><span>Chat</span>Book</div>
-  <div class="search">🔍 <input placeholder="Rechercher..." oninput="search(this.value)"></div>
-  <div class="cats">
-    <button class="cat active" onclick="filterCat('tous',this)">Tous</button>
-    <button class="cat" onclick="filterCat('humour',this)">😂 Humour</button>
-    <button class="cat" onclick="filterCat('motivation',this)">💪 Motivation</button>
-    <button class="cat" onclick="filterCat('musique',this)">🎵 Musique</button>
-  </div>
-</div>
-
+<div class="header"><div class="logo"><span>Chat</span>Book</div><div class="search">🔍 <input placeholder="Rechercher" oninput="doSearch(this.value)"></div><div class="cats"><button class="cat active" onclick="fil('tous',this)">Tous</button><button class="cat" onclick="fil('humour',this)">😂 Humour</button><button class="cat" onclick="fil('motivation',this)">💪 Motivation</button><button class="cat" onclick="fil('musique',this)">🎵 Musique</button></div></div>
 <div class="feed" id="feed"></div>
-
-<div class="bottom">
-  <button class="nav active">Accueil</button>
-  <button class="nav" onclick="document.getElementById('file').click()">Publier</button>
-  <button class="nav" onclick="location.href='index.html'">Profil</button>
-</div>
-<input type="file" id="file" accept="video/*" style="display:none" onchange="newVid(this)">
-
+<div class="bottom"><button class="nav active">Accueil</button><button class="nav" onclick="document.getElementById('up').click()">Publier</button><button class="nav" onclick="location.href='inscription.html'">Profil</button></div>
+<input type="file" id="up" accept="video/*" style="display:none" onchange="addV(this)">
 <script>
-let list=[
- {url:"https://www.w3schools.com/html/mov_bbb.mp4",user:"@dakar_comedy",cat:"humour",likes:"12.3k",desc:"Quand tu dis que t'as pas d'argent 😂"},
- {url:"https://www.w3schools.com/html/movie.mp4",user:"@motivation_sn",cat:"motivation",likes:"45k",desc:"Ne lâche jamais 💪"},
- {url:"https://www.w3schools.com/html/mov_bbb.mp4",user:"@sabar_dance",cat:"musique",likes:"89k",desc:"Nouveau son 🔥"},
+let data=[
+ {url:"https://www.w3schools.com/html/mov_bbb.mp4",user:"@dakar_comedy",cat:"humour",likes:12300,desc:"Trop drôle 😂",coms:[]},
+ {url:"https://www.w3schools.com/html/movie.mp4",user:"@motivation_sn",cat:"motivation",likes:45000,desc:"N'abandonne jamais 💪",coms:[]},
 ];
-let feed=document.getElementById('feed');
+let saved=new Set();
 function render(arr){
- feed.innerHTML="";
+ let f=document.getElementById('feed');f.innerHTML="";
  arr.forEach((v,i)=>{
-  feed.innerHTML+=<div class="box"><video src="${v.url}" loop playsinline autoplay muted id="v${i}" onclick="if(this.paused)this.play();else this.pause()"></video><button class="sound" onclick="let vid=document.getElementById('v${i}');vid.muted=!vid.muted;this.textContent=vid.muted?'🔇':'🔊'">🔇</button><div class="info"><b>${v.user}</b><br><small>${v.desc}</small></div><div class="like"><div>❤️</div><small>${v.likes}</small></div></div>;
+  f.innerHTML+=`<div class="box">
+   <video src="${v.url}" loop muted playsinline onclick="this.paused?this.play():this.pause()" id="vid${i}"></video>
+   <div class="top-right"><button class="icon-btn" onclick="togSound(${i})" id="s${i}">🔇</button></div>
+   <div class="info"><b>${v.user}</b><p>${v.desc}</p><p id="com${i}" style="font-size:12px;color:#ccc;margin-top:4px">${v.coms.slice(-1)[0]||''}</p></div>
+   <div class="actions">
+     <div class="act" id="like${i}" onclick="like(${i})"><div>❤️</div><span id="lc${i}">${format(v.likes)}</span></div>
+     <div class="act" onclick="openCom(${i})"><div>💬</div><span>${v.coms.length}</span></div>
+     <div class="act" onclick="shareV(${i})"><div>↗️</div><span>Partage</span></div>
+     <div class="act ${saved.has(i)?'saved':''}" id="save${i}" onclick="saveV(${i})"><div>${saved.has(i)?'★':'☆'}</div><span>Favoris</span></div>
+   </div>
+   <div class="comment-box" id="cb${i}"><input id="ci${i}" placeholder="Ajouter un commentaire..."><button onclick="sendCom(${i})" style="background:#fe2c55;border:none;color:#fff;padding:8px 12px;border-radius:20px">Envoyer</button></div>
+  </div>`;
  });
+ setTimeout(()=>{document.querySelectorAll('video').forEach(v=>v.play().catch(()=>{}));},200);
 }
-function filterCat(c,b){document.querySelectorAll('.cat').forEach(x=>x.classList.remove('active'));b.classList.add('active');if(c=='tous')render(list);else render(list.filter(v=>v.cat==c));}
-function search(q){render(list.filter(v=>v.user.includes(q)||v.desc.includes(q)));}
-function newVid(inp){let f=inp.files[0];if(!f)return;let u=URL.createObjectURL(f);list.unshift({url:u,user:"@moi",cat:"tous",likes:"0",desc:"Ma vidéo"});render(list);}
-render(list);
+function format(n){return n>=1000?(n/1000).toFixed(1)+'k':n}
+function togSound(i){let v=document.getElementById('vid'+i);v.muted=!v.muted;document.getElementById('s'+i).textContent=v.muted?'🔇':'🔊';}
+function like(i){let el=document.getElementById('like'+i);let lc=document.getElementById('lc'+i);if(el.classList.contains('liked')){el.classList.remove('liked');data[i].likes--;}else{el.classList.add('liked');data[i].likes++;}lc.textContent=format(data[i].likes);}
+function saveV(i){if(saved.has(i))saved.delete(i);else saved.add(i);document.getElementById('save'+i).classList.toggle('saved');}
+function openCom(i){let b=document.getElementById('cb'+i);b.style.display=b.style.display==='flex'?'none':'flex';}
+function sendCom(i){let inp=document.getElementById('ci'+i);if(!inp.value)return;data[i].coms.push('Moi: '+inp.value);document.getElementById('com'+i).textContent=inp.value;inp.value='';openCom(i);}
+function shareV(i){if(navigator.share){navigator.share({title:'ChatBook',text:data[i].desc,url:location.href});}else{alert('Lien copié: '+location.href);}}
+function fil(c,b){document.querySelectorAll('.cat').forEach(x=>x.classList.remove('active'));b.classList.add('active');if(c=='tous')render(data);else render(data.filter(d=>d.cat==c));}
+function doSearch(q){q=q.toLowerCase();render(data.filter(d=>d.user.toLowerCase().includes(q)||d.desc.toLowerCase().includes(q)));}
+function addV(inp){let file=inp.files[0];if(!file)return;let u=URL.createObjectURL(file);data.unshift({url:u,user:"@moi",cat:"tous",likes:0,desc:"Ma vidéo",coms:[]});render(data);}
+render(data);
 </script>
-</body>
-</html>
+</body></html>
