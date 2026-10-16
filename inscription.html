@@ -1,181 +1,53 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ChatBook - Inscription</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
-
-        body {
-            background: linear-gradient(135deg, #1877f2, #0056b3);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .register-container {
-            background-color: #ffffff;
-            width: 100%;
-            max-width: 400px;
-            padding: 30px 25px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-            text-align: center;
-        }
-
-        .register-container h1 {
-            color: #1877f2;
-            font-size: 2.2rem;
-            font-weight: 800;
-            margin-bottom: 5px;
-            letter-spacing: -0.5px;
-        }
-
-        .register-container p {
-            color: #606770;
-            font-size: 0.95rem;
-            margin-bottom: 25px;
-        }
-
-        .input-group {
-            margin-bottom: 14px;
-            text-align: left;
-            position: relative;
-        }
-
-        .input-group input {
-            width: 100%;
-            padding: 14px 16px;
-            font-size: 1rem;
-            border: 1px solid #ccd0d5;
-            border-radius: 8px;
-            outline: none;
-            transition: border-color 0.2s;
-            -webkit-appearance: none;
-        }
-
-        .input-group input:focus {
-            border-color: #1877f2;
-            box-shadow: 0 0 0 2px rgba(24, 119, 242, 0.2);
-        }
-
-        /* STYLE POUR L'ŒIL DU MOT DE PASSE */
-        .password-toggle-eye {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            font-size: 1.2rem;
-            user-select: none;
-            color: #606770;
-        }
-
-        .btn-register {
-            width: 100%;
-            padding: 14px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: #ffffff;
-            background-color: #42b72a;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: background-color 0.2s;
-            -webkit-appearance: none;
-        }
-
-        .footer-links {
-            margin-top: 20px;
-            border-top: 1px solid #e4e6eb;
-            padding-top: 20px;
-        }
-
-        .footer-links a {
-            color: #1877f2;
-            text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 600;
-        }
-    </style>
-    <script src="https://jsdelivr.net"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ChatBook - Inscription</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+body{background:#f0f2f5;display:flex;justify-content:center;align-items:center;height:100vh}
+.card{background:#fff;width:90%;max-width:360px;padding:22px;border-radius:20px;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,0.1)}
+h1{color:#0a7cff;font-size:30px;font-weight:800}.sub{color:#555;font-size:13px;margin:8px 0 18px}
+.input-box{position:relative;margin-bottom:12px}
+.input-box input{width:100%;padding:12px 40px 12px 12px;border:none;background:#f1f5f9;border-radius:20px;outline:none}
+.eye{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:18px}
+.btn{width:100%;padding:12px;background:#22c55e;color:#fff;border:none;border-radius:20px;font-weight:bold;font-size:15px;cursor:pointer;margin-top:8px}
+.msg{margin-top:10px;font-size:13px;padding:8px;border-radius:10px;display:none}
+.msg.ok{display:block;background:#dcfce7;color:#166534}.msg.err{display:block;background:#fee2e2;color:#991b1b}
+a{color:#0a7cff;text-decoration:none;font-size:13px}
+</style>
 </head>
 <body>
-
-    <div class="register-container">
-        <h1>ChatBook</h1>
-        <p>C'est rapide et facile.</p>
-        
-        <form id="formInscription">
-            <div class="input-group">
-                <input type="text" id="regPrenom" placeholder="Prénom" required>
-            </div>
-            <div class="input-group">
-                <input type="text" id="regNom" placeholder="Nom de famille" required>
-            </div>
-            <div class="input-group">
-                <input type="email" id="regEmail" placeholder="Numéro de mobile ou e-mail" required>
-            </div>
-            <!-- APPORT DE LA CASE DU MOT DE PASSE INTERACTIVE -->
-            <div class="input-group">
-                <input type="password" id="regPassword" placeholder="Nouveau mot de passe" required>
-                <span class="password-toggle-eye" id="togglePasswordBtn" onclick="togglePasswordVisibility()">👁️</span>
-            </div>
-            <button type="submit" class="btn-register">S'inscrire</button>
-        </form>
-
-        <div class="footer-links">
-            <a href="connexion.html">Vous avez déjà un compte ?</a>
-        </div>
-    </div>
-
-    <script>
-        const SUPABASE_URL = "https://supabase.co";
-        const SUPABASE_KEY = "sb_publishable_DucLDxgJL-poE8KrN_9bnA_K-D0aGOS";
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-        // SYSTÈME DE L'ŒIL MAGIQUE (AFFICHER / MASQUER)
-        function togglePasswordVisibility() {
-            const passwordField = document.getElementById('regPassword');
-            const eyeIcon = document.getElementById('togglePasswordBtn');
-            
-            if (passwordField.type === "password") {
-                passwordField.type = "text";
-                eyeIcon.innerText = "🔒"; // Change l'icône quand c'est visible
-            } else {
-                passwordField.type = "password";
-                eyeIcon.innerText = "👁️"; // Remet l'œil quand c'est masqué
-            }
-        }
-
-        document.getElementById('formInscription').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const prenom = document.getElementById('regPrenom').value;
-            const name = document.getElementById('regNom').value;
-            const email = document.getElementById('regEmail').value;
-            const mot_de_passe = document.getElementById('regPassword').value;
-
-            const { data, error } = await supabase
-                .from('utilisateurs')
-                .insert([{ prenom, nom: name, email, mot_de_passe }]);
-
-            if (error) {
-                alert("Erreur technique : " + error.message);
-            } else {
-                alert("Félicitations Chef ! Compte enregistré en direct dans Supabase ! 🎉");
-                window.location.href = "connexion.html?v=12";
-            }
-        });
-    </script>
+<div class="card">
+  <h1>ChatBook</h1>
+  <div class="sub">Crée ton compte pour voir le feed</div>
+  <div class="input-box"><input id="name" placeholder="Nom complet"></div>
+  <div class="input-box"><input id="email" placeholder="Email" type="email"></div>
+  <div class="input-box">
+    <input id="pass" placeholder="Mot de passe" type="password">
+    <button class="eye" type="button" onclick="togglePass()">👁️</button>
+  </div>
+  <div id="m" class="msg"></div>
+  <button class="btn" onclick="inscrire()">S'inscrire</button>
+  <div style="margin-top:12px"><a href="connexion.html">Déjà un compte? Se connecter</a></div>
+</div>
+<script>
+function togglePass(){
+  let p=document.getElementById('pass');
+  let e=document.querySelector('.eye');
+  if(p.type==='password'){p.type='text';e.textContent='🙈';}
+  else{p.type='password';e.textContent='👁️';}
+}
+function inscrire(){
+  let n=document.getElementById('name').value.trim();
+  let e=document.getElementById('email').value.trim();
+  let p=document.getElementById('pass').value.trim();
+  let m=document.getElementById('m');
+  if(!n||!e||!p){m.textContent='Remplis tous les champs';m.className='msg err';return;}
+  m.textContent='✅ Compte créé! Redirection...';m.className='msg ok';
+  setTimeout(()=>{location.href='accueil.html';},1200);
+}
+</script>
 </body>
 </html>
