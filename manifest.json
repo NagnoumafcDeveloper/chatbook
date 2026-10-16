@@ -1,11 +1,37 @@
 {
-  "name": "ChatBook",
+  "id": "/chatbook/",
+  "name": "ChatBook - Vidéos Sénégal",
   "short_name": "ChatBook",
-  "start_url": "accueil.html",
+  "description": "ChatBook - L'app vidéos 100% sénégalaise comme TikTok. Regarde, like, commente et partage.",
+  "start_url": "/chatbook/accueil.html",
+  "scope": "/chatbook/",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#000000",
   "theme_color": "#fe2c55",
+  "lang": "fr",
+  "dir": "ltr",
+  "id": "/chatbook/",
   "icons": [
-    { "src": "https://i.pravatar.cc/512?img=32", "sizes": "512x512", "type": "image/png" }
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
   ]
 }
