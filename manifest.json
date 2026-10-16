@@ -1,22 +1,11 @@
 {
   "name": "ChatBook",
   "short_name": "ChatBook",
-  "description": "ChatBook - Vidéos comme TikTok",
   "start_url": "accueil.html",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#fe2c55",
-  "orientation": "portrait",
   "icons": [
-    {
-      "src": "https://i.pravatar.cc/512?img=32",
-      "sizes": "512x512",
-      "type": "image/png"
-    },
-    {
-      "src": "https://i.pravatar.cc/192?img=32",
-      "sizes": "192x192",
-      "type": "image/png"
-    }
+    { "src": "https://i.pravatar.cc/512?img=32", "sizes": "512x512", "type": "image/png" }
   ]
 }
