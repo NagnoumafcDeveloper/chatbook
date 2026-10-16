@@ -1,84 +1,107 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ChatBook</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ChatBook - Comme TikTok</title>
 <style>
-body{background:#eef4ff;margin:0;font-family:Arial}
-.header{background:#fff;padding:12px;position:sticky;top:0}
-.logo{font-weight:900;font-size:22px}.logo span{color:#0a7cff}
-.search{background:#f0f2f5;border-radius:20px;padding:10px;margin-top:8px}
-.search input{border:none;background:transparent;width:100%;outline:none}
-.cats{display:flex;gap:6px;margin-top:8px}
-.cat{padding:6px 10px;border-radius:12px;border:none;background:#e4e6eb}
-.cat.active{background:#0a7cff;color:#fff}
-.feed{display:flex;flex-direction:column;align-items:center;padding:10px;gap:12px}
-.box{position:relative;width:95%;max-width:400px;background:#000;border-radius:16px;overflow:hidden;height:75vh}
-.box video{width:100%;height:100%;object-fit:cover}
-.info{position:absolute;left:10px;bottom:10px;color:#fff;text-shadow:0 1px 3px #000}
-.actions{position:absolute;right:8px;bottom:10px;display:flex;flex-direction:column;gap:16px;text-align:center}
-.act{cursor:pointer}
-.act div{font-size:30px;color:#fff;text-shadow:0 1px 3px #000}
-.act.liked div{color:#fe2c55}
-.act.saved div{color:#ffcc00}
-.act span{color:#fff;font-size:11px;font-weight:bold;text-shadow:0 1px 3px #000}
-.bottom{height:50px;background:#fff;display:flex;justify-content:space-around;align-items:center;position:fixed;bottom:0;width:100%;border-top:1px solid #ddd}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+body{background:#000;color:#fff;display:flex;height:100vh;overflow:hidden}
+/* MENU GAUCHE COMME TA PHOTO */
+.left{width:240px;background:#000;padding:12px 10px;display:flex;flex-direction:column;gap:4px;border-right:1px solid #222}
+.logo{font-size:26px;font-weight:900;padding:8px 0 15px 8px}
+.logo span{color:#fe2c55}
+.search{background:#1e1e1e;border-radius:22px;padding:10px 12px;display:flex;gap:8px;color:#888}
+.search input{background:transparent;border:none;outline:none;color:#fff;width:100%}
+.menu{margin-top:14px;display:flex;flex-direction:column;gap:2px}
+.menu a{padding:10px 8px;border-radius:8px;display:flex;gap:12px;align-items:center;cursor:pointer;font-size:15px;color:#fff;text-decoration:none}
+.menu a.active{color:#fe2c55;font-weight:700}
+.menu a:hover{background:#121212}
+.btn-red{background:#fe2c55;color:#fff;border:none;border-radius:6px;padding:12px;font-weight:700;margin-top:15px;cursor:pointer}
+/* CENTRE VIDEO */
+.center{flex:1;display:flex;justify-content:center;align-items:center;gap:16px;background:#000;position:relative}
+.video-box{position:relative;width:360px;height:80vh;background:#111;border-radius:8px;overflow:hidden}
+.video-box video{width:100%;height:100%;object-fit:cover}
+.video-info{position:absolute;left:10px;bottom:10px;right:10px}
+.video-info b{font-size:15px}
+.video-info p{font-size:13px;margin-top:4px}
+.tag{background:#2a2a2a;font-size:11px;padding:4px 8px;border-radius:4px;display:inline-block;margin-top:6px}
+/* BOUTONS DROITE COMME TA PHOTO */
+.right-actions{display:flex;flex-direction:column;gap:8px;align-items:center}
+.pp{width:48px;height:48px;border-radius:50%;background:#333;position:relative;overflow:hidden}
+.pp img{width:100%;height:100%;object-fit:cover}
+.plus{position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);background:#fe2c55;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;border:2px solid #000}
+.action{width:48px;height:48px;background:#2a2a2a;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer}
+.action.liked{background:#fe2c55}
+.action.saved{background:#ffc107;color:#000}
+.count{font-size:12px;font-weight:700;margin-top:-2px}
+.top-right{position:absolute;top:10px;right:12px;display:flex;gap:8px}
+.top-right button{background:#2a2a2a;border:none;color:#fff;padding:8px 14px;border-radius:20px;font-size:13px}
+.top-right.red{background:#fe2c55}
+@media(max-width:900px){.left{display:none}.video-box{width:100%;max-width:400px;height:85vh}.center{padding:0 10px}}
 </style>
 </head>
 <body>
-<div class="header">
+<div class="left">
 <div class="logo"><span>Chat</span>Book</div>
-<div class="search"><input placeholder="Rechercher" oninput="doSearch(this.value)"></div>
-<div class="cats">
-<button class="cat active" onclick="fil('tous',this)">Tous</button>
-<button class="cat" onclick="fil('humour',this)">Humour</button>
-<button class="cat" onclick="fil('motivation',this)">Motivation</button>
+<div class="search">🔍 <input placeholder="Rechercher" oninput="doSearch(this.value)"></div>
+<div class="menu">
+<a class="active">🏠 Pour toi</a>
+<a>🧭 Explorer</a>
+<a>👥 Suivis</a>
+<a>🎬 Mini-dramas</a>
+<a>📺 LIVE</a>
+<a onclick="document.getElementById('up').click()">➕ Importer</a>
+<a onclick="location.href='inscription.html'">👤 Profil</a>
+<a>⋯ Plus</a>
+<button class="btn-red" onclick="location.href='inscription.html'">Se connecter</button>
 </div>
 </div>
 
-<div class="feed" id="feed"></div>
-
-<div class="bottom">
-<button>Accueil</button>
-<button onclick="document.getElementById('up').click()">Publier</button>
-<button onclick="location.href='inscription.html'">Profil</button>
+<div class="center" id="center">
+<div class="video-box" id="vbox"></div>
+<div class="right-actions" id="actions"></div>
+<div class="top-right"><button>Obtenir de...</button><button>Obtenir l'a...</button><button class="red">Se connecter</button></div>
 </div>
 
-<input type="file" id="up" accept="video/*" style="display:none" onchange="addV(this)">
+<input type="file" id="up" accept="video/*" hidden onchange="addV(this)">
 
 <script>
 let data=[
- {url:"https://www.w3schools.com/html/mov_bbb.mp4",user:"@dakar_comedy",likes:12300,desc:"Trop drôle 😂",coms:0},
- {url:"https://www.w3schools.com/html/movie.mp4",user:"@motivation_sn",likes:45000,desc:"N'abandonne jamais 💪",coms:0},
+ {url:"https://www.w3schools.com/html/mov_bbb.mp4",user:"SENEGALESEBOYZ SN",desc:"💔💔 #humoursenegal",likes:37700,coms:1354,favs:7256,shares:345,photo:"https://i.pravatar.cc/100?img=5"},
+ {url:"https://www.w3schools.com/html/movie.mp4",user:"@dakar_comedy",desc:"WEUH 😳😳 #senegal",likes:45200,coms:2100,favs:5400,shares:812,photo:"https://i.pravatar.cc/100?img=12"},
 ];
+let idx=0;
 let saved=new Set();
-function render(arr){
- let f=document.getElementById('feed');f.innerHTML="";
- arr.forEach((v,i)=>{
-  f.innerHTML+=`<div class="box">
-   <video src="${v.url}" loop muted playsinline id="vid${i}" onclick="this.paused?this.play():this.pause()"></video>
-   <div class="info"><b>${v.user}</b><br>${v.desc}</div>
-   <div class="actions">
-     <div class="act" id="like${i}" onclick="like(${i})"><div>🤍</div><span id="lc${i}">${format(v.likes)}</span></div>
-     <div class="act" onclick="openCom(${i})"><div>💬</div><span id="c${i}">${v.coms}</span></div>
-     <div class="act" id="save${i}" onclick="saveV(${i})"><div>☆</div><span>Favoris</span></div>
-     <div class="act" onclick="shareV()"><div>↗️</div><span>Partage</span></div>
-     <div class="act" onclick="togSound(${i})"><div id="s${i}">🔇</div><span>Son</span></div>
-   </div>
-  </div>`;
- });
+function fmt(n){if(n>=1000)return (n/1000).toFixed(1)+'K';return n}
+function show(i){
+ let v=data[i];
+ document.getElementById('vbox').innerHTML=`
+  <video src="${v.url}" loop autoplay muted playsinline id="vid" onclick="this.paused?this.play():this.pause()"></video>
+  <div class="video-info"><b>${v.user}</b><p>${v.desc}</p><span class="tag">Contenu promotionnel</span></div>`;
+ document.getElementById('actions').innerHTML=`
+  <div class="pp"><img src="${v.photo}"><div class="plus">+</div></div>
+  <div onclick="like(${i})"><div class="action ${document.getElementById('like'+i)?.classList.contains('liked')?'liked':''}" id="actLike"><div>🤍</div></div><div class="count" id="lc">${fmt(v.likes)}</div></div>
+  <div onclick="commenter()"><div class="action"><div>💬</div></div><div class="count">${v.coms}</div></div>
+  <div onclick="saveV(${i})"><div class="action" id="actSave"><div>🔖</div></div><div class="count">${v.favs}</div></div>
+  <div onclick="shareV()"><div class="action"><div>➤</div></div><div class="count">${v.shares}</div></div>
+  <div class="pp" style="margin-top:8px"><img src="${v.photo}"></div>`;
 }
-function format(n){return n>=1000?(n/1000).toFixed(1)+'k':n}
-function togSound(i){let v=document.getElementById('vid'+i);v.muted=!v.muted;document.getElementById('s'+i).textContent=v.muted?'🔇':'🔊';}
-function like(i){let el=document.getElementById('like'+i);let ic=el.querySelector('div');if(el.classList.contains('liked')){el.classList.remove('liked');ic.textContent='🤍';data[i].likes--;}else{el.classList.add('liked');ic.textContent='❤️';data[i].likes++;}document.getElementById('lc'+i).textContent=format(data[i].likes);}
-function saveV(i){let el=document.getElementById('save'+i);let ic=el.querySelector('div');if(saved.has(i)){saved.delete(i);el.classList.remove('saved');ic.textContent='☆';}else{saved.add(i);el.classList.add('saved');ic.textContent='★';}}
-function openCom(i){let t=prompt('Commentaire:');if(t){data[i].coms++;document.getElementById('c'+i).textContent=data[i].coms;}}
-function shareV(){alert('Lien copié: '+location.href);}
-function fil(c,b){document.querySelectorAll('.cat').forEach(x=>x.classList.remove('active'));b.classList.add('active');if(c=='tous')render(data);else render(data.filter(d=>d.cat==c));}
-function doSearch(q){q=q.toLowerCase();render(data.filter(d=>d.user.toLowerCase().includes(q)));}
-function addV(inp){let f=inp.files[0];if(!f)return;let u=URL.createObjectURL(f);data.unshift({url:u,user:"@moi",likes:0,desc:"Ma vidéo",cat:"tous",coms:0});render(data);}
-render(data);
+function like(i){
+ let el=document.getElementById('actLike');
+ let liked=el.classList.contains('liked');
+ if(liked){el.classList.remove('liked');el.innerHTML='<div>🤍</div>';data[i].likes--;}else{el.classList.add('liked');el.innerHTML='<div>❤️</div>';data[i].likes++;}
+ document.getElementById('lc').textContent=fmt(data[i].likes);
+}
+function saveV(i){
+ let el=document.getElementById('actSave');
+ if(saved.has(i)){saved.delete(i);el.classList.remove('saved');}else{saved.add(i);el.classList.add('saved');}
+}
+function commenter(){let t=prompt('Commentaire:');if(t){data[idx].coms++;show(idx);}}
+function shareV(){if(navigator.share)navigator.share({url:location.href});else alert('Lien copié');}
+function addV(inp){let f=inp.files[0];if(!f)return;let u=URL.createObjectURL(f);data.unshift({url:u,user:"@moi",desc:"Ma vidéo #chatbook",likes:0,coms:0,favs:0,shares:0,photo:"https://i.pravatar.cc/100?img=8"});idx=0;show(0);}
+document.addEventListener('wheel',e=>{if(e.deltaY>0){idx=Math.min(data.length-1,idx+1);}else{idx=Math.max(0,idx-1);}show(idx);});
+function doSearch(q){q=q.toLowerCase();let f=data.filter(d=>d.user.toLowerCase().includes(q));if(f.length){data=f;idx=0;show(0);}}
+show(0);
 </script>
 </body>
 </html>
