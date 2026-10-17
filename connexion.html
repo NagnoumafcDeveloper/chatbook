@@ -6,9 +6,8 @@
     <title>ChatBook - Connexion</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #000000;
-            color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(180deg, #000000 0%, #1a0002 50%, #4a0005 100%);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -16,29 +15,48 @@
             margin: 0;
         }
         .login-container {
-            width: 100%;
-            max-width: 350px;
-            padding: 20px;
+            background-color: #111111;
+            width: 90%;
+            max-width: 400px;
+            padding: 35px 25px;
+            border-radius: 20px;
+            border: 1px solid #222222;
+            box-shadow: 0 10px 30px rgba(229, 9, 20, 0.15);
             text-align: center;
+            box-sizing: border-box;
         }
-        h2 {
-            font-size: 32px;
+        h1 {
             color: #e50914;
-            margin-bottom: 30px;
+            font-size: 36px;
+            font-weight: bold;
+            margin: 0 0 5px 0;
+            letter-spacing: 1px;
+        }
+        p {
+            color: #aaaaaa;
+            font-size: 16px;
+            margin: 0 0 25px 0;
         }
         .input-group {
             position: relative;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
         input {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #333;
-            border-radius: 25px;
-            background-color: #111;
-            color: white;
+            padding: 14px 16px;
+            border: 1px solid #333333;
+            border-radius: 8px;
+            background-color: #1a1a1a;
+            color: #ffffff;
             box-sizing: border-box;
             font-size: 16px;
+        }
+        input::placeholder {
+            color: #777777;
+        }
+        input:focus {
+            outline: none;
+            border-color: #e50914;
         }
         .password-toggle {
             position: absolute;
@@ -46,41 +64,49 @@
             top: 50%;
             transform: translateY(-50%);
             cursor: pointer;
-            color: #aaa;
+            font-size: 20px;
             user-select: none;
         }
         .btn-login {
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             border: none;
-            border-radius: 25px;
+            border-radius: 8px;
             background-color: #e50914;
-            color: white;
-            font-size: 16px;
+            color: #ffffff;
+            font-size: 18px;
             font-weight: bold;
             cursor: pointer;
             margin-top: 10px;
+            transition: background-color 0.2s;
+        }
+        .btn-login:hover {
+            background-color: #b80710;
+        }
+        .divider {
+            border-top: 1px solid #222222;
+            margin: 20px 0;
         }
         .signup-link {
-            margin-top: 20px;
-            display: block;
-            color: #aaa;
-            text-decoration: none;
-            font-size: 14px;
-        }
-        .signup-link span {
             color: #e50914;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 600;
+        }
+        .signup-link:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
 
 <div class="login-container">
-    <h2>ChatBook</h2>
+    <h1>ChatBook</h1>
+    <p>Connectez-vous pour commencer.</p>
     
     <form id="loginForm">
         <div class="input-group">
-            <input type="text" placeholder="Email ou nom d'utilisateur" required>
+            <input type="text" placeholder="Numéro de mobile ou e-mail" required>
         </div>
         
         <div class="input-group">
@@ -91,7 +117,9 @@
         <button type="submit" class="btn-login">Se connecter</button>
     </form>
     
-    <a href="#" class="signup-link">Nouveau sur ChatBook ? <span>Inscrivez-vous</span></a>
+    <div class="divider"></div>
+    
+    <a href="index.html" class="signup-link">Nouveau sur ChatBook ? Créez un compte</a>
 </div>
 
 <script>
@@ -102,6 +130,13 @@
         const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
         password.setAttribute('type', type);
         this.textContent = type === 'password' ? '👁️' : '🙈';
+    });
+
+    // Connexion fictive et redirection vers le chat
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        alert('Connexion réussie !');
+        window.location.href = 'chat.html';
     });
 </script>
 
