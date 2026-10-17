@@ -99,44 +99,47 @@
             font-weight: 500;
         }
 
+        /* Barre d'action alignée à 4 boutons sur une seule ligne */
         .action-bar {
             display: flex;
-            justify-content: space-around;
-            padding: 12px 0;
+            justify-content: space-between;
+            padding: 12px 10px;
             border-top: 1px solid #111;
             border-bottom: 1px solid #111;
             background-color: #050505;
+            box-sizing: border-box;
         }
 
         .action-item {
             display: flex;
             align-items: center;
-            gap: 8px;
-            color: #ffffff; /* Le texte reste toujours blanc */
-            font-size: 14px;
+            gap: 5px;
+            color: #ffffff;
+            font-size: 12px;
             cursor: pointer;
             background: none;
             border: none;
-            padding: 5px 10px;
+            padding: 6px 8px;
             border-radius: 20px;
             transition: background-color 0.2s;
+            flex: 1;
+            justify-content: center;
         }
 
         .action-item:hover {
             background-color: #111111;
         }
 
-        /* Style des icônes de base (blanches) */
         .icon-svg {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             fill: none;
             stroke: #ffffff;
             stroke-width: 2;
             transition: fill 0.2s, stroke 0.2s;
         }
 
-        /* Quand on clique : l'icône se remplit de rouge vif */
+        /* Remplissage rouge uniquement pour le cœur et l'étoile activés */
         .action-item.active .icon-svg {
             fill: #e50914;
             stroke: #e50914;
@@ -248,9 +251,9 @@
             </div>
         </div>
 
-        <!-- Barre d'actions réorganisée avec le commentaire au milieu et les icônes SVG de haute qualité -->
+        <!-- Les 4 boutons alignés impeccablement sur la même ligne -->
         <div class="action-bar">
-            <!-- Bouton Like (Cœur) -->
+            <!-- 1. Like -->
             <button class="action-item" id="likeBtn">
                 <svg class="icon-svg" viewBox="0 0 24 24">
                     <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
@@ -258,20 +261,28 @@
                 <span id="likeCount">12.5K</span>
             </button>
 
-            <!-- Bouton Commentaire (Bulle) placé au milieu -->
+            <!-- 2. Commentaires -->
             <button class="action-item" id="commentBarBtn">
-                <svg class="icon-svg" viewBox="0 0 24 24" style="fill: none; stroke: #fff;">
+                <svg class="icon-svg" viewBox="0 0 24 24">
                     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
                 </svg>
                 <span id="commentCount">1</span>
             </button>
 
-            <!-- Bouton Favoris (Étoile) -->
+            <!-- 3. Favoris -->
             <button class="action-item" id="favBtn">
                 <svg class="icon-svg" viewBox="0 0 24 24">
                     <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
                 </svg>
                 <span>Favoris</span>
+            </button>
+
+            <!-- 4. Partager -->
+            <button class="action-item">
+                <svg class="icon-svg" viewBox="0 0 24 24" style="fill: none; stroke: #fff;">
+                    <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13"/>
+                </svg>
+                <span>Partager</span>
             </button>
         </div>
 
@@ -297,7 +308,7 @@
     </div>
 
     <script>
-        // Interaction dynamique du cœur (Se remplit en rouge, texte reste blanc)
+        // Gestion dynamique du clic Like
         const likeBtn = document.getElementById('likeBtn');
         const likeCount = document.getElementById('likeCount');
         let isLiked = false;
@@ -313,7 +324,7 @@
             }
         });
 
-        // Interaction dynamique de l'étoile (Se remplit en rouge, texte reste blanc)
+        // Gestion dynamique du clic Favoris
         const favBtn = document.getElementById('favBtn');
         let isFav = false;
 
@@ -326,11 +337,4 @@
             }
         });
 
-        // Focus le champ de saisie si on clique sur le bouton commentaire de la barre
-        document.getElementById('commentBarBtn').addEventListener('click', function() {
-            document.getElementById('commentInput').focus();
-        });
-
-        // Ajout dynamique des commentaires
-        const commentForm = document.getElementById('commentForm');
-        const commentInput = document.getElementById('commentInput');
+        // Focus direct sur la zone d'écriture au clic sur le bouton Commentaire
