@@ -190,7 +190,7 @@
                 <span id="likeCount">12.5K</span>
             </button>
 
-            <!-- 2. Commentaires (Ouvre directement l'espace chat.html) -->
+            <!-- 2. Commentaires -->
             <button class="action-item" onclick="window.location.href='chat.html'">
                 <svg class="icon-svg" viewBox="0 0 24 24">
                     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
@@ -206,8 +206,8 @@
                 <span>Favoris</span>
             </button>
 
-            <!-- 4. Partager -->
-            <button class="action-item">
+            <!-- 4. Partager fonctionnel -->
+            <button class="action-item" id="shareBtn">
                 <svg class="icon-svg" viewBox="0 0 24 24" style="fill: none; stroke: #fff;">
                     <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13"/>
                 </svg>
@@ -243,6 +243,26 @@
                 this.classList.add('active');
             } else {
                 this.classList.remove('active');
+            }
+        });
+
+        // Script pour activer le partage natif sur smartphone
+        const shareBtn = document.getElementById('shareBtn');
+        shareBtn.addEventListener('click', async () => {
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: 'ChatBook',
+                        text: 'Regarde cette vidéo sur ChatBook !',
+                        url: window.location.href
+                    });
+                } catch (err) {
+                    console.log('Partage annulé ou erreur:', err);
+                }
+            } else {
+                // Option de secours pour les ordinateurs de bureau
+                navigator.clipboard.writeText(window.location.href);
+                alert('Lien copié dans le presse-papiers !');
             }
         });
     </script>
