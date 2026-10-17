@@ -112,23 +112,34 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            color: #ffffff; /* Boutons blancs par défaut */
+            color: #ffffff; /* Le texte reste toujours blanc */
             font-size: 14px;
             cursor: pointer;
             background: none;
             border: none;
             padding: 5px 10px;
             border-radius: 20px;
-            transition: color 0.2s, background-color 0.2s;
+            transition: background-color 0.2s;
         }
 
         .action-item:hover {
             background-color: #111111;
         }
 
-        /* Classe active pour passer en rouge au clic */
-        .action-item.clicked {
-            color: #e50914 !important;
+        /* Style des icônes de base (blanches) */
+        .icon-svg {
+            width: 20px;
+            height: 20px;
+            fill: none;
+            stroke: #ffffff;
+            stroke-width: 2;
+            transition: fill 0.2s, stroke 0.2s;
+        }
+
+        /* Quand on clique : l'icône se remplit de rouge vif */
+        .action-item.active .icon-svg {
+            fill: #e50914;
+            stroke: #e50914;
         }
 
         .comments-section {
@@ -237,18 +248,42 @@
             </div>
         </div>
 
-        <!-- Barre d'actions avec boutons interactifs -->
+        <!-- Barre d'actions réorganisée avec le commentaire au milieu et les icônes SVG de haute qualité -->
         <div class="action-bar">
-            <button class="action-item" id="likeBtn">❤️ <span id="likeCount">12.5K</span></button>
-            <button class="action-item" id="favBtn">⭐ <span>Favoris</span></button>
-            <button class="action-item">🔗 <span>Partager</span></button>
+            <!-- Bouton Like (Cœur) -->
+            <button class="action-item" id="likeBtn">
+                <svg class="icon-svg" viewBox="0 0 24 24">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+                <span id="likeCount">12.5K</span>
+            </button>
+
+            <!-- Bouton Commentaire (Bulle) placé au milieu -->
+            <button class="action-item" id="commentBarBtn">
+                <svg class="icon-svg" viewBox="0 0 24 24" style="fill: none; stroke: #fff;">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                </svg>
+                <span id="commentCount">1</span>
+            </button>
+
+            <!-- Bouton Favoris (Étoile) -->
+            <button class="action-item" id="favBtn">
+                <svg class="icon-svg" viewBox="0 0 24 24">
+                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
+                <span>Favoris</span>
+            </button>
         </div>
 
         <div class="comments-section">
             <div class="comments-title">Commentaires</div>
             
-            <!-- Liste vide (utilisateurs 1 et 2 supprimés) -->
-            <div class="comment-list" id="commentList"></div>
+            <div class="comment-list" id="commentList">
+                <div class="comment-item">
+                    <span class="comment-user">@Moi:</span>
+                    <span class="comment-text">cc</span>
+                </div>
+            </div>
 
             <form class="comment-box" id="commentForm">
                 <input type="text" id="commentInput" placeholder="Ajouter un commentaire..." autocomplete="off" required>
@@ -262,50 +297,40 @@
     </div>
 
     <script>
-        // Gestion du bouton Like (Cœur)
+        // Interaction dynamique du cœur (Se remplit en rouge, texte reste blanc)
         const likeBtn = document.getElementById('likeBtn');
+        const likeCount = document.getElementById('likeCount');
         let isLiked = false;
+
         likeBtn.addEventListener('click', function() {
             isLiked = !isLiked;
             if(isLiked) {
-                this.classList.add('clicked');
-                document.getElementById('likeCount').textContent = "12.6K";
+                this.classList.add('active');
+                likeCount.textContent = "12.6K";
             } else {
-                this.classList.remove('clicked');
-                document.getElementById('likeCount').textContent = "12.5K";
+                this.classList.remove('active');
+                likeCount.textContent = "12.5K";
             }
         });
 
-        // Gestion du bouton Favoris (Étoile)
+        // Interaction dynamique de l'étoile (Se remplit en rouge, texte reste blanc)
         const favBtn = document.getElementById('favBtn');
         let isFav = false;
+
         favBtn.addEventListener('click', function() {
             isFav = !isFav;
             if(isFav) {
-                this.classList.add('clicked');
+                this.classList.add('active');
             } else {
-                this.classList.remove('clicked');
+                this.classList.remove('active');
             }
+        });
+
+        // Focus le champ de saisie si on clique sur le bouton commentaire de la barre
+        document.getElementById('commentBarBtn').addEventListener('click', function() {
+            document.getElementById('commentInput').focus();
         });
 
         // Ajout dynamique des commentaires
         const commentForm = document.getElementById('commentForm');
         const commentInput = document.getElementById('commentInput');
-        const commentList = document.getElementById('commentList');
-
-        commentForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const newComment = document.createElement('div');
-            newComment.classList.add('comment-item');
-            newComment.innerHTML = `
-                <span class="comment-user">@Moi:</span>
-                <span class="comment-text">${commentInput.value}</span>
-            `;
-            
-            commentList.appendChild(newComment);
-            commentInput.value = '';
-        });
-    </script>
-</body>
-</html>
