@@ -1,30 +1,4 @@
-[15:32, 17/10/2026] Le Bon: <!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChatBook - Pour vous</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #050505;
-            color: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        .app-container {
-            width: 100%;
-            max-width: 450px;
-            background-color: #000000;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-       …
-[15:36, 17/10/2026] Le Bon: <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -53,15 +27,25 @@
             border-right: 1px solid #1a1a1a;
             box-sizing: border-box;
             box-shadow: 0 0 30px rgba(229, 9, 20, 0.1);
+            position: relative;
+            padding-top: 60px; /* Espace pour ne pas cacher la vidéo sous l'en-tête figé */
         }
 
+        /* En-tête FIXÉ et bloqué tout en haut de l'écran */
         .app-header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 20px;
+            padding: 0 20px;
             background-color: #000000;
             border-bottom: 1px solid #111;
+            box-sizing: border-box;
+            z-index: 100; /* Force l'affichage au-dessus de tout */
         }
 
         .logo {
@@ -243,6 +227,7 @@
 <body>
 
     <div class="app-container">
+        <!-- Barre supérieure de navigation sécurisée et bloquée -->
         <header class="app-header">
             <a href="index.html" class="logo">ChatBook</a>
             <div class="nav-tabs">
@@ -349,15 +334,3 @@
         const commentList = document.getElementById('commentList');
         const commentCount = document.getElementById('commentCount');
         let currentComments = 1;
-
-        commentForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const newComment = document.createElement('div');
-            newComment.classList.add('comment-item');
-            newComment.innerHTML = `
-                <span class="comment-user">@Moi:</span>
-                <span class="comment-text">${commentInput.value}</span>
-            `;
-            
-            commentList.appendChild(newComment);
