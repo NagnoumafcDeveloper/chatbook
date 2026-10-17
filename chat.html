@@ -3,36 +3,205 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChatBook - Vidéos</title>
+    <title>ChatBook - Messagerie</title>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-        }
         body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
             background-color: #000000;
             color: #ffffff;
             display: flex;
-            justify-content: center;
-            align-items: center;
             height: 100vh;
         }
-        .container {
-            text-align: center;
-            padding: 20px;
+        .chat-sidebar {
+            width: 300px;
+            background-color: #111111;
+            border-right: 1px solid #222222;
+            display: flex;
+            flex-direction: column;
         }
-        h1 {
-            color: #1877f2;
-            margin-bottom: 10px;
+        .sidebar-header {
+            padding: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #e50914;
+            border-bottom: 1px solid #222222;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .back-home {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 14px;
+            background-color: #222222;
+            padding: 5px 10px;
+            border-radius: 15px;
+        }
+        .user-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+        }
+        .user-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .user-item:hover, .user-item.active {
+            background-color: #222222;
+        }
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #e50914;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+        }
+        .chat-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: #0a0a0a;
+        }
+        .chat-header {
+            padding: 20px;
+            background-color: #111111;
+            border-bottom: 1px solid #222222;
+            font-weight: bold;
+        }
+        .message-area {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .message {
+            max-width: 60%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            font-size: 15px;
+            line-height: 1.4;
+        }
+        .message.incoming {
+            background-color: #222222;
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+        .message.outgoing {
+            background-color: #e50914;
+            color: #ffffff;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+        .input-area {
+            padding: 20px;
+            background-color: #111111;
+            display: flex;
+            gap: 12px;
+        }
+        .input-area input {
+            flex: 1;
+            padding: 14px 20px;
+            border: 1px solid #333333;
+            border-radius: 25px;
+            background-color: #1a1a1a;
+            color: white;
+            font-size: 15px;
+        }
+        .input-area input:focus {
+            outline: none;
+            border-color: #e50914;
+        }
+        .btn-send {
+            background-color: #e50914;
+            color: white;
+            border: none;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .btn-send:hover {
+            background-color: #b80710;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>ChatBook</h1>
-        <p>Espace vidéo en cours de configuration...</p>
+
+    <!-- Liste des discussions à gauche -->
+    <div class="chat-sidebar">
+        <div class="sidebar-header">
+            <span>Messages</span>
+            <a href="accueil.html" class="back-home">◀️ Vidéos</a>
+        </div>
+        <div class="user-list">
+            <div class="user-item active">
+                <div class="avatar">SB</div>
+                <div>
+                    <div style="font-weight: bold;">SENEGALESEBOYZ SN</div>
+                    <div style="font-size: 13px; color: #777;">En ligne</div>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <!-- Zone de discussion principale à droite -->
+    <div class="chat-main">
+        <div class="chat-header">
+            SENEGALESEBOYZ SN
+        </div>
+        
+        <div class="message-area" id="messageArea">
+            <div class="message incoming">
+                Salam! Content que tu aimes nos vidéos sur ChatBook! 🇸🇳
+            </div>
+            <div class="message outgoing">
+                Merci! L'application fonctionne super bien!
+            </div>
+        </div>
+        
+        <form class="input-area" id="chatForm">
+            <input type="text" id="msgInput" placeholder="Écrire un message..." autocomplete="off" required>
+            <button type="submit" class="btn-send">➤</button>
+        </form>
+    </div>
+
+    <script>
+        const chatForm = document.getElementById('chatForm');
+        const msgInput = document.getElementById('msgInput');
+        const messageArea = document.getElementById('messageArea');
+
+        chatForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Créer le message de l'utilisateur
+            const newMsg = document.createElement('div');
+            newMsg.classList.add('message', 'outgoing');
+            newMsg.textContent = msgInput.value;
+            
+            // L'ajouter à l'écran
+            messageArea.appendChild(newMsg);
+            
+            // Vider le champ de texte
+            msgInput.value = '';
+            
+            // Faire défiler vers le bas automatiquement
+            messageArea.scrollTop = messageArea.scrollHeight;
+        });
+    </script>
 </body>
 </html>
