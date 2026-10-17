@@ -1,74 +1,146 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ChatBook</title>
-<style>
-body{background:#2563eb;display:flex;justify-content:center;align-items:center;height:100vh;margin:0;font-family:Arial}
-.card{background:white;width:90%;max-width:380px;border-radius:20px;padding:28px 22px;text-align:center}
-h1{color:#0a7cff;margin:0;font-size:34px;font-weight:800}
-.sub{color:#888;font-size:14px;margin:8px 0 20px}
-input{width:100%;padding:14px;margin-bottom:12px;border:none;background:#f1f5f9;border-radius:10px;box-sizing:border-box;font-size:15px;outline:none}
-input:focus{background:#e8eef7}
-.btn{width:100%;background:#22c55e;color:white;border:none;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer}
-.btn:active{transform:scale(0.97)}
-.link{color:#0a7cff;display:block;margin-top:16px;font-size:13px;text-decoration:none}
-.msg{display:none;padding:12px;border-radius:10px;margin-bottom:12px;font-size:13px;font-weight:bold}
-.msg.error{background:#fee2e2;color:#dc2626;display:none}
-.msg.ok{background:#dcfce7;color:#16a34a}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatBook - Inscription</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            /* Fond dégradé du noir profond vers le rouge sombre */
+            background: linear-gradient(180deg, #000000 0%, #1a0002 50%, #4a0005 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .signup-container {
+            background-color: #111111; /* Boîtier noir carbone */
+            width: 90%;
+            max-width: 400px;
+            padding: 35px 25px;
+            border-radius: 20px;
+            border: 1px solid #222222;
+            box-shadow: 0 10px 30px rgba(229, 9, 20, 0.15); /* Lueur rouge discrète */
+            text-align: center;
+            box-sizing: border-box;
+        }
+        h1 {
+            color: #e50914; /* Texte rouge vif */
+            font-size: 36px;
+            font-weight: bold;
+            margin: 0 0 5px 0;
+            letter-spacing: 1px;
+        }
+        p {
+            color: #aaaaaa;
+            font-size: 16px;
+            margin: 0 0 25px 0;
+        }
+        .input-group {
+            position: relative;
+            margin-bottom: 16px;
+        }
+        input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #333333;
+            border-radius: 8px;
+            background-color: #1a1a1a; /* Champs gris très foncé */
+            color: #ffffff;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        input::placeholder {
+            color: #777777;
+        }
+        input:focus {
+            outline: none;
+            border-color: #e50914; /* Bordure rouge au clic */
+        }
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 20px;
+            user-select: none;
+        }
+        .btn-signup {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background-color: #e50914; /* Bouton rouge principal */
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.2s;
+        }
+        .btn-signup:hover {
+            background-color: #b80710;
+        }
+        .divider {
+            border-top: 1px solid #222222;
+            margin: 20px 0;
+        }
+        .login-link {
+            color: #e50914;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 600;
+        }
+        .login-link:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-<div class="card">
-<h1>ChatBook</h1>
-<p class="sub">C'est rapide et facile.</p>
 
-<div id="msgError" class="msg error"></div>
-<div id="msgOk" class="msg ok"></div>
-
-<input id="prenom" placeholder="Prénom" value="Condé">
-<input id="nom" placeholder="Nom de famille" value="Facely">
-<input id="email" placeholder="Numéro de mobile ou e-mail">
-<input id="pass" type="password" placeholder="Mot de passe">
-
-<button class="btn" onclick="inscrire()">S'inscrire</button>
-<a class="link" href="#">Vous avez déjà un compte?</a>
+<div class="signup-container">
+    <h1>ChatBook</h1>
+    <p>C'est rapide et facile.</p>
+    
+    <form id="signupForm">
+        <div class="input-group">
+            <input type="text" placeholder="Prénom" required>
+        </div>
+        
+        <div class="input-group">
+            <input type="text" placeholder="Nom de famille" required>
+        </div>
+        
+        <div class="input-group">
+            <input type="text" placeholder="Numéro de mobile ou e-mail" required>
+        </div>
+        
+        <div class="input-group">
+            <input type="password" id="password" placeholder="Nouveau mot de passe" required>
+            <span class="password-toggle" id="togglePassword">👁️</span>
+        </div>
+        
+        <button type="submit" class="btn-signup">S'inscrire</button>
+    </form>
+    
+    <div class="divider"></div>
+    
+    <a href="#" class="login-link">Vous avez déjà un compte ?</a>
 </div>
 
 <script>
-function inscrire(){
-  let p=document.getElementById('prenom').value.trim();
-  let n=document.getElementById('nom').value.trim();
-  let e=document.getElementById('email').value.trim();
-  let m=document.getElementById('pass').value.trim();
-  let err=document.getElementById('msgError');
-  let ok=document.getElementById('msgOk');
+    const togglePassword = document.querySelector('#togglePassword');
+    const password = document.querySelector('#password');
 
-  err.style.display='none';
-  ok.style.display='none';
-
-  if(!p||!n||!e||!m){
-    err.textContent="⚠️ Remplis tous les champs";
-    err.style.display='block';
-    return;
-  }
-  if(m.length<4){
-    err.textContent="Mot de passe trop court (4 min)";
-    err.style.display='block';
-    return;
-  }
-
-  // Sauvegarde
-  localStorage.setItem('chatbook_user', JSON.stringify({prenom:p, nom:n}));
-
-  ok.textContent="✅ Compte créé : "+p+" "+n+" - Redirection...";
-  ok.style.display='block';
-
-  setTimeout(()=>{
-    window.location.href="accueil.html";
-  },1200);
-}
+    togglePassword.addEventListener('click', function () {
+        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+        password.setAttribute('type', type);
+        this.textContent = type === 'password' ? '👁️' : '🙈';
+    });
 </script>
+
 </body>
 </html>
