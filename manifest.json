@@ -2,7 +2,7 @@
   "name": "ChatBook",
   "short_name": "ChatBook",
   "description": "Une application web pour connecter les utilisateurs et chatter comme sur les grands réseaux.",
-  "start_url": "/index.html",
+  "start_url": "/chatbook/index.html",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#000000",
