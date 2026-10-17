@@ -100,15 +100,15 @@
             width: 100%;
             max-width: 400px;
             height: 85vh;
-            background-color: #111;
+            background-color: #000000;
             border-radius: 12px;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.7);
+            border: 1px solid #222;
         }
 
-        /* Image lapin temporaire imitant la vidéo */
-        .video-placeholder {
+        video {
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -123,10 +123,11 @@
             flex-direction: column;
             gap: 20px;
             align-items: center;
+            z-index: 10;
         }
 
         .action-button {
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.6);
             border: none;
             border-radius: 50%;
             width: 45px;
@@ -137,12 +138,15 @@
             color: white;
             font-size: 20px;
             cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
 
         .action-label {
             font-size: 12px;
-            color: #aaa;
+            color: #ffffff;
+            font-weight: bold;
             margin-top: -15px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
         }
 
         /* Infos de la vidéo en bas */
@@ -151,16 +155,22 @@
             left: 15px;
             bottom: 20px;
             right: 80px;
+            z-index: 10;
+            background: linear-gradient(transparent, rgba(0,0,0,0.7));
+            padding: 10px;
+            border-radius: 8px;
         }
 
         .username {
             font-weight: bold;
             margin-bottom: 5px;
+            font-size: 16px;
         }
 
         .hashtag {
             color: #e50914;
             font-size: 14px;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -174,20 +184,23 @@
         <div class="menu-links">
             <a href="#" class="menu-item active">🏠 Pour toi</a>
             <a href="#" class="menu-item">🧭 Explorer</a>
-            <a href="#" class="menu-item">👥 Suivis</a>
+            <!-- Le bouton Suivis ouvre maintenant votre fichier chat.html -->
+            <a href="chat.html" class="menu-item">👥 Suivis</a>
             <a href="#" class="menu-item">📺 LIVE</a>
             <a href="#" class="menu-item">➕ Importer</a>
             <a href="#" class="menu-item">👤 Profil</a>
         </div>
 
-        <!-- Bouton de connexion fonctionnel relié au fichier connexion.html -->
         <a href="connexion.html" class="btn-sidebar-login">Se connecter</a>
     </div>
 
-    <!-- Zone principale -->
+    <!-- Zone principale avec un vrai lecteur vidéo en boucle -->
     <div class="main-content">
         <div class="video-container">
-            <img class="video-placeholder" src="https://wikimedia.org" alt="Video">
+            <video autoplay loop muted playsinline>
+                <source src="https://mixkit.co" type="video/mp4">
+                Votre navigateur ne supporte pas les vidéos.
+            </video>
             
             <div class="video-actions">
                 <button class="action-button" style="color: #e50914;">❤️</button>
