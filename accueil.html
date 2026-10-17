@@ -8,7 +8,7 @@
         body {
             margin: 0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #050505; /* Fond extérieur noir profond */
+            background-color: #050505;
             color: #ffffff;
             display: flex;
             justify-content: center;
@@ -16,11 +16,10 @@
             min-height: 100vh;
         }
 
-        /* Conteneur principal style application mobile centrée */
         .app-container {
             width: 100%;
             max-width: 450px;
-            background-color: #000000; /* Fond noir de l'application */
+            background-color: #000000;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -30,7 +29,6 @@
             box-shadow: 0 0 30px rgba(229, 9, 20, 0.1);
         }
 
-        /* Barre supérieure (Header) */
         .app-header {
             display: flex;
             justify-content: space-between;
@@ -41,7 +39,7 @@
         }
 
         .logo {
-            color: #e50914; /* Texte ChatBook en rouge */
+            color: #e50914;
             font-size: 22px;
             font-weight: bold;
             text-decoration: none;
@@ -60,14 +58,13 @@
         .nav-tabs .active {
             color: #ffffff;
             font-weight: bold;
-            border-bottom: 2px solid #e50914; /* Barre active rouge */
+            border-bottom: 2px solid #e50914;
         }
 
-        /* Zone du lecteur vidéo */
         .video-wrapper {
             position: relative;
             width: 100%;
-            aspect-ratio: 9/16; /* Format vidéo mobile vertical */
+            aspect-ratio: 9/16;
             background-color: #0a0a0a;
             overflow: hidden;
         }
@@ -78,7 +75,6 @@
             object-fit: cover;
         }
 
-        /* Section des détails sous la vidéo */
         .video-details {
             padding: 15px;
             background-color: #000000;
@@ -99,11 +95,10 @@
         }
 
         .hashtag {
-            color: #e50914; /* Hashtags en rouge */
+            color: #e50914;
             font-weight: 500;
         }
 
-        /* Barre d'actions (Likes, Commentaires, Partager) */
         .action-bar {
             display: flex;
             justify-content: space-around;
@@ -117,22 +112,25 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            color: #aaaaaa;
+            color: #ffffff; /* Boutons blancs par défaut */
             font-size: 14px;
             cursor: pointer;
             background: none;
             border: none;
             padding: 5px 10px;
             border-radius: 20px;
-            transition: background 0.2s;
+            transition: color 0.2s, background-color 0.2s;
         }
 
         .action-item:hover {
             background-color: #111111;
-            color: #e50914;
         }
 
-        /* Section Commentaires */
+        /* Classe active pour passer en rouge au clic */
+        .action-item.clicked {
+            color: #e50914 !important;
+        }
+
         .comments-section {
             padding: 15px;
             flex: 1;
@@ -167,7 +165,6 @@
             color: #bbbbbb;
         }
 
-        /* Formulaire pour ajouter un commentaire en bas */
         .comment-box {
             display: flex;
             gap: 10px;
@@ -190,7 +187,7 @@
         }
 
         .btn-publish {
-            background-color: #e50914; /* Bouton Publier rouge */
+            background-color: #e50914;
             color: #ffffff;
             border: none;
             padding: 0 20px;
@@ -204,7 +201,6 @@
             background-color: #b80710;
         }
 
-        /* Zone publicitaire basse discrète */
         .ads-footer {
             text-align: center;
             padding: 15px;
@@ -219,7 +215,6 @@
 <body>
 
     <div class="app-container">
-        <!-- En-tête -->
         <header class="app-header">
             <a href="index.html" class="logo">ChatBook</a>
             <div class="nav-tabs">
@@ -228,7 +223,6 @@
             </div>
         </header>
 
-        <!-- Lecteur Vidéo vertical fluide -->
         <div class="video-wrapper">
             <video autoplay loop muted playsinline>
                 <source src="https://mixkit.co" type="video/mp4">
@@ -236,7 +230,6 @@
             </video>
         </div>
 
-        <!-- Détails de la publication -->
         <div class="video-details">
             <div class="author">@NagnoumaDeveloper</div>
             <div class="description">
@@ -244,43 +237,58 @@
             </div>
         </div>
 
-        <!-- Barre d'actions statistiques -->
+        <!-- Barre d'actions avec boutons interactifs -->
         <div class="action-bar">
-            <button class="action-item">❤️ <span>12.5K</span></button>
-            <button class="action-item">💬 <span>345</span></button>
+            <button class="action-item" id="likeBtn">❤️ <span id="likeCount">12.5K</span></button>
+            <button class="action-item" id="favBtn">⭐ <span>Favoris</span></button>
             <button class="action-item">🔗 <span>Partager</span></button>
         </div>
 
-        <!-- Espace commentaires -->
         <div class="comments-section">
             <div class="comments-title">Commentaires</div>
             
-            <div class="comment-list" id="commentList">
-                <div class="comment-item">
-                    <span class="comment-user">@Utilisateur1:</span>
-                    <span class="comment-text">Super application !</span>
-                </div>
-                <div class="comment-item">
-                    <span class="comment-user">@Utilisateur2:</span>
-                    <span class="comment-text">J'aime beaucoup le concept rouge et noir.</span>
-                </div>
-            </div>
+            <!-- Liste vide (utilisateurs 1 et 2 supprimés) -->
+            <div class="comment-list" id="commentList"></div>
 
-            <!-- Ajout de commentaire -->
             <form class="comment-box" id="commentForm">
                 <input type="text" id="commentInput" placeholder="Ajouter un commentaire..." autocomplete="off" required>
                 <button type="submit" class="btn-publish">Publier</button>
             </form>
         </div>
 
-        <!-- Pied de page AdMob / Facebook Ads -->
         <footer class="ads-footer">
             ANNONCE PUBLICITAIRE • ESPACE ADMOB / FACEBOOK ADS
         </footer>
     </div>
 
     <script>
-        // Script dynamique pour ajouter des commentaires en direct
+        // Gestion du bouton Like (Cœur)
+        const likeBtn = document.getElementById('likeBtn');
+        let isLiked = false;
+        likeBtn.addEventListener('click', function() {
+            isLiked = !isLiked;
+            if(isLiked) {
+                this.classList.add('clicked');
+                document.getElementById('likeCount').textContent = "12.6K";
+            } else {
+                this.classList.remove('clicked');
+                document.getElementById('likeCount').textContent = "12.5K";
+            }
+        });
+
+        // Gestion du bouton Favoris (Étoile)
+        const favBtn = document.getElementById('favBtn');
+        let isFav = false;
+        favBtn.addEventListener('click', function() {
+            isFav = !isFav;
+            if(isFav) {
+                this.classList.add('clicked');
+            } else {
+                this.classList.remove('clicked');
+            }
+        });
+
+        // Ajout dynamique des commentaires
         const commentForm = document.getElementById('commentForm');
         const commentInput = document.getElementById('commentInput');
         const commentList = document.getElementById('commentList');
@@ -290,7 +298,6 @@
             
             const newComment = document.createElement('div');
             newComment.classList.add('comment-item');
-            
             newComment.innerHTML = `
                 <span class="comment-user">@Moi:</span>
                 <span class="comment-text">${commentInput.value}</span>
