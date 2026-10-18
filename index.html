@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ChatBook - Inscription</title>
-    <!-- Chargement officiel de Supabase -->
     <script src="https://jsdelivr.net"></script>
     <style>
         body {
@@ -133,7 +132,6 @@
 </div>
 
 <script>
-// Connexion à Supabase
 const SUPABASE_URL = "https://supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_DucLDxgJL-poE8KrN_9bnA_K-D0a34b2259be265f247dcbfce76ca80630b9ee7";
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -147,7 +145,6 @@ togglePassword.addEventListener('click', function () {
     this.textContent = type === 'password' ? '👁️' : '🙈';
 });
 
-// Envoi et Redirection FORCÉE
 document.getElementById('signupForm').addEventListener('submit', function(e) {
     e.preventDefault();
     
@@ -156,18 +153,18 @@ document.getElementById('signupForm').addEventListener('submit', function(e) {
     const email = document.getElementById('email').value;
     const mot_de_passe = document.getElementById('password').value;
 
-    // Envoi en arrière-plan sans attendre la réponse pour éviter les blocages de sécurité
+    // Envoi en arrière-plan à Supabase
     supabaseClient
         .from('utilisateurs')
         .insert([{ prenom: prenom, nom: nom, email: email, mot_de_passe: mot_de_passe }])
-        .then(() => {
-            console.log("Données envoyées");
-        });
+        .then(() => { console.log("Données envoyées"); });
 
-    // REDIRECTION ULTRA-RAPIDE IMMÉDIATE VERS L'ACCUEIL VIDEO
+    // CRÉATION DU BADGE DE CONNEXION DANS LE TÉLÉPHONE
+    localStorage.setItem('chatbook_connecte', 'true');
+
+    // Direction l'accueil
     window.location.href = 'accueil.html';
 });
 </script>
-
 </body>
 </html>
