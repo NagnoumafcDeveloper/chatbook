@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ChatBook - Inscription</title>
-    <!-- Chargement de la bibliothèque officielle Supabase -->
+    <!-- Chargement officiel de Supabase -->
     <script src="https://jsdelivr.net"></script>
     <style>
         body {
@@ -133,7 +133,7 @@
 </div>
 
 <script>
-// Connexion à votre projet Supabase
+// Connexion à Supabase
 const SUPABASE_URL = "https://supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_DucLDxgJL-poE8KrN_9bnA_K-D0a34b2259be265f247dcbfce76ca80630b9ee7";
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -141,34 +141,30 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const togglePassword = document.querySelector('#togglePassword');
 const password = document.querySelector('#password');
 
-// Gestion du petit œil pour masquer/afficher le mot de passe
 togglePassword.addEventListener('click', function () {
     const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
     password.setAttribute('type', type);
     this.textContent = type === 'password' ? '👁️' : '🙈';
 });
 
-// Envoi du formulaire et redirection garantie
-document.getElementById('signupForm').addEventListener('submit', async function(e) {
+// Envoi et Redirection FORCÉE
+document.getElementById('signupForm').addEventListener('submit', function(e) {
     e.preventDefault();
     
-    const prenomValue = document.getElementById('prenom').value;
-    const nomValue = document.getElementById('nom').value;
-    const emailValue = document.getElementById('email').value;
-    const passwordValue = document.getElementById('password').value;
+    const prenom = document.getElementById('prenom').value;
+    const nom = document.getElementById('nom').value;
+    const email = document.getElementById('email').value;
+    const mot_de_passe = document.getElementById('password').value;
 
-    try {
-        // Tentative d'enregistrement en arrière-plan
-        await supabaseClient
-            .from('utilisateurs')
-            .insert([
-                { prenom: prenomValue, nom: nomValue, email: emailValue, mot_de_passe: passwordValue }
-            ]);
-    } catch (err) {
-        console.log("Erreur de communication Supabase ignorée pour forcer le passage:", err);
-    }
+    // Envoi en arrière-plan sans attendre la réponse pour éviter les blocages de sécurité
+    supabaseClient
+        .from('utilisateurs')
+        .insert([{ prenom: prenom, nom: nom, email: email, mot_de_passe: mot_de_passe }])
+        .then(() => {
+            console.log("Données envoyées");
+        });
 
-    // REDIRECTION FORCÉE ET GARANTIE VERS L'ACCUEIL VIDEO
+    // REDIRECTION ULTRA-RAPIDE IMMÉDIATE VERS L'ACCUEIL VIDEO
     window.location.href = 'accueil.html';
 });
 </script>
