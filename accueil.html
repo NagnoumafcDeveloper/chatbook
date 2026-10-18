@@ -14,13 +14,14 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            overflow: hidden;
         }
 
         .app-container {
             width: 100%;
             max-width: 450px;
             background-color: #000000;
-            min-height: 100vh;
+            height: 100vh;
             display: flex;
             flex-direction: column;
             border-left: 1px solid #1a1a1a;
@@ -28,9 +29,9 @@
             box-sizing: border-box;
             box-shadow: 0 0 30px rgba(229, 9, 20, 0.1);
             position: relative;
-            padding-top: 60px;
         }
 
+        /* Barre supérieure fixe */
         .app-header {
             position: absolute;
             top: 0;
@@ -41,8 +42,9 @@
             justify-content: space-between;
             align-items: center;
             padding: 0 20px;
-            background-color: #000000;
-            border-bottom: 1px solid #111;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             box-sizing: border-box;
             z-index: 100;
         }
@@ -70,12 +72,41 @@
             border-bottom: 2px solid #e50914;
         }
 
-        .video-wrapper {
+        /* Zone de défilement vertical (Container principal style TikTok) */
+        .feed-container {
+            flex: 1;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory; /* Force le blocage sur chaque vidéo */
+            scroll-behavior: smooth;
+            scrollbar-width: none; /* Cache la barre de défilement Firefox */
+            margin-top: 0;
+            height: 100%;
+        }
+
+        .feed-container::-webkit-scrollbar {
+            display: none; /* Cache la barre de défilement Chrome/Safari */
+        }
+
+        /* Chaque élément vidéo prend exactement tout l'écran */
+        .video-section {
+            height: 100vh;
+            scroll-snap-align: start;
             position: relative;
+            background-color: #000000;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            box-sizing: border-box;
+            padding-bottom: 80px; /* Place pour la barre d'action du bas */
+        }
+
+        .video-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            aspect-ratio: 9/16;
-            background-color: #0a0a0a;
-            overflow: hidden;
+            height: 100%;
+            z-index: 1;
         }
 
         video {
@@ -84,10 +115,12 @@
             object-fit: cover;
         }
 
+        /* Contenu textuel sur la vidéo */
         .video-details {
-            padding: 15px;
-            background-color: #000000;
-            margin-bottom: 5px;
+            padding: 20px;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            position: relative;
+            z-index: 10;
         }
 
         .author {
@@ -99,7 +132,7 @@
 
         .description {
             font-size: 14px;
-            color: #cccccc;
+            color: #e0e0e0;
             line-height: 1.4;
         }
 
@@ -108,6 +141,7 @@
             font-weight: 500;
         }
 
+        /* Barre d'action basse collée sous la vidéo */
         .action-bar {
             display: flex;
             justify-content: space-between;
@@ -115,6 +149,8 @@
             border-top: 1px solid #111;
             background-color: #050505;
             box-sizing: border-box;
+            position: relative;
+            z-index: 20;
         }
 
         .action-item {
@@ -159,30 +195,57 @@
         <header class="app-header">
             <a href="index.html" class="logo">ChatBook</a>
             <div class="nav-tabs">
-                <span>Abonnements</span>
+                <span onclick="window.location.href='importer.html'">➕ Importer</span>
                 <span class="active">Pour vous</span>
             </div>
         </header>
 
-        <!-- Zone Vidéo -->
-        <div class="video-wrapper">
-            <video autoplay loop muted playsinline>
-                <source src="https://mixkit.co" type="video/mp4">
-                Votre navigateur ne supporte pas les vidéos.
-            </video>
+        <!-- Conteneur des vidéos défilantes -->
+        <div class="feed-container" id="feedContainer">
+            
+            <!-- VIDÉO 1 -->
+            <section class="video-section">
+                <div class="video-wrapper">
+                    <video loop muted autoplay playsinline>
+                        <source src="https://mixkit.co" type="video/mp4">
+                    </video>
+                </div>
+                <div class="video-details">
+                    <div class="author">@NagnoumaDeveloper</div>
+                    <div class="description">Bienvenue sur ChatBook ! Swipe vers le haut pour voir d'autres créateurs. 🔥 <span class="hashtag">#tech</span></div>
+                </div>
+            </section>
+
+            <!-- VIDÉO 2 -->
+            <section class="video-section">
+                <div class="video-wrapper">
+                    <video loop muted playsinline>
+                        <source src="https://mixkit.co" type="video/mp4">
+                    </video>
+                </div>
+                <div class="video-details">
+                    <div class="author">@SenegalHumour</div>
+                    <div class="description">Quand ton ami essaie de coder sans comprendre 😂🇸🇳 <span class="hashtag">#rire</span></div>
+                </div>
+            </section>
+
+            <!-- VIDÉO 3 -->
+            <section class="video-section">
+                <div class="video-wrapper">
+                    <video loop muted playsinline>
+                        <source src="https://mixkit.co" type="video/mp4">
+                    </video>
+                </div>
+                <div class="video-details">
+                    <div class="author">@DakarVibes</div>
+                    <div class="description">Magnifique vue sur la côte à Dakar ce matin 🌊❤️ <span class="hashtag">#kebemer</span></div>
+                </div>
+            </section>
+
         </div>
 
-        <!-- Informations de la publication -->
-        <div class="video-details">
-            <div class="author">@NagnoumaDeveloper</div>
-            <div class="description">
-                Bienvenue sur le flux vidéo officiel de ChatBook ! 🚀✨ 🔥 <span class="hashtag">#tech</span>
-            </div>
-        </div>
-
-        <!-- Les 4 boutons d'action alignés -->
+        <!-- Les 4 boutons d'action alignés en bas fixes -->
         <div class="action-bar">
-            <!-- 1. Like -->
             <button class="action-item" id="likeBtn">
                 <svg class="icon-svg" viewBox="0 0 24 24">
                     <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
@@ -190,15 +253,13 @@
                 <span id="likeCount">12.5K</span>
             </button>
 
-            <!-- 2. Commentaires -->
             <button class="action-item" onclick="window.location.href='chat.html'">
                 <svg class="icon-svg" viewBox="0 0 24 24">
                     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
                 </svg>
-                <span>1</span>
+                <span>Messages</span>
             </button>
 
-            <!-- 3. Favoris -->
             <button class="action-item" id="favBtn">
                 <svg class="icon-svg" viewBox="0 0 24 24">
                     <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
@@ -206,7 +267,6 @@
                 <span>Favoris</span>
             </button>
 
-            <!-- 4. Partager fonctionnel -->
             <button class="action-item" id="shareBtn">
                 <svg class="icon-svg" viewBox="0 0 24 24" style="fill: none; stroke: #fff;">
                     <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13"/>
@@ -217,54 +277,23 @@
     </div>
 
     <script>
-        // Gestion dynamique du clic Like
+        // Gestion des interactions
         const likeBtn = document.getElementById('likeBtn');
-        const likeCount = document.getElementById('likeCount');
         let isLiked = false;
-
         likeBtn.addEventListener('click', function() {
             isLiked = !isLiked;
-            if(isLiked) {
-                this.classList.add('active');
-                likeCount.textContent = "12.6K";
-            } else {
-                this.classList.remove('active');
-                likeCount.textContent = "12.5K";
-            }
+            this.classList.toggle('active', isLiked);
+            document.getElementById('likeCount').textContent = isLiked ? "12.6K" : "12.5K";
         });
 
-        // Gestion dynamique du clic Favoris
         const favBtn = document.getElementById('favBtn');
         let isFav = false;
-
         favBtn.addEventListener('click', function() {
             isFav = !isFav;
-            if(isFav) {
-                this.classList.add('active');
-            } else {
-                this.classList.remove('active');
-            }
+            this.classList.toggle('active', isFav);
         });
 
-        // Script pour activer le partage natif sur smartphone
         const shareBtn = document.getElementById('shareBtn');
         shareBtn.addEventListener('click', async () => {
             if (navigator.share) {
                 try {
-                    await navigator.share({
-                        title: 'ChatBook',
-                        text: 'Regarde cette vidéo sur ChatBook !',
-                        url: window.location.href
-                    });
-                } catch (err) {
-                    console.log('Partage annulé ou erreur:', err);
-                }
-            } else {
-                // Option de secours pour les ordinateurs de bureau
-                navigator.clipboard.writeText(window.location.href);
-                alert('Lien copié dans le presse-papiers !');
-            }
-        });
-    </script>
-</body>
-</html>
