@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ChatBook - Pour vous</title>
+    <script>
+        // BARRIÈRE DE SÉCURITÉ OBLIGATOIRE
+        // Si l'utilisateur n'a pas le badge dans son téléphone, on le renvoie à l'inscription
+        if (localStorage.getItem('chatbook_connecte') !== 'true') {
+            window.location.href = 'index.html';
+        }
+    </script>
     <style>
         body {
             margin: 0;
@@ -31,7 +38,6 @@
             position: relative;
         }
 
-        /* Barre supérieure fixe */
         .app-header {
             position: absolute;
             top: 0;
@@ -72,22 +78,20 @@
             border-bottom: 2px solid #e50914;
         }
 
-        /* Zone de défilement vertical (Container principal style TikTok) */
         .feed-container {
             flex: 1;
             overflow-y: scroll;
-            scroll-snap-type: y mandatory; /* Force le blocage sur chaque vidéo */
+            scroll-snap-type: y mandatory;
             scroll-behavior: smooth;
-            scrollbar-width: none; /* Cache la barre de défilement Firefox */
+            scrollbar-width: none;
             margin-top: 0;
             height: 100%;
         }
 
         .feed-container::-webkit-scrollbar {
-            display: none; /* Cache la barre de défilement Chrome/Safari */
+            display: none;
         }
 
-        /* Chaque élément vidéo prend exactement tout l'écran */
         .video-section {
             height: 100vh;
             scroll-snap-align: start;
@@ -97,7 +101,7 @@
             flex-direction: column;
             justify-content: flex-end;
             box-sizing: border-box;
-            padding-bottom: 80px; /* Place pour la barre d'action du bas */
+            padding-bottom: 80px;
         }
 
         .video-wrapper {
@@ -115,7 +119,6 @@
             object-fit: cover;
         }
 
-        /* Contenu textuel sur la vidéo */
         .video-details {
             padding: 20px;
             background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
@@ -141,7 +144,6 @@
             font-weight: 500;
         }
 
-        /* Barre d'action basse collée sous la vidéo */
         .action-bar {
             display: flex;
             justify-content: space-between;
@@ -191,19 +193,15 @@
 <body>
 
     <div class="app-container">
-        <!-- Barre supérieure fixe -->
         <header class="app-header">
-            <a href="index.html" class="logo">ChatBook</a>
+            <a href="#" class="logo" onclick="localStorage.removeItem('chatbook_connecte'); window.location.reload();">ChatBook</a>
             <div class="nav-tabs">
                 <span onclick="window.location.href='importer.html'">➕ Importer</span>
                 <span class="active">Pour vous</span>
             </div>
         </header>
 
-        <!-- Conteneur des vidéos défilantes -->
         <div class="feed-container" id="feedContainer">
-            
-            <!-- VIDÉO 1 -->
             <section class="video-section">
                 <div class="video-wrapper">
                     <video loop muted autoplay playsinline>
@@ -216,7 +214,6 @@
                 </div>
             </section>
 
-            <!-- VIDÉO 2 -->
             <section class="video-section">
                 <div class="video-wrapper">
                     <video loop muted playsinline>
@@ -228,23 +225,8 @@
                     <div class="description">Quand ton ami essaie de coder sans comprendre 😂🇸🇳 <span class="hashtag">#rire</span></div>
                 </div>
             </section>
-
-            <!-- VIDÉO 3 -->
-            <section class="video-section">
-                <div class="video-wrapper">
-                    <video loop muted playsinline>
-                        <source src="https://mixkit.co" type="video/mp4">
-                    </video>
-                </div>
-                <div class="video-details">
-                    <div class="author">@DakarVibes</div>
-                    <div class="description">Magnifique vue sur la côte à Dakar ce matin 🌊❤️ <span class="hashtag">#kebemer</span></div>
-                </div>
-            </section>
-
         </div>
 
-        <!-- Les 4 boutons d'action alignés en bas fixes -->
         <div class="action-bar">
             <button class="action-item" id="likeBtn">
                 <svg class="icon-svg" viewBox="0 0 24 24">
@@ -277,7 +259,6 @@
     </div>
 
     <script>
-        // Gestion des interactions
         const likeBtn = document.getElementById('likeBtn');
         let isLiked = false;
         likeBtn.addEventListener('click', function() {
@@ -297,3 +278,27 @@
         shareBtn.addEventListener('click', async () => {
             if (navigator.share) {
                 try {
+                    await navigator.share({ title: 'ChatBook', url: window.location.href });
+                } catch (err) {}
+            } else {
+                navigator.clipboard.writeText(window.location.href);
+                alert('Lien copié !');
+            }
+        });
+
+        const container = document.getElementById('feedContainer');
+        const videos = document.querySelectorAll('video');
+
+        container.addEventListener('scroll', () => {
+            videos.forEach(video => {
+                const rect = video.getBoundingClientRect();
+                if (rect.top >= 0 && rect.top < window.innerHeight / 2) {
+                    video.play();
+                } else {
+                    video.pause();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
