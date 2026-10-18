@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ChatBook - Inscription</title>
+    <!-- Chargement officiel de Supabase -->
     <script src="https://jsdelivr.net"></script>
     <style>
         body {
@@ -132,6 +133,7 @@
 </div>
 
 <script>
+// Initialisation de votre projet Supabase avec vos clés exactes
 const SUPABASE_URL = "https://supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_DucLDxgJL-poE8KrN_9bnA_K-D0a34b2259be265f247dcbfce76ca80630b9ee7";
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -139,12 +141,14 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const togglePassword = document.querySelector('#togglePassword');
 const password = document.querySelector('#password');
 
+// Script du petit œil pour masquer/afficher
 togglePassword.addEventListener('click', function () {
     const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
     password.setAttribute('type', type);
     this.textContent = type === 'password' ? '👁️' : '🙈';
 });
 
+// Envoi réel des formulaires vers Supabase et redirection
 document.getElementById('signupForm').addEventListener('submit', function(e) {
     e.preventDefault();
     
@@ -157,7 +161,9 @@ document.getElementById('signupForm').addEventListener('submit', function(e) {
     supabaseClient
         .from('utilisateurs')
         .insert([{ prenom: prenom, nom: nom, email: email, mot_de_passe: mot_de_passe }])
-        .then(() => { console.log("Données envoyées"); });
+        .then(() => { 
+            console.log("Données envoyées"); 
+        });
 
     // CRÉATION DU BADGE DE CONNEXION DANS LE TÉLÉPHONE
     localStorage.setItem('chatbook_connecte', 'true');
@@ -166,5 +172,6 @@ document.getElementById('signupForm').addEventListener('submit', function(e) {
     window.location.href = 'accueil.html';
 });
 </script>
+
 </body>
 </html>
