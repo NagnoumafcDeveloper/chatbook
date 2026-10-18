@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ChatBook - Inscription</title>
+    <script src="https://jsdelivr.net"></script>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -131,22 +132,46 @@
 </div>
 
 <script>
-    const togglePassword = document.querySelector('#togglePassword');
-    const password = document.querySelector('#password');
+// 1. Initialisation de la connexion sécurisée à votre Supabase
+const SUPABASE_URL = "https://supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_DucLDxgJL-poE8KrN_9bnA_K-D0a34b2259be265f247dcbfce76ca80630b9ee7";
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    togglePassword.addEventListener('click', function () {
-        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-        password.setAttribute('type', type);
-        this.textContent = type === 'password' ? '👁️' : '🙈';
-    });
+const togglePassword = document.querySelector('#togglePassword');
+const password = document.querySelector('#password');
 
-    // Enregistrement fictif des données et redirection vers le chat
-    document.getElementById('signupForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
+// Gestion du petit œil pour le mot de passe
+togglePassword.addEventListener('click', function () {
+    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+    password.setAttribute('type', type);
+    this.textContent = type === 'password' ? '👁️' : '🙈';
+});
+
+// 2. Enregistrement RÉEL de l'utilisateur dans votre table Supabase
+document.getElementById('signupForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    // Récupération correcte des champs du formulaire par leur ID ou position
+    const inputs = e.target.querySelectorAll('input');
+    const prenom = inputs[0].value;
+    const nom = inputs[1].value;
+    const email = inputs[2].value;
+    const mot_de_passe = password.value;
+
+    // Envoi direct dans votre table "utilisateurs" sur Supabase
+    const { data, error } = await supabaseClient
+        .from('utilisateurs')
+        .insert([
+            { prenom: prenom, nom: nom, email: email, mot_de_passe: mot_de_passe }
+        ]);
+
+    if (error) {
+        alert("Erreur lors de l'inscription : " + error.message);
+    } else {
+        // Redirection vers l'accueil si l'enregistrement a réussi
         window.location.href = 'accueil.html';
-    });
+    }
+});
 </script>
-
 </body>
 </html>
