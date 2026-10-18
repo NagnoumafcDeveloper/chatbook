@@ -132,7 +132,6 @@
 </div>
 
 <script>
-// 1. Initialisation de la connexion sécurisée à votre Supabase
 const SUPABASE_URL = "https://supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_DucLDxgJL-poE8KrN_9bnA_K-D0a34b2259be265f247dcbfce76ca80630b9ee7";
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -140,25 +139,21 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const togglePassword = document.querySelector('#togglePassword');
 const password = document.querySelector('#password');
 
-// Gestion du petit œil pour le mot de passe
 togglePassword.addEventListener('click', function () {
     const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
     password.setAttribute('type', type);
     this.textContent = type === 'password' ? '👁️' : '🙈';
 });
 
-// 2. Enregistrement RÉEL de l'utilisateur dans votre table Supabase
 document.getElementById('signupForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     
-    // Récupération correcte des champs du formulaire par leur ID ou position
     const inputs = e.target.querySelectorAll('input');
     const prenom = inputs[0].value;
     const nom = inputs[1].value;
     const email = inputs[2].value;
     const mot_de_passe = password.value;
 
-    // Envoi direct dans votre table "utilisateurs" sur Supabase
     const { data, error } = await supabaseClient
         .from('utilisateurs')
         .insert([
@@ -168,10 +163,10 @@ document.getElementById('signupForm').addEventListener('submit', async function(
     if (error) {
         alert("Erreur lors de l'inscription : " + error.message);
     } else {
-        // Redirection vers l'accueil si l'enregistrement a réussi
         window.location.href = 'accueil.html';
     }
 });
 </script>
+
 </body>
 </html>
