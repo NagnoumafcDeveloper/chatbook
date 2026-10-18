@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ChatBook - Inscription</title>
-    <!-- Chargement officiel de Supabase -->
+    <!-- 1. LIEN CORRECT POUR CHARGER SUPABASE -->
     <script src="https://jsdelivr.net"></script>
     <style>
         body {
@@ -107,7 +107,6 @@
     <p>C'est rapide et facile.</p>
     
     <form id="signupForm">
-        <!-- Ajout des ID indispensables pour que JavaScript puisse lire les valeurs -->
         <div class="input-group">
             <input type="text" id="prenom" placeholder="Prénom" required>
         </div>
@@ -134,22 +133,20 @@
 </div>
 
 <script>
-// Initialisation de votre projet Supabase avec vos clés exactes
-const SUPABASE_URL = "https://supabase.co";
+// 2. ADRESSE EXACTE DE VOTRE PROJET SUPABASE CONNECTÉ
+const SUPABASE_URL = "https://ddftothrbbaqsfjffzby.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_DucLDxgJL-poE8KrN_9bnA_K-D0a34b2259be265f247dcbfce76ca80630b9ee7";
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 const togglePassword = document.querySelector('#togglePassword');
 const password = document.querySelector('#password');
 
-// Script du petit œil pour masquer/afficher
 togglePassword.addEventListener('click', function () {
     const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
     password.setAttribute('type', type);
     this.textContent = type === 'password' ? '👁️' : '🙈';
 });
 
-// Envoi réel des formulaires vers Supabase
 document.getElementById('signupForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     
@@ -158,7 +155,6 @@ document.getElementById('signupForm').addEventListener('submit', async function(
     const email = document.getElementById('email').value;
     const mot_de_passe = document.getElementById('password').value;
 
-    // Envoi des informations dans votre table "utilisateurs"
     const { data, error } = await supabaseClient
         .from('utilisateurs')
         .insert([
