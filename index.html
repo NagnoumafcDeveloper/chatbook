@@ -107,7 +107,7 @@
     <p>C'est rapide et facile.</p>
     
     <form id="signupForm">
-        <!-- Ajout des ID indispensables pour que JavaScript puisse lire les valeurs -->
+        <!-- Attribution d'identifiants uniques id pour la lecture JS -->
         <div class="input-group">
             <input type="text" id="prenom" placeholder="Prénom" required>
         </div>
@@ -153,21 +153,23 @@ togglePassword.addEventListener('click', function () {
 document.getElementById('signupForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     
-    const prenom = document.getElementById('prenom').value;
-    const nom = document.getElementById('nom').value;
-    const email = document.getElementById('email').value;
-    const mot_de_passe = document.getElementById('password').value;
+    // Récupération ciblée par ID pour garantir la lecture des textes saisis
+    const prenomValue = document.getElementById('prenom').value;
+    const nomValue = document.getElementById('nom').value;
+    const emailValue = document.getElementById('email').value;
+    const passwordValue = document.getElementById('password').value;
 
     // Envoi des informations dans votre table "utilisateurs"
     const { data, error } = await supabaseClient
         .from('utilisateurs')
         .insert([
-            { prenom: prenom, nom: nom, email: email, mot_de_passe: mot_de_passe }
+            { prenom: prenomValue, nom: nomValue, email: emailValue, mot_de_passe: passwordValue }
         ]);
 
     if (error) {
         alert("Erreur lors de l'inscription : " + error.message);
     } else {
+        // Redirection uniquement si Supabase valide l'insertion
         window.location.href = 'accueil.html';
     }
 });
