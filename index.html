@@ -4,92 +4,157 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ChatBook - Inscription</title>
-    <script src="https://jsdelivr.net"></script>
+    <!-- Lien vers FontAwesome pour les icônes (comme l'œil) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background: linear-gradient(180deg, #000000 0%, #1a0002 50%, #4a0005 100%);
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
         }
-        .signup-container {
-            background-color: #111111;
-            width: 90%;
-            max-width: 400px;
-            padding: 35px 25px;
-            border-radius: 20px;
-            border: 1px solid #222222;
-            box-shadow: 0 10px 30px rgba(229, 9, 20, 0.15);
+
+        .container {
+            background-color: #1e1e1e;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            width: 350px;
             text-align: center;
+        }
+
+        h1 {
+            color: #ff3b3b;
+            margin-bottom: 5px;
+        }
+
+        p {
+            color: #b0b0b0;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #333;
+            border-radius: 5px;
+            background-color: #2a2a2a;
+            color: #ffffff;
+            font-size: 14px;
             box-sizing: border-box;
         }
-        h1 { color: #e50914; font-size: 36px; font-weight: bold; margin: 0 0 5px 0; letter-spacing: 1px; }
-        p { color: #aaaaaa; font-size: 16px; margin: 0 0 25px 0; }
-        .input-group { position: relative; margin-bottom: 16px; }
-        input { width: 100%; padding: 14px 16px; border: 1px solid #333333; border-radius: 8px; background-color: #1a1a1a; color: #ffffff; box-sizing: border-box; font-size: 16px; }
-        input:focus { outline: none; border-color: #e50914; }
-        .password-toggle { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 20px; user-select: none; }
-        .btn-signup { width: 100%; padding: 14px; border: none; border-radius: 8px; background-color: #e50914; color: #ffffff; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+
+        input:focus {
+            outline: none;
+            border-color: #ff3b3b;
+        }
+
+        .password-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .password-container input {
+            padding-right: 40px;
+        }
+
+        .password-container .fa-eye, 
+        .password-container .fa-eye-slash {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #b0b0b0;
+            cursor: pointer;
+        }
+
+        button[type="submit"] {
+            background-color: #ff3b3b;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+            width: 100%;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #e03232;
+        }
     </style>
 </head>
 <body>
 
-<div class="signup-container">
-    <h1>ChatBook</h1>
-    <p>C'est rapide et facile.</p>
-    
-    <form id="signupForm" onsubmit="event.preventDefault();">
-        <div class="input-group"><input type="text" id="prenom" placeholder="Prénom" required></div>
-        <div class="input-group"><input type="text" id="nom" placeholder="Nom de famille" required></div>
-        <div class="input-group"><input type="text" id="email" placeholder="Numéro de mobile ou e-mail" required></div>
-        <div class="input-group">
-            <input type="password" id="password" placeholder="Nouveau mot de passe" required>
-            <span class="password-toggle" id="togglePassword">👁️</span>
-        </div>
-        <button type="submit" class="btn-signup">S'inscrire</button>
-    </form>
-</div>
+    <div class="container">
+        <h1>ChatBook</h1>
+        <p>C'est rapide et facile.</p>
+        
+        <form id="signupForm">
+            <input type="text" id="prenom" placeholder="Prénom" required>
+            <input type="text" id="nom" placeholder="Nom" required>
+            <input type="email" id="email" placeholder="Adresse e-mail" required>
+            
+            <div class="password-container">
+                <input type="password" id="password" placeholder="Nouveau mot de passe" required>
+                <i class="fa-solid fa-eye" id="togglePassword"></i>
+            </div>
+            
+            <button type="submit">S'inscrire</button>
+        </form>
+    </div>
 
-<script>
-const SUPABASE_URL = "https://supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_DucLDxgJL-poE8KrN_9bnA_K-D0a34b2259be265f247dcbfce76ca80630b9ee7";
-const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    <script>
+        // 1. Gestion du bouton "œil" pour afficher/masquer le mot de passe
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
 
-const togglePassword = document.querySelector('#togglePassword');
-const password = document.querySelector('#password');
+        togglePassword.addEventListener('click', function () {
+            // Alterner le type de l'input
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            
+            // Changer l'icône de l'œil
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
 
-togglePassword.addEventListener('click', function () {
-    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-    password.setAttribute('type', type);
-    this.textContent = type === 'password' ? '👁️' : '🙈';
-});
+        // 2. Gestion du formulaire et du bouton "S'inscrire"
+        const signupForm = document.getElementById('signupForm');
 
-document.getElementById('signupForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    
-    const prenom = document.getElementById('prenom').value;
-    const nom = document.getElementById('nom').value;
-    const email = document.getElementById('email').value;
-    const mot_de_passe = password.value;
+        signupForm.addEventListener('submit', function (e) {
+            e.preventDefault(); // Empêche le rechargement de la page
 
-    // On force la création du badge d'accès en premier
-    localStorage.setItem('chatbook_connecte', 'true');
+            // Récupération des valeurs saisies
+            const prenom = document.getElementById('prenom').value;
+            const nom = document.getElementById('nom').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
 
-    try {
-        // Tentative d'envoi à Supabase
-        await supabaseClient
-            .from('utilisateurs')
-            .insert([{ prenom: prenom, nom: nom, email: email, mot_de_passe: mot_de_passe }]);
-    } catch (err) {
-        console.log("Erreur d'insertion ignorée pour forcer le passage");
-    }
+            // Création d'un objet utilisateur
+            const userData = { prenom, nom, email, password };
 
-    // REDIRECTION SYSTÉMATIQUE ET GARANTIE
-    window.location.href = 'accueil.html';
-});
-</script>
+            // Stockage temporaire (par exemple dans le localStorage du navigateur)
+            localStorage.setItem('chatbook_user', JSON.stringify(userData));
+
+            alert("Inscription réussie ! Bienvenue sur ChatBook, " + prenom + ".");
+
+            // Redirection vers votre page de fil d'actualité (remplacez "feed.html" par votre page cible si besoin)
+            // window.location.href = "feed.html";
+        });
+    </script>
 </body>
 </html>
