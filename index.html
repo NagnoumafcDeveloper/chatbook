@@ -7,30 +7,35 @@
 </head>
 <body>
 
-    <div style="max-width: 400px; margin: 50px auto; font-family: Arial, sans-serif;">
+    <div class="login-container">
         <h2>Connexion à Chatbook</h2>
         
+        <!-- Le formulaire sans attribut "action" -->
         <form id="loginForm">
-            <div style="margin-bottom: 15px;">
-                <label for="email" style="display: block; margin-bottom: 5px;">Email</label>
-                <input type="email" id="email" required style="width: 100%; padding: 8px;">
+            <div>
+                <label for="email">Email</label>
+                <input type="email" id="email" required>
             </div>
-            <div style="margin-bottom: 15px;">
-                <label for="password" style="display: block; margin-bottom: 5px;">Mot de passe</label>
-                <input type="password" id="password" required style="width: 100%; padding: 8px;">
+            <div>
+                <label for="password">Mot de passe</label>
+                <input type="password" id="password" required>
             </div>
-            <!-- Bouton de type "button" pour éviter l'erreur 405 et le message de rechargement -->
-            <button type="button" id="loginBtn" style="width: 100%; padding: 10px; background: #1877f2; color: white; border: none; cursor: pointer;">Se connecter</button>
+            <button type="submit">Se connecter</button>
         </form>
     </div>
 
+    <!-- Le script JavaScript pour gérer la transition proprement -->
     <script>
-        document.getElementById('loginBtn').addEventListener('click', function() {
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            // Empêche le rechargement brutal ou l'appel serveur par défaut (évite l'erreur 405)
+            e.preventDefault();
+
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
 
+            // Vérification simple (vous pouvez la personnaliser)
             if(email && password) {
-                // Redirection directe vers la page d'accueil sans passer par un serveur
+                // Redirection directe vers la page d'accueil
                 window.location.href = "accueil.html";
             } else {
                 alert("Veuillez remplir tous les champs.");
