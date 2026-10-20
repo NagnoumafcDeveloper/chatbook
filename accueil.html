@@ -47,11 +47,10 @@
 
             const videos = container.querySelectorAll('video');
             
-            // Correction de la gestion du scroll pour jouer/mettre en pause la vidéo active
+            // Gestion du scroll pour jouer/mettre en pause la vidéo active
             container.addEventListener('scroll', () => {
                 videos.forEach(video => {
                     const rect = video.getBoundingClientRect();
-                    // Si la vidéo est visible à l'écran, on la lit, sinon on la met en pause
                     if (rect.top >= -window.innerHeight / 2 && rect.top < window.innerHeight / 2) {
                         video.play().catch(() => {});
                     } else {
@@ -63,4 +62,4 @@
 
         // Lancer le chargement des vidéos au démarrage
         chargerVideos();
-    </script>
+</script>
