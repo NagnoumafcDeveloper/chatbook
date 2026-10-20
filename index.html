@@ -3,170 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChatBook - Inscription</title>
-    <!-- Chargement officiel de Supabase -->
-    <script src="https://jsdelivr.net"></script>
+    <title>ChatBook - Connexion</title>
     <style>
         body {
+            margin: 0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background: linear-gradient(180deg, #000000 0%, #1a0002 50%, #4a0005 100%);
+            background-color: #1877f2; /* Fond bleu caractéristique */
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
+            min-height: 100vh;
         }
-        .signup-container {
-            background-color: #111111;
-            width: 90%;
+
+        .login-container {
+            width: 100%;
             max-width: 400px;
-            padding: 35px 25px;
-            border-radius: 20px;
-            border: 1px solid #222222;
-            box-shadow: 0 10px 30px rgba(229, 9, 20, 0.15);
-            text-align: center;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            padding: 30px 20px;
             box-sizing: border-box;
+            text-align: center;
         }
-        h1 {
-            color: #e50914;
-            font-size: 36px;
+
+        .logo {
+            color: #1877f2;
+            font-size: 32px;
             font-weight: bold;
-            margin: 0 0 5px 0;
-            letter-spacing: 1px;
+            margin-bottom: 8px;
+            text-decoration: none;
         }
-        p {
-            color: #aaaaaa;
-            font-size: 16px;
-            margin: 0 0 25px 0;
+
+        .subtitle {
+            font-size: 14px;
+            color: #606770;
+            margin-bottom: 25px;
+            line-height: 1.4;
         }
-        .input-group {
-            position: relative;
-            margin-bottom: 16px;
-        }
-        input {
+
+        .input-field {
             width: 100%;
             padding: 14px 16px;
-            border: 1px solid #333333;
-            border-radius: 8px;
-            background-color: #1a1a1a;
-            color: #ffffff;
+            margin-bottom: 15px;
+            border: 1px solid #ccd0d5;
+            border-radius: 6px;
+            font-size: 15px;
             box-sizing: border-box;
-            font-size: 16px;
-        }
-        input::placeholder {
-            color: #777777;
-        }
-        input:focus {
             outline: none;
-            border-color: #e50914;
+            transition: border-color 0.2s;
         }
-        .password-toggle {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            font-size: 20px;
-            user-select: none;
+
+        .input-field:focus {
+            border-color: #1877f2;
+            box-shadow: 0 0 0 2px rgba(24, 119, 242, 0.2);
         }
-        .btn-signup {
+
+        .btn-login {
             width: 100%;
-            padding: 14px;
+            background-color: #1877f2;
+            color: white;
             border: none;
-            border-radius: 8px;
-            background-color: #e50914;
-            color: #ffffff;
-            font-size: 18px;
+            border-radius: 6px;
+            padding: 14px;
+            font-size: 16px;
             font-weight: bold;
             cursor: pointer;
-            margin-top: 10px;
             transition: background-color 0.2s;
+            margin-bottom: 15px;
         }
-        .btn-signup:hover {
-            background-color: #b80710;
+
+        .btn-login:hover {
+            background-color: #166fe5;
         }
+
+        .forgot-password {
+            display: block;
+            color: #1877f2;
+            font-size: 14px;
+            text-decoration: none;
+            margin-bottom: 20px;
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+
         .divider {
-            border-top: 1px solid #222222;
+            border-bottom: 1px solid #dadde1;
             margin: 20px 0;
         }
-        .login-link {
-            color: #e50914;
-            text-decoration: none;
+
+        .btn-create {
+            background-color: #42b72a; /* Vert vif comme sur l'image */
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 12px 20px;
             font-size: 15px;
-            font-weight: 600;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: inline-block;
+            text-decoration: none;
         }
-        .login-link:hover {
-            text-decoration: underline;
+
+        .btn-create:hover {
+            background-color: #36a420;
         }
     </style>
 </head>
 <body>
 
-<div class="signup-container">
-    <h1>ChatBook</h1>
-    <p>C'est rapide et facile.</p>
-    
-    <form id="signupForm">
-        <div class="input-group">
-            <input type="text" id="prenom" placeholder="Prénom" required>
-        </div>
-        
-        <div class="input-group">
-            <input type="text" id="nom" placeholder="Nom de famille" required>
-        </div>
-        
-        <div class="input-group">
-            <input type="text" id="email" placeholder="Numéro de mobile ou e-mail" required>
-        </div>
-        
-        <div class="input-group">
-            <input type="password" id="password" placeholder="Nouveau mot de passe" required>
-            <span class="password-toggle" id="togglePassword">👁️</span>
-        </div>
-        
-        <button type="submit" class="btn-signup">S'inscrire</button>
-    </form>
-    
-    <div class="divider"></div>
-    
-    <a href="connexion.html" class="login-link">Vous avez déjà un compte ?</a>
-</div>
+    <div class="login-container">
+        <div class="logo">ChatBook</div>
+        <div class="subtitle">Connectez-vous pour voir les messages et vidéos de vos proches.</div>
 
-<script>
-// Initialisation de votre projet Supabase avec vos clés exactes
-const SUPABASE_URL = "https://supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_DucLDxgJL-poE8KrN_9bnA_K-D0a34b2259be265f247dcbfce76ca80630b9ee7";
-const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        <form action="accueil.html" method="POST">
+            <input type="email" class="input-field" placeholder="Ex: monadresse@gmail.com" required>
+            <input type="password" class="input-field" placeholder="Votre mot de passe" required>
+            
+            <button type="submit" class="btn-login">Se connecter</button>
+        </form>
 
-const togglePassword = document.querySelector('#togglePassword');
-const password = document.querySelector('#password');
+        <a href="#" class="forgot-password">Mot de passe oublié ?</a>
 
-// Script du petit œil pour masquer/afficher
-togglePassword.addEventListener('click', function () {
-    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-    password.setAttribute('type', type);
-    this.textContent = type === 'password' ? '👁️' : '🙈';
-});
+        <div class="divider"></div>
 
-// Envoi réel des formulaires vers Supabase et redirection
-document.getElementById('signupForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const prenom = document.getElementById('prenom').value;
-    const nom = document.getElementById('nom').value;
-    const email = document.getElementById('email').value;
-    const mot_de_passe = document.getElementById('password').value;
-
-    // Envoi en arrière-plan à Supabase
-    supabaseClient
-        .from('utilisateurs')
-        .insert([{ prenom: prenom, nom: nom, email: email, mot_de_passe: mot_de_passe }])
-        .then(() => { 
-            console.log("Données envoyées"); 
-            window.location.href = 'accueil.html';
-        });
-});
-</script>
+        <a href="inscription.html" class="btn-create">Créer un nouveau compte</a>
+    </div>
 
 </body>
 </html>
