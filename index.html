@@ -3,134 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChatBook - Connexion</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #1877f2; /* Fond bleu caractéristique */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        .login-container {
-            width: 100%;
-            max-width: 400px;
-            background-color: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-            padding: 30px 20px;
-            box-sizing: border-box;
-            text-align: center;
-        }
-
-        .logo {
-            color: #1877f2;
-            font-size: 32px;
-            font-weight: bold;
-            margin-bottom: 8px;
-            text-decoration: none;
-        }
-
-        .subtitle {
-            font-size: 14px;
-            color: #606770;
-            margin-bottom: 25px;
-            line-height: 1.4;
-        }
-
-        .input-field {
-            width: 100%;
-            padding: 14px 16px;
-            margin-bottom: 15px;
-            border: 1px solid #ccd0d5;
-            border-radius: 6px;
-            font-size: 15px;
-            box-sizing: border-box;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-
-        .input-field:focus {
-            border-color: #1877f2;
-            box-shadow: 0 0 0 2px rgba(24, 119, 242, 0.2);
-        }
-
-        .btn-login {
-            width: 100%;
-            background-color: #1877f2;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            padding: 14px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            margin-bottom: 15px;
-        }
-
-        .btn-login:hover {
-            background-color: #166fe5;
-        }
-
-        .forgot-password {
-            display: block;
-            color: #1877f2;
-            font-size: 14px;
-            text-decoration: none;
-            margin-bottom: 20px;
-        }
-
-        .forgot-password:hover {
-            text-decoration: underline;
-        }
-
-        .divider {
-            border-bottom: 1px solid #dadde1;
-            margin: 20px 0;
-        }
-
-        .btn-create {
-            background-color: #42b72a; /* Vert vif comme sur l'image */
-            color: white;
-            border: none;
-            border-radius: 6px;
-            padding: 12px 20px;
-            font-size: 15px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            display: inline-block;
-            text-decoration: none;
-        }
-
-        .btn-create:hover {
-            background-color: #36a420;
-        }
-    </style>
+    <title>Connexion - Chatbook</title>
 </head>
 <body>
 
-    <div class="login-container">
-        <div class="logo">ChatBook</div>
-        <div class="subtitle">Connectez-vous pour voir les messages et vidéos de vos proches.</div>
-
-        <form action="accueil.html" method="POST">
-            <input type="email" class="input-field" placeholder="Ex: monadresse@gmail.com" required>
-            <input type="password" class="input-field" placeholder="Votre mot de passe" required>
-            
-            <button type="submit" class="btn-login">Se connecter</button>
+    <div style="max-width: 400px; margin: 50px auto; font-family: Arial, sans-serif;">
+        <h2>Connexion à Chatbook</h2>
+        
+        <form id="loginForm">
+            <div style="margin-bottom: 15px;">
+                <label for="email" style="display: block; margin-bottom: 5px;">Email</label>
+                <input type="email" id="email" required style="width: 100%; padding: 8px;">
+            </div>
+            <div style="margin-bottom: 15px;">
+                <label for="password" style="display: block; margin-bottom: 5px;">Mot de passe</label>
+                <input type="password" id="password" required style="width: 100%; padding: 8px;">
+            </div>
+            <!-- Bouton de type "button" pour éviter l'erreur 405 et le message de rechargement -->
+            <button type="button" id="loginBtn" style="width: 100%; padding: 10px; background: #1877f2; color: white; border: none; cursor: pointer;">Se connecter</button>
         </form>
-
-        <a href="#" class="forgot-password">Mot de passe oublié ?</a>
-
-        <div class="divider"></div>
-
-        <a href="inscription.html" class="btn-create">Créer un nouveau compte</a>
     </div>
+
+    <script>
+        document.getElementById('loginBtn').addEventListener('click', function() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            if(email && password) {
+                // Redirection directe vers la page d'accueil sans passer par un serveur
+                window.location.href = "accueil.html";
+            } else {
+                alert("Veuillez remplir tous les champs.");
+            }
+        });
+    </script>
 
 </body>
 </html>
