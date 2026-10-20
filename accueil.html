@@ -3,308 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChatBook - Pour vous</title>
+    <title>Accueil - Chatbook</title>
     <style>
         body {
+            font-family: Arial, sans-serif;
             margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #050505;
-            color: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            overflow: hidden;
+            padding: 0;
+            background-color: #f0f2f5;
         }
-
-        .app-container {
-            width: 100%;
-            max-width: 450px;
-            background-color: #000000;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            border-left: 1px solid #1a1a1a;
-            border-right: 1px solid #1a1a1a;
-            box-sizing: border-box;
-            box-shadow: 0 0 30px rgba(229, 9, 20, 0.1);
-            position: relative;
-            padding-top: 60px;
-        }
-
-        /* Barre supérieure bloquée et fixe */
-        .app-header {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 60px;
+        header {
+            background-color: #ffffff;
+            padding: 15px 30px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 20px;
-            background-color: #000000;
-            border-bottom: 1px solid #111;
-            box-sizing: border-box;
-            z-index: 100;
         }
-
-        .logo {
-            color: #e50914;
-            font-size: 22px;
+        header h1 {
+            color: #1877f2;
+            margin: 0;
+            font-size: 24px;
+        }
+        .logout-btn {
+            background-color: #e4e6eb;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
             font-weight: bold;
+            color: #050505;
             text-decoration: none;
         }
-
-        .nav-tabs {
-            font-size: 14px;
-            color: #777777;
+        .logout-btn:hover {
+            background-color: #d8dadf;
         }
-
-        .nav-tabs span {
-            cursor: pointer;
-            padding: 5px 10px;
-        }
-
-        .nav-tabs .active {
-            color: #ffffff;
-            font-weight: bold;
-            border-bottom: 2px solid #e50914;
-        }
-
-        /* Conteneur pour le swipe TikTok */
-        .feed-container {
-            flex: 1;
-            overflow-y: scroll;
-            scroll-snap-type: y mandatory;
-            scroll-behavior: smooth;
-            scrollbar-width: none;
-            height: 100%;
-        }
-
-        .feed-container::-webkit-scrollbar {
-            display: none;
-        }
-
-        .video-section {
-            height: 100vh;
-            scroll-snap-align: start;
-            position: relative;
-            background-color: #000000;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            box-sizing: border-box;
-            padding-bottom: 80px;
-        }
-
-        .video-wrapper {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-        }
-
-        video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .video-details {
-            padding: 15px;
-            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
-            position: relative;
-            z-index: 10;
-        }
-
-        .author {
-            font-weight: bold;
-            font-size: 16px;
-            color: #ffffff;
-            margin-bottom: 5px;
-        }
-
-        .description {
-            font-size: 14px;
-            color: #cccccc;
-            line-height: 1.4;
-        }
-
-        .hashtag {
-            color: #e50914;
-            font-weight: 500;
-        }
-
-        /* Les 4 boutons alignés */
-        .action-bar {
-            display: flex;
-            justify-content: space-between;
-            padding: 12px 10px;
-            border-top: 1px solid #111;
-            background-color: #050505;
-            box-sizing: border-box;
-            position: relative;
-            z-index: 20;
-        }
-
-        .action-item {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            color: #ffffff;
-            font-size: 12px;
-            cursor: pointer;
-            background: none;
-            border: none;
-            padding: 6px 8px;
-            border-radius: 20px;
-            transition: background-color 0.2s;
-            flex: 1;
-            justify-content: center;
-        }
-
-        .action-item:hover {
-            background-color: #111111;
-        }
-
-        .icon-svg {
-            width: 18px;
-            height: 18px;
-            fill: none;
-            stroke: #ffffff;
-            stroke-width: 2;
-            transition: fill 0.2s, stroke 0.2s;
-        }
-
-        .action-item.active .icon-svg {
-            fill: #e50914;
-            stroke: #e50914;
+        main {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
 <body>
 
-    <div class="app-container">
-        <!-- En-tête de l'application -->
-        <header class="app-header">
-            <a href="index.html" class="logo">ChatBook</a>
-            <div class="nav-tabs">
-                <span onclick="window.location.href='importer.html'">➕ Importer</span>
-                <span class="active">Pour vous</span>
-            </div>
-        </header>
+    <header>
+        <h1>Chatbook</h1>
+        <a href="index.html" class="logout-btn">Se déconnecter</a>
+    </header>
 
-        <!-- Container principal avec 2 vidéos de test pour le swipe -->
-        <div class="feed-container" id="feedContainer">
-            
-            <!-- Vidéo 1 -->
-            <section class="video-section">
-                <div class="video-wrapper">
-                    <video loop muted autoplay playsinline>
-                        <source src="https://mixkit.co" type="video/mp4">
-                    </video>
-                </div>
-                <div class="video-details">
-                    <div class="author">@NagnoumaDeveloper</div>
-                    <div class="description">
-                        Bienvenue sur le flux vidéo officiel de ChatBook ! 🚀✨ 🔥 <span class="hashtag">#tech</span>
-                    </div>
-                </div>
-            </section>
+    <main>
+        <h2>Bienvenue sur votre fil d'actualité !</h2>
+        <p>Vous êtes connecté avec succès à Chatbook.</p>
+    </main>
 
-            <!-- Vidéo 2 -->
-            <section class="video-section">
-                <div class="video-wrapper">
-                    <video loop muted playsinline>
-                        <source src="https://mixkit.co" type="video/mp4">
-                    </video>
-                </div>
-                <div class="video-details">
-                    <div class="author">@SenegalHumour</div>
-                    <div class="description">
-                        Quand le code fonctionne enfin du premier coup ! 😂🇸🇳 <span class="hashtag">#rire</span>
-                    </div>
-                </div>
-            </section>
-
-        </div>
-
-        <!-- Les 4 boutons d'action bas -->
-        <div class="action-bar">
-            <!-- 1. Like -->
-            <button class="action-item" id="likeBtn">
-                <svg class="icon-svg" viewBox="0 0 24 24">
-                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                </svg>
-                <span id="likeCount">12.5K</span>
-            </button>
-
-            <!-- 2. Commentaires -->
-            <button class="action-item" onclick="window.location.href='chat.html'">
-                <svg class="icon-svg" viewBox="0 0 24 24">
-                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-                </svg>
-                <span>Messages</span>
-            </button>
-
-            <!-- 3. Favoris -->
-            <button class="action-item" id="favBtn">
-                <svg class="icon-svg" viewBox="0 0 24 24">
-                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                </svg>
-                <span>Favoris</span>
-            </button>
-
-            <!-- 4. Partager -->
-            <button class="action-item" id="shareBtn">
-                <svg class="icon-svg" viewBox="0 0 24 24" style="fill: none; stroke: #fff;">
-                    <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13"/>
-                </svg>
-                <span>Partager</span>
-            </button>
-        </div>
-    </div>
-
-    <script>
-        // Gestion des boutons cœur et étoile
-        const likeBtn = document.getElementById('likeBtn');
-        const likeCount = document.getElementById('likeCount');
-        let isLiked = false;
-
-        likeBtn.addEventListener('click', function() {
-            isLiked = !isLiked;
-            this.classList.toggle('active', isLiked);
-            likeCount.textContent = isLiked ? "12.6K" : "12.5K";
-        });
-
-        const favBtn = document.getElementById('favBtn');
-        let isFav = false;
-
-        favBtn.addEventListener('click', function() {
-            isFav = !isFav;
-            this.classList.toggle('active', isFav);
-        });
-
-        // Script de partage smartphone
-        const shareBtn = document.getElementById('shareBtn');
-        shareBtn.addEventListener('click', async () => {
-            if (navigator.share) {
-                try {
-                    await navigator.share({ title: 'ChatBook', url: window.location.href });
-                } catch (err) {}
-            } else {
-                navigator.clipboard.writeText(window.location.href);
-                alert('Lien copié dans le presse-papiers !');
-            }
-        });
-
-        // Script de gestion automatique de lecture au scroll
-        const container = document.getElementById('feedContainer');
-        const videos = document.querySelectorAll('video');
-
-        container.addEventListener('scroll', () => {
-            videos.forEach(video => {
-                const rect = video.getBoundingClientRect();
+</body>
+</html>
