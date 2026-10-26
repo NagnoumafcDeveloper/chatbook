@@ -353,7 +353,39 @@ button{cursor:pointer;-webkit-tap-highlight-color:transparent}
     }
   }
 
-  $("soundBtn").addEventListener("click", () => {
+ function toggleVideoSound() {
+    const video = feed.querySelector(".video");
+    if (!video) return;
+
+    video.muted = !video.muted;
+
+    const soundButton = $("soundBtn");
+    const discButton = $("discBtn");
+
+    soundButton.setAttribute(
+      "aria-label",
+      video.muted ? "Activer le son" : "Couper le son"
+    );
+
+    discButton.setAttribute(
+      "aria-label",
+      video.muted ? "Activer le son" : "Couper le son"
+    );
+
+    discButton.querySelector("span").textContent =
+      video.muted ? "Son désactivé" : "Son activé";
+
+    if (!video.muted && video.paused) {
+      video.play().catch(() => {
+        notify("Appuie sur la vidéo pour démarrer la lecture");
+      });
+    }
+
+    notify(video.muted ? "Son désactivé" : "Son activé");
+  }
+
+  $("soundBtn").addEventListener("click", toggleVideoSound);
+  
     const video = feed.querySelector(".video");
     if (!video) return;
     video.muted = !video.muted;
