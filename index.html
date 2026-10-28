@@ -3,21 +3,34 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ChatBook</title>
+<meta name="theme-color" content="#111111">
+<title>ChatBook - Réseau social</title>
 
 <style>
+:root {
+    --bg: #101010;
+    --surface: #1b1b1b;
+    --surface2: #252525;
+    --red: #ff2638;
+    --red-dark: #d90f25;
+    --white: #ffffff;
+    --text: #f5f5f5;
+    --muted: #a5a5a5;
+    --border: #333333;
+}
+
 * {
     box-sizing: border-box;
 }
 
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
-    background: #eef1f5;
-    color: #111;
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--bg);
+    color: var(--text);
 }
 
-button, input {
+button, input, textarea {
     font: inherit;
 }
 
@@ -25,306 +38,767 @@ button {
     cursor: pointer;
 }
 
-header {
-    height: 68px;
-    background: white;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 20px;
-    border-bottom: 1px solid #ddd;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-}
-
-.logo {
-    color: #1877f2;
-    font-size: 25px;
-    font-weight: bold;
-}
-
-.header-links {
-    display: flex;
-    gap: 15px;
-    align-items: center;
-}
-
-.header-links button {
-    border: none;
-    background: transparent;
-}
-
-main {
-    width: 100%;
-    max-width: 580px;
-    margin: 20px auto;
-}
-
-.card {
-    background: white;
-    margin-bottom: 16px;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 2px 12px #00000010;
-}
-
-/* Inscription */
-
-#signupScreen {
-    min-height: 100vh;
-    background: linear-gradient(145deg, #1877f2, #0754ad);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-}
-
-.signup-box {
-    width: 100%;
-    max-width: 400px;
-    background: white;
-    padding: 25px 20px;
-    border-radius: 15px;
-    text-align: center;
-}
-
-.signup-box h1 {
-    color: #1877f2;
-    margin: 0 0 5px;
-    font-size: 30px;
-}
-
-.signup-box p {
-    color: #777;
-    margin-bottom: 22px;
-}
-
-.signup-box input {
-    width: 100%;
-    padding: 13px;
-    border: 1px solid #d0d4da;
-    border-radius: 8px;
-    margin-bottom: 11px;
-    outline-color: #1877f2;
-}
-
-.password-box {
-    display: flex;
-    margin-bottom: 12px;
-    border: 1px solid #d0d4da;
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-.password-box input {
-    border: none;
-    margin: 0;
-}
-
-.password-box button {
-    border: none;
-    background: white;
-    padding: 0 12px;
-}
-
-.signup-button {
-    width: 100%;
-    padding: 13px;
-    background: #36b52b;
-    border: none;
-    color: white;
-    font-weight: bold;
-    border-radius: 7px;
-}
-
-.switch-account {
-    margin-top: 18px;
-    padding-top: 16px;
-    border-top: 1px solid #ddd;
-    color: #1877f2;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-/* Fil d'actualité */
-
-.post-video {
-    background: #101010;
-    color: white;
-}
-
-.youtube-title {
-    padding: 20px;
-    font-size: 23px;
-    font-weight: bold;
-}
-
-.youtube-title span {
-    color: #ff0033;
-}
-
-.video-frame {
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    border: 0;
-    display: block;
-    background: #111;
-}
-
-.post-info {
-    padding: 18px 20px 10px;
-}
-
-.author {
-    font-size: 19px;
-    font-weight: bold;
-    margin-bottom: 8px;
-}
-
-.caption {
-    line-height: 1.5;
-}
-
-.stats {
-    display: flex;
-    justify-content: space-between;
-    padding: 14px 20px;
-    color: #666;
-    border-bottom: 1px solid #eee;
-}
-
-.actions {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 4px;
-    padding: 10px;
-}
-
-.action-button {
-    border: none;
-    background: white;
-    color: #626262;
-    border-radius: 7px;
-    padding: 12px 3px;
-    font-weight: bold;
-}
-
-.action-button:hover {
-    background: #f0f2f5;
-}
-
-.action-button.active {
-    color: #1877f2;
-    background: #e8f1ff;
-}
-
-/* Commentaires */
-
-.comments {
-    padding: 15px 20px 20px;
-}
-
-.comments h3 {
-    margin-top: 0;
-}
-
-.comment {
-    margin: 12px 0;
-    line-height: 1.5;
-    overflow-wrap: anywhere;
-}
-
-.comment strong {
-    margin-right: 5px;
-}
-
-.comment-form {
-    display: flex;
-    gap: 8px;
-    margin-top: 15px;
-}
-
-.comment-form input {
-    min-width: 0;
-    flex: 1;
-    padding: 12px 14px;
-    border: 1px solid #d0d4da;
-    border-radius: 25px;
-    outline-color: #1877f2;
-}
-
-.publish-button {
-    background: #1877f2;
-    color: white;
-    font-weight: bold;
-    border: none;
-    border-radius: 25px;
-    padding: 0 18px;
-}
-
-/* Favoris */
-
-.favorites-section {
-    padding: 0 20px 18px;
-}
-
-.favorite-button {
-    width: 100%;
-    padding: 14px;
-    background: #fff8dc;
-    color: #8a6500;
-    border: 1px solid #f0d777;
-    border-radius: 9px;
-    font-weight: bold;
-    font-size: 16px;
-}
-
-.favorite-button.active {
-    background: #ffe89a;
-    color: #664900;
-}
-
-.favorite-button:hover {
-    filter: brightness(0.97);
-}
-
-.advertisement {
-    text-align: center;
-    color: #777;
-    padding: 18px;
-    font-size: 12px;
-    letter-spacing: 1px;
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+    outline: 2px solid var(--red);
+    outline-offset: 2px;
 }
 
 .hidden {
     display: none !important;
 }
 
-.notice {
-    padding: 12px;
-    border-radius: 8px;
-    background: #e8f5e9;
-    color: #176b25;
+/* INSCRIPTION */
+
+#authScreen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background:
+        radial-gradient(circle at top right, #4a0c16 0, transparent 40%),
+        var(--bg);
+}
+
+.auth-box {
+    width: 100%;
+    max-width: 410px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 28px;
+    border-radius: 18px;
+    text-align: center;
+    box-shadow: 0 15px 50px #0008;
+}
+
+.brand {
+    font-size: 32px;
+    font-weight: 900;
+    letter-spacing: -1px;
+}
+
+.brand span {
+    color: var(--red);
+}
+
+.auth-subtitle {
+    color: var(--muted);
+    margin-bottom: 25px;
+}
+
+.auth-box input {
+    display: block;
+    width: 100%;
+    padding: 14px;
     margin-bottom: 12px;
+    border-radius: 9px;
+    border: 1px solid var(--border);
+    background: #111;
+    color: white;
+}
+
+.primary-button {
+    background: var(--red);
+    color: white;
+    border: none;
+    padding: 13px 18px;
+    border-radius: 9px;
+    font-weight: bold;
+    transition: .2s;
+}
+
+.primary-button:hover {
+    background: var(--red-dark);
+}
+
+.auth-box .primary-button {
+    width: 100%;
+}
+
+.text-button {
+    color: #ff6673;
+    background: none;
+    border: none;
+    margin-top: 17px;
+}
+
+.notice {
+    display: none;
+    padding: 12px;
+    background: #32151a;
+    border: 1px solid #70232d;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    overflow-wrap: anywhere;
+}
+
+/* HEADER */
+
+header {
+    height: 66px;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: #151515f5;
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 22px;
+    gap: 15px;
+}
+
+.header-left,
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.header-logo {
+    font-size: 27px;
+    font-weight: 900;
+    white-space: nowrap;
+}
+
+.header-logo span {
+    color: var(--red);
+}
+
+.search-box {
+    width: min(32vw, 300px);
+    background: var(--surface2);
+    color: white;
+    border: 1px solid var(--border);
+    padding: 11px 15px;
+    border-radius: 25px;
+}
+
+.icon-button {
+    background: var(--surface2);
+    color: white;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    font-size: 18px;
+}
+
+.icon-button:hover {
+    background: #3a2024;
+}
+
+.logout-button {
+    border: 1px solid var(--border);
+    background: transparent;
+    color: white;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+/* NAVIGATION */
+
+.top-nav {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px;
+    background: #151515;
+    border-bottom: 1px solid var(--border);
+}
+
+.nav-button {
+    flex: 1;
+    max-width: 160px;
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    padding: 13px 8px;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.nav-button.active,
+.nav-button:hover {
+    background: #32151a;
+    color: white;
+}
+
+.nav-button.active {
+    box-shadow: inset 0 -3px var(--red);
+}
+
+/* PAGE LAYOUT */
+
+.layout {
+    display: grid;
+    grid-template-columns: 220px minmax(0, 650px) 220px;
+    gap: 20px;
+    max-width: 1160px;
+    padding: 20px 15px;
+    margin: auto;
+    align-items: start;
+}
+
+.sidebar {
+    position: sticky;
+    top: 145px;
+}
+
+.side-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 14px 12px;
+    border: none;
+    border-radius: 9px;
+    background: transparent;
+    color: var(--text);
+    text-align: left;
+    font-weight: bold;
+}
+
+.side-link:hover {
+    background: var(--surface2);
+}
+
+.side-link .emoji {
+    font-size: 21px;
+}
+
+.side-heading {
+    color: var(--muted);
+    font-size: 13px;
+    padding: 12px;
+}
+
+.card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 13px;
+    margin-bottom: 17px;
+    overflow: hidden;
+}
+
+.card-padding {
+    padding: 17px;
+}
+
+.section-title {
+    font-size: 19px;
+    margin: 0 0 15px;
+}
+
+.muted {
+    color: var(--muted);
+}
+
+/* STORIES */
+
+.stories {
+    display: flex;
+    gap: 10px;
+    padding: 15px;
+    overflow-x: auto;
+}
+
+.story {
+    flex: 0 0 90px;
+    height: 140px;
+    border-radius: 12px;
+    background: linear-gradient(150deg, #6b1724, #222);
+    border: 1px solid #65232d;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 9px;
+    cursor: pointer;
+}
+
+.story-avatar {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: var(--red);
+    border: 2px solid white;
+    display: grid;
+    place-items: center;
+}
+
+.story-name {
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* CREATE POST */
+
+.create-post {
+    padding: 17px;
+}
+
+.create-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.avatar {
+    width: 43px;
+    height: 43px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--red), #741020);
+    display: grid;
+    place-items: center;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.create-input {
+    width: 100%;
+    background: var(--surface2);
+    color: white;
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 13px 17px;
+}
+
+.create-options {
+    display: flex;
+    gap: 8px;
+    margin-top: 14px;
+    padding-top: 13px;
+    border-top: 1px solid var(--border);
+}
+
+.option-button {
+    flex: 1;
+    padding: 10px 5px;
+    background: transparent;
+    color: var(--muted);
+    border: none;
+    border-radius: 8px;
+}
+
+.option-button:hover {
+    background: var(--surface2);
+    color: white;
+}
+
+.create-details {
+    margin-top: 12px;
+}
+
+.create-details textarea {
+    width: 100%;
+    min-height: 85px;
+    resize: vertical;
+    background: #111;
+    color: white;
+    border: 1px solid var(--border);
+    padding: 12px;
+    border-radius: 9px;
+}
+
+.create-details input[type="file"] {
+    max-width: 100%;
+    margin: 12px 0;
+    color: var(--muted);
+}
+
+.create-details .primary-button {
+    display: block;
+    width: 100%;
+}
+
+/* POSTS */
+
+.post-header {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 16px 16px 8px;
+}
+
+.post-author {
+    font-weight: bold;
+}
+
+.post-time {
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.post-caption {
+    padding: 8px 16px 15px;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+}
+
+.post-media {
+    display: block;
+    width: 100%;
+    max-height: 560px;
+    object-fit: contain;
+    background: #080808;
+}
+
+.post-stats {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    color: var(--muted);
+    font-size: 13px;
+    padding: 13px 16px;
+    border-bottom: 1px solid var(--border);
+}
+
+.post-actions {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    padding: 7px;
+    gap: 4px;
+}
+
+.action-button {
+    background: transparent;
+    color: var(--muted);
+    border: none;
+    padding: 11px 3px;
+    border-radius: 7px;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.action-button:hover {
+    background: var(--surface2);
+    color: white;
+}
+
+.action-button.active {
+    color: #ff4c5c;
+    background: #36151a;
+}
+
+/* COMMENTS */
+
+.comments {
+    padding: 12px 16px 17px;
+    border-top: 1px solid var(--border);
+}
+
+.comment {
+    margin: 11px 0;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.comment strong {
+    color: #ff5968;
+    margin-right: 5px;
+}
+
+.comment-form {
+    display: flex;
+    gap: 8px;
+    margin-top: 13px;
+}
+
+.comment-form input {
+    min-width: 0;
+    flex: 1;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: white;
+    border-radius: 22px;
+    padding: 12px;
+}
+
+.comment-form button {
+    border: none;
+    border-radius: 22px;
+    background: var(--red);
+    color: white;
+    padding: 0 15px;
+}
+
+/* RIGHT SIDEBAR */
+
+.info-card {
+    padding: 16px;
+}
+
+.info-card h3 {
+    margin: 0 0 12px;
+    font-size: 16px;
+}
+
+.info-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 9px 0;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+/* VIDEO FEED */
+
+.video-feed {
+    max-width: 650px;
+    margin: 20px auto;
+    padding: 0 12px;
+}
+
+.video-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 13px;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.video-heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px;
+}
+
+.video-frame {
+    display: block;
+    width: 100%;
+    aspect-ratio: 9 / 16;
+    max-height: 680px;
+    border: none;
+    background: black;
+}
+
+.video-caption {
+    padding: 14px;
+    line-height: 1.6;
+}
+
+.video-actions {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+    border-top: 1px solid var(--border);
+}
+
+.video-actions button {
+    background: transparent;
+    border: none;
+    color: white;
+    padding: 9px;
+}
+
+.video-actions button:hover {
+    color: var(--red);
+}
+
+/* FRIENDS, MESSAGES, PROFILE */
+
+.simple-page {
+    max-width: 650px;
+    margin: 20px auto;
+    padding: 0 12px;
+}
+
+.profile-cover {
+    height: 170px;
+    background: linear-gradient(130deg, #6b0c1c, #161616, #9b1427);
+}
+
+.profile-main {
+    padding: 0 20px 20px;
+}
+
+.profile-avatar {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    border: 4px solid var(--surface);
+    background: var(--red);
+    display: grid;
+    place-items: center;
+    font-size: 30px;
+    font-weight: bold;
+    margin-top: -45px;
+}
+
+.profile-name {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.profile-stats {
+    display: flex;
+    gap: 22px;
+    margin: 17px 0;
+    color: var(--muted);
+    flex-wrap: wrap;
+}
+
+.profile-stats strong {
+    color: white;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--muted);
+}
+
+/* MOBILE NAV */
+
+.mobile-nav {
     display: none;
 }
 
-@media (max-width: 600px) {
-    header {
-        padding: 0 14px;
+/* RESPONSIVE */
+
+@media (max-width: 950px) {
+    .layout {
+        grid-template-columns: 175px minmax(0, 650px);
+        max-width: 850px;
     }
 
-    main {
-        margin: 12px auto;
+    .right-sidebar {
+        display: none;
+    }
+}
+
+@media (max-width: 650px) {
+    header {
+        height: 58px;
+        padding: 0 12px;
+    }
+
+    .header-logo {
+        font-size: 23px;
+    }
+
+    .search-box {
+        display: none;
+    }
+
+    .header-left,
+    .header-right {
+        gap: 8px;
+    }
+
+    .icon-button {
+        width: 37px;
+        height: 37px;
+    }
+
+    .logout-button {
+        font-size: 12px;
+        padding: 8px;
+    }
+
+    .top-nav {
+        justify-content: flex-start;
+        overflow-x: auto;
+    }
+
+    .nav-button {
+        flex: 0 0 auto;
+        min-width: 95px;
+        font-size: 12px;
+    }
+
+    .layout {
+        display: block;
+        padding: 10px 0 85px;
+        margin: 0;
+    }
+
+    .left-sidebar,
+    .right-sidebar {
+        display: none;
     }
 
     .card {
         border-radius: 0;
+        border-left: none;
+        border-right: none;
+    }
+
+    .stories {
+        padding: 12px;
+    }
+
+    .story {
+        flex-basis: 78px;
+        height: 120px;
+    }
+
+    .post-actions {
+        gap: 0;
     }
 
     .action-button {
-        font-size: 12px;
+        font-size: 11px;
+    }
+
+    .mobile-nav {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 30;
+        justify-content: space-around;
+        background: #171717f7;
+        border-top: 1px solid var(--border);
+        padding: 8px 2px max(8px, env(safe-area-inset-bottom));
+    }
+
+    .mobile-nav button {
+        flex: 1;
+        background: transparent;
+        border: none;
+        color: var(--muted);
+        font-size: 11px;
+        padding: 5px 1px;
+    }
+
+    .mobile-nav button span {
+        display: block;
+        font-size: 20px;
+        margin-bottom: 3px;
+    }
+
+    .mobile-nav button.active {
+        color: var(--red);
+    }
+
+    .video-feed,
+    .simple-page {
+        margin-top: 12px;
+        padding: 0;
+    }
+
+    .video-card {
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition: none !important;
     }
 }
 </style>
@@ -332,40 +806,42 @@ main {
 
 <body>
 
-<!-- PAGE D'INSCRIPTION -->
+<!-- INSCRIPTION / CONNEXION -->
 
-<section id="signupScreen">
-    <div class="signup-box">
-        <h1>ChatBook</h1>
-        <p>C'est rapide et facile.</p>
+<section id="authScreen">
+    <div class="auth-box">
+        <div class="brand">Chat<span>Book</span></div>
+        <p class="auth-subtitle">Connecte-toi au monde.</p>
 
-        <div id="notice" class="notice"></div>
+        <div id="authNotice" class="notice" role="alert"></div>
 
-        <form id="signupForm">
+        <form id="authForm">
             <input id="firstName" type="text"
-                   placeholder="Prénom" required>
+                   placeholder="Prénom" autocomplete="given-name" required>
 
             <input id="lastName" type="text"
-                   placeholder="Nom de famille" required>
+                   placeholder="Nom de famille" autocomplete="family-name" required>
 
-            <input id="contact" type="text"
-                   placeholder="Numéro de mobile ou e-mail" required>
+            <input id="email" type="email"
+                   placeholder="Adresse e-mail" autocomplete="email" required>
 
-            <div class="password-box">
-                <input id="password" type="password"
-                       placeholder="Mot de passe" minlength="6" required>
-                <button type="button" id="togglePassword"
-                        aria-label="Afficher le mot de passe">👁️</button>
-            </div>
+            <input id="password" type="password"
+                   placeholder="Mot de passe (6 caractères minimum)"
+                   minlength="6" autocomplete="new-password" required>
 
-            <button class="signup-button" type="submit">
-                S'inscrire
+            <button class="primary-button" type="submit">
+                Créer mon compte de démonstration
             </button>
         </form>
 
-        <div class="switch-account" id="loginButton">
-            Vous avez déjà un compte ?
-        </div>
+        <button class="text-button" id="existingAccount">
+            J'ai déjà utilisé ChatBook sur cet appareil
+        </button>
+
+        <p class="muted" style="font-size:12px;line-height:1.5">
+            Démonstration locale : les comptes ne sont pas sécurisés
+            et ne sont pas partagés entre appareils.
+        </p>
     </div>
 </section>
 
@@ -373,336 +849,259 @@ main {
 
 <div id="app" class="hidden">
 
-    <header>
-        <div class="logo">ChatBook</div>
+<header>
+    <div class="header-left">
+        <div class="header-logo">Chat<span>Book</span></div>
+        <input id="searchInput" class="search-box"
+               type="search" placeholder="🔍 Rechercher...">
+    </div>
 
-        <div class="header-links">
-            <button id="favoritesLink">⭐ Favoris</button>
-            <button id="logoutButton">Déconnexion</button>
-        </div>
-    </header>
+    <div class="header-right">
+        <button class="icon-button" data-page="messages"
+                aria-label="Messages" title="Messages">💬</button>
+        <button class="icon-button" data-page="notifications"
+                aria-label="Notifications" title="Notifications">🔔</button>
+        <button id="logoutButton" class="logout-button">Quitter</button>
+    </div>
+</header>
 
-    <main id="feed">
+<nav class="top-nav" aria-label="Navigation principale">
+    <button class="nav-button active" data-page="home">🏠 Accueil</button>
+    <button class="nav-button" data-page="videos">🎬 Vidéos</button>
+    <button class="nav-button" data-page="friends">👥 Amis</button>
+    <button class="nav-button" data-page="messages">💬 Messages</button>
+    <button class="nav-button" data-page="favorites">⭐ Favoris</button>
+    <button class="nav-button" data-page="profile">👤 Profil</button>
+</nav>
 
-        <article class="card">
+<!-- ACCUEIL -->
 
-            <div class="post-video">
-                <div class="youtube-title">
-                    <span>▶</span> YouTube
+<section id="homePage" class="layout page">
+    <aside class="sidebar left-sidebar">
+        <button class="side-link" data-page="profile">
+            <span class="emoji">👤</span> Mon profil
+        </button>
+        <button class="side-link" data-page="friends">
+            <span class="emoji">👥</span> Mes amis
+        </button>
+        <button class="side-link" data-page="videos">
+            <span class="emoji">🎬</span> Vidéos
+        </button>
+        <button class="side-link" data-page="messages">
+            <span class="emoji">💬</span> Messages
+        </button>
+        <button class="side-link" data-page="notifications">
+            <span class="emoji">🔔</span> Notifications
+        </button>
+        <button class="side-link" data-page="favorites">
+            <span class="emoji">⭐</span> Mes favoris
+        </button>
+
+        <div class="side-heading">CHATBOOK</div>
+        <p class="muted" style="font-size:12px;padding:0 12px;line-height:1.5">
+            Partage tes idées, tes photos et tes vidéos.
+        </p>
+    </aside>
+
+    <main>
+        <!-- STORIES -->
+        <section class="card">
+            <div class="stories">
+                <div class="story" id="addStory">
+                    <div class="story-avatar">+</div>
+                    <div class="story-name">Ajouter une story</div>
                 </div>
 
-                <!-- Remplace VIDEO_ID par l'identifiant d'une vidéo YouTube -->
-                <iframe
-                    class="video-frame"
-                    src="https://www.youtube.com/embed/VIDEO_ID"
-                    title="Vidéo ChatBook"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen>
-                </iframe>
-            </div>
-
-            <div class="post-info">
-                <div class="author">@NagnoumaDeveloper</div>
-
-                <div class="caption">
-                    Bienvenue sur le flux vidéo officiel de ChatBook ! 🚀 🔥 #tech
-                </div>
-            </div>
-
-            <div class="stats">
-                <span id="likeCount">🤍 12.5K</span>
-                <span id="commentCount">💬 2 commentaires</span>
-                <span id="favoriteCount">⭐ 0 favoris</span>
-            </div>
-
-            <div class="actions">
-                <button id="likeButton" class="action-button">
-                    🤍 J'aime
-                </button>
-
-                <button id="commentButton" class="action-button">
-                    💬 Commenter
-                </button>
-
-                <button id="shareButton" class="action-button">
-                    🔗 Partager
-                </button>
-
-                <button id="saveButton" class="action-button">
-                    ⭐ Favoris
-                </button>
-            </div>
-
-            <section class="comments" id="commentsSection">
-                <h3>Commentaires</h3>
-
-                <div id="commentList">
-                    <div class="comment">
-                        <strong>@Utilisateur1:</strong>
-                        Super application !
-                    </div>
-
-                    <div class="comment">
-                        <strong>@Utilisateur2:</strong>
-                        J'aime beaucoup le concept.
-                    </div>
+                <div class="story">
+                    <div class="story-avatar">🔥</div>
+                    <div class="story-name">Découvertes</div>
                 </div>
 
-                <form class="comment-form" id="commentForm">
-                    <input id="commentInput"
-                           type="text"
-                           placeholder="Ajouter un commentaire..."
-                           maxlength="500"
-                           required>
+                <div class="story">
+                    <div class="story-avatar">🎬</div>
+                    <div class="story-name">Vidéos</div>
+                </div>
 
-                    <button class="publish-button" type="submit">
-                        Publier
-                    </button>
-                </form>
-            </section>
+                <div class="story">
+                    <div class="story-avatar">🎵</div>
+                    <div class="story-name">Musique</div>
+                </div>
+            </div>
+        </section>
 
-            <!-- BOUTON FAVORIS AGRANDI APRÈS LES COMMENTAIRES -->
-
-            <section class="favorites-section">
-                <button id="bigFavoriteButton" class="favorite-button">
-                    ☆ Ajouter cette publication aux favoris
+        <!-- CRÉATION DE PUBLICATION -->
+        <section class="card create-post">
+            <div class="create-top">
+                <div class="avatar" id="createAvatar">C</div>
+                <button class="create-input" id="openComposer"
+                        style="text-align:left">
+                    Quoi de neuf ?
                 </button>
-            </section>
+            </div>
 
-        </article>
+            <form id="postForm" class="create-details hidden">
+                <textarea id="postText"
+                          maxlength="5000"
+                          placeholder="Écris quelque chose..."></textarea>
 
-        <div class="advertisement">
-            ANNONCE PUBLICITAIRE • ESPACE PUBLICITAIRE
-        </div>
+                <label class="muted" for="postFile">
+                    Ajouter une photo ou une vidéo
+                </label>
 
-        <section id="favoritesPage" class="card hidden">
-            <div class="post-info">
-                <h2>⭐ Mes favoris</h2>
-                <p id="favoritesMessage">
-                    Vous n'avez pas encore de favoris.
-                </p>
-                <button id="backToFeed"
-                        class="publish-button"
-                        style="padding:12px 18px">
-                    Retour au fil d'actualité
+                <input id="postFile" type="file"
+                       accept="image/*,video/*">
+
+                <button class="primary-button" type="submit">
+                    Publier
+                </button>
+            </form>
+
+            <div class="create-options">
+                <button class="option-button" id="photoOption">
+                    🖼️ Photo
+                </button>
+                <button class="option-button" id="videoOption">
+                    🎬 Vidéo
+                </button>
+                <button class="option-button" id="feelingOption">
+                    😊 Humeur
                 </button>
             </div>
         </section>
 
+        <div id="feed"></div>
+
+        <section id="emptyFeed" class="card empty-state hidden">
+            <h3>Aucune publication trouvée</h3>
+            <p>Sois le premier à partager quelque chose !</p>
+        </section>
     </main>
-</div>
 
-<script>
-const $ = id => document.getElementById(id);
+    <aside class="sidebar right-sidebar">
+        <section class="card info-card">
+            <h3>✨ Découvrir</h3>
+            <div class="info-row">🔥 Les publications populaires</div>
+            <div class="info-row">🎬 Les dernières vidéos</div>
+            <div class="info-row">👥 Trouver des amis</div>
+        </section>
 
-let currentUser = null;
-let liked = false;
-let favorited = false;
-let likes = 12500;
+        <section class="card info-card">
+            <h3>À propos</h3>
+            <p class="muted" style="font-size:13px;line-height:1.6">
+                Bienvenue sur ChatBook, ton espace pour partager,
+                découvrir et communiquer.
+            </p>
+        </section>
+    </aside>
+</section>
 
-const initialComments = 2;
-let commentTotal = initialComments;
+<!-- VIDÉOS -->
 
-function showNotice(message) {
-    const notice = $("notice");
-    notice.textContent = message;
-    notice.style.display = "block";
-}
+<section id="videosPage" class="page hidden">
+    <div class="video-feed">
+        <h2>🎬 Vidéos ChatBook</h2>
+        <p class="muted">
+            Découvre les vidéos de la communauté.
+        </p>
 
-function updateLikeDisplay() {
-    $("likeCount").textContent =
-        "❤️ " + likes.toLocaleString("fr-FR");
-    $("likeButton").classList.toggle("active", liked);
-    $("likeButton").textContent = liked ? "❤️ Aimé" : "🤍 J'aime";
-}
+        <article class="video-card">
+            <div class="video-heading">
+                <div class="avatar">C</div>
+                <div>
+                    <strong>ChatBook Découverte</strong>
+                    <div class="post-time">Vidéo de démonstration</div>
+                </div>
+            </div>
 
-function updateFavoriteDisplay() {
-    $("saveButton").classList.toggle("active", favorited);
-    $("saveButton").textContent =
-        favorited ? "⭐ En favoris" : "☆ Favoris";
+            <iframe class="video-frame"
+                    src="https://www.youtube-nocookie.com/embed/ScMzIvxBSi4"
+                    title="Vidéo de démonstration ChatBook"
+                    loading="lazy"
+                    allow="accelerometer; encrypted-media; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    allowfullscreen></iframe>
 
-    $("bigFavoriteButton").classList.toggle("active", favorited);
+            <div class="video-caption">
+                Bienvenue dans l'espace vidéos de ChatBook ! ❤️
+                <br>#ChatBook #Découverte
+            </div>
 
-    $("bigFavoriteButton").textContent = favorited
-        ? "⭐ Retirer des favoris"
-        : "☆ Ajouter cette publication aux favoris";
+            <div class="video-actions">
+                <button data-video-like>❤️ J'aime</button>
+                <button id="videoCommentButton">💬 Commenter</button>
+                <button id="videoShareButton">🔗 Partager</button>
+                <button id="videoFavoriteButton">⭐ Favoris</button>
+            </div>
 
-    $("favoriteCount").textContent =
-        "⭐ " + (favorited ? 1 : 0) + " favoris";
+            <div class="comments">
+                <div id="videoComments"></div>
+                <form id="videoCommentForm" class="comment-form">
+                    <input id="videoCommentInput"
+                           placeholder="Commenter la vidéo..."
+                           maxlength="500" required>
+                    <button type="submit">Envoyer</button>
+                </form>
+            </div>
+        </article>
 
-    localStorage.setItem("chatbookFavorite", JSON.stringify(favorited));
-}
+        <p class="muted" style="font-size:13px">
+            Cette version contient une vidéo de démonstration.
+            Le téléchargement et la publication de vidéos par les membres
+            nécessitent un système de stockage adapté.
+        </p>
+    </div>
+</section>
 
-function toggleLike() {
-    liked = !liked;
-    likes += liked ? 1 : -1;
-    updateLikeDisplay();
-    localStorage.setItem("chatbookLiked", JSON.stringify(liked));
-    localStorage.setItem("chatbookLikes", String(likes));
-}
+<!-- FAVORIS -->
 
-function toggleFavorite() {
-    favorited = !favorited;
-    updateFavoriteDisplay();
-}
+<section id="favoritesPage" class="page hidden simple-page">
+    <section class="card card-padding">
+        <h2>⭐ Mes favoris</h2>
+        <p class="muted">Les publications enregistrées apparaîtront ici.</p>
+    </section>
+    <div id="favoritesFeed"></div>
+    <div id="emptyFavorites" class="card empty-state">
+        <h3>Aucun favori pour le moment</h3>
+        <p>Utilise le bouton Favoris sur une publication.</p>
+    </div>
+</section>
 
-function showApp(name) {
-    $("signupScreen").classList.add("hidden");
-    $("app").classList.remove("hidden");
-    $("favoritesPage").classList.add("hidden");
-    $("feed").querySelector(".card").classList.remove("hidden");
-    $("feed").querySelector(".advertisement").classList.remove("hidden");
+<!-- PROFIL -->
 
-    $("firstName").value = name;
-}
+<section id="profilePage" class="page hidden simple-page">
+    <section class="card">
+        <div class="profile-cover"></div>
+        <div class="profile-main">
+            <div class="profile-avatar" id="profileAvatar">C</div>
+            <div class="profile-name" id="profileName">Mon profil</div>
+            <p id="profileEmail" class="muted"></p>
 
-function showSignup() {
-    $("app").classList.add("hidden");
-    $("signupScreen").classList.remove("hidden");
-    $("password").value = "";
-}
+            <div class="profile-stats">
+                <span><strong id="profilePostCount">0</strong> publications</span>
+                <span><strong>0</strong> amis</span>
+                <span><strong>0</strong> abonnés</span>
+            </div>
 
-$("togglePassword").addEventListener("click", () => {
-    const password = $("password");
-    password.type = password.type === "password" ? "text" : "password";
-});
+            <button id="editProfileButton" class="primary-button">
+                Modifier mon profil
+            </button>
+        </div>
+    </section>
 
-$("signupForm").addEventListener("submit", event => {
-    event.preventDefault();
+    <h3>Mes publications</h3>
+    <div id="myPosts"></div>
+</section>
 
-    const firstName = $("firstName").value.trim();
-    const lastName = $("lastName").value.trim();
-    const contact = $("contact").value.trim();
-    const password = $("password").value;
+<!-- AMIS -->
 
-    if (!firstName || !lastName || !contact || password.length < 6) {
-        showNotice("Veuillez remplir tous les champs correctement.");
-        return;
-    }
-
-    // Démonstration locale uniquement : aucun vrai compte n'est créé.
-    currentUser = { firstName, lastName, contact };
-
-    localStorage.setItem("chatbookUser", JSON.stringify(currentUser));
-
-    showApp(firstName);
-});
-
-$("loginButton").addEventListener("click", () => {
-    const savedUser = localStorage.getItem("chatbookUser");
-
-    if (savedUser) {
-        currentUser = JSON.parse(savedUser);
-        showApp(currentUser.firstName);
-    } else {
-        showNotice("Aucun compte local trouvé. Remplissez le formulaire pour continuer.");
-    }
-});
-
-$("logoutButton").addEventListener("click", () => {
-    currentUser = null;
-    showSignup();
-});
-
-$("likeButton").addEventListener("click", toggleLike);
-
-$("commentButton").addEventListener("click", () => {
-    $("commentInput").focus();
-    $("commentsSection").scrollIntoView({
-        behavior: "smooth",
-        block: "center"
-    });
-});
-
-$("shareButton").addEventListener("click", async () => {
-    const shareData = {
-        title: "ChatBook",
-        text: "Découvre cette publication sur ChatBook !",
-        url: window.location.href
-    };
-
-    try {
-        if (navigator.share) {
-            await navigator.share(shareData);
-        } else if (navigator.clipboard && window.isSecureContext) {
-            await navigator.clipboard.writeText(shareData.url);
-            alert("Lien copié !");
-        } else {
-            prompt("Copiez le lien de cette page :", shareData.url);
-        }
-    } catch (error) {
-        if (error.name !== "AbortError") {
-            alert("Le partage n'a pas pu être effectué.");
-        }
-    }
-});
-
-$("saveButton").addEventListener("click", toggleFavorite);
-$("bigFavoriteButton").addEventListener("click", toggleFavorite);
-
-$("commentForm").addEventListener("submit", event => {
-    event.preventDefault();
-
-    const input = $("commentInput");
-    const text = input.value.trim();
-
-    if (!text) return;
-
-    const comment = document.createElement("div");
-    comment.className = "comment";
-
-    const author = document.createElement("strong");
-    author.textContent = "@" +
-        (currentUser ? currentUser.firstName : "Visiteur") + ":";
-
-    comment.appendChild(author);
-    comment.appendChild(document.createTextNode(" " + text));
-
-    $("commentList").appendChild(comment);
-
-    commentTotal++;
-    $("commentCount").textContent =
-        "💬 " + commentTotal + " commentaires";
-
-    input.value = "";
-});
-
-$("favoritesLink").addEventListener("click", () => {
-    $("feed").querySelector(".card").classList.add("hidden");
-    $("feed").querySelector(".advertisement").classList.add("hidden");
-    $("favoritesPage").classList.remove("hidden");
-
-    $("favoritesMessage").textContent = favorited
-        ? "⭐ Vous avez enregistré cette publication dans vos favoris."
-        : "Vous n'avez pas encore de favoris.";
-});
-
-$("backToFeed").addEventListener("click", () => {
-    $("favoritesPage").classList.add("hidden");
-    $("feed").querySelector(".card").classList.remove("hidden");
-    $("feed").querySelector(".advertisement").classList.remove("hidden");
-});
-
-function initialize() {
-    liked = JSON.parse(localStorage.getItem("chatbookLiked") || "false");
-    likes = Number(localStorage.getItem("chatbookLikes")) || 12500;
-    favorited = JSON.parse(
-        localStorage.getItem("chatbookFavorite") || "false"
-    );
-
-    updateLikeDisplay();
-    updateFavoriteDisplay();
-
-    const savedUser = localStorage.getItem("chatbookUser");
-
-    if (savedUser) {
-        currentUser = JSON.parse(savedUser);
-        showApp(currentUser.firstName);
-    }
-}
-
-initialize();
-</script>
-
-</body>
-</html>
+<section id="friendsPage" class="page hidden simple-page">
+    <section class="card card-padding">
+        <h2>👥 Amis</h2>
+        <p class="muted">
+            La recherche et les demandes d'amitié entre plusieurs
+            utilisateurs seront disponibles après connexion à un backend.
+        </p>
+        <input id="friendSearch"
+               class="create-input"
+               placeholder="Rechercher un nom d'utilisateur">
+        <div id="friendSearchResult" class
