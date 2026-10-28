@@ -2,558 +2,707 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#000000">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ChatBook</title>
 
 <style>
-:root{--red:#ff3159;--cyan:#28e7e7;--white:#fff;--muted:#bbb}
-*{box-sizing:border-box}
-html,body{margin:0;width:100%;min-height:100%;background:#000;color:#fff;font-family:Arial,Helvetica,sans-serif}
-button,input{font:inherit}
-button{cursor:pointer;-webkit-tap-highlight-color:transparent}
-[hidden]{display:none!important}
+* {
+    box-sizing: border-box;
+}
 
-/* INSCRIPTION ET CONNEXION */
-.auth-screen{min-height:100vh;min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:24px;background:radial-gradient(ellipse at top,#35101b 0%,#100509 45%,#000 78%)}
-.auth-box{width:100%;max-width:410px;padding:30px 24px;border:1px solid #333;border-radius:24px;background:rgba(15,15,15,.96);box-shadow:0 15px 55px #0009}
-.auth-logo{text-align:center;font-size:39px;font-weight:900;letter-spacing:-2px;margin-bottom:8px}
-.auth-logo span,.logo span{color:var(--red)}
-.auth-subtitle{text-align:center;color:#bbb;line-height:1.5;margin:0 0 26px}
-.auth-tabs{display:flex;padding:4px;gap:5px;background:#222;border-radius:12px;margin-bottom:22px}
-.auth-tab{flex:1;border:0;border-radius:9px;padding:12px 5px;color:#bbb;background:transparent;font-weight:bold}
-.auth-tab.active{background:var(--red);color:#fff}
-.field{margin-bottom:15px}
-.field label{display:block;margin-bottom:8px;font-size:14px;color:#eee}
-.field input{display:block;width:100%;padding:14px;border:1px solid #383838;border-radius:11px;background:#1c1c1c;color:#fff;outline:none}
-.field input:focus{border-color:var(--red)}
-.password-wrap{position:relative}
-.password-wrap input{padding-right:55px}
-.password-toggle{position:absolute;right:7px;top:50%;transform:translateY(-50%);width:42px;height:42px;border:0;border-radius:8px;background:transparent;color:#fff;font-size:21px}
-.auth-submit{width:100%;padding:15px;margin-top:6px;border:0;border-radius:12px;background:var(--red);color:#fff;font-weight:800}
-.auth-submit:disabled{opacity:.6;cursor:wait}
-.auth-message{min-height:20px;margin:16px 0 0;text-align:center;font-size:14px;line-height:1.5;overflow-wrap:anywhere}
-.auth-message.error{color:#ff8197}
-.auth-message.success{color:#7df2b0}
-.auth-terms{margin:18px 0 0;color:#888;font-size:12px;text-align:center;line-height:1.5}
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #eef1f5;
+    color: #111;
+}
 
-/* APPLICATION */
-.app{width:100%;height:100vh;height:100dvh;max-width:520px;margin:auto;position:relative;overflow:hidden;background:#000}
-.feed{height:100%;overflow-y:auto;scroll-snap-type:y mandatory;scrollbar-width:none;overscroll-behavior-y:contain}
-.feed::-webkit-scrollbar{display:none}
-.video-card{width:100%;height:100%;height:100dvh;min-height:450px;position:relative;scroll-snap-align:start;scroll-snap-stop:always;overflow:hidden;background:#202020}
-.video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#202020}
-.video-card::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(to bottom,rgba(0,0,0,.65),transparent 22%,transparent 48%,rgba(0,0,0,.15) 65%,rgba(0,0,0,.78) 100%)}
-.header{position:absolute;z-index:5;top:max(0px,env(safe-area-inset-top));left:0;right:0;height:68px;padding:18px 22px;display:flex;align-items:center;justify-content:space-between}
-.logo{font-size:30px;letter-spacing:-1.6px;font-weight:900;color:#fff;text-decoration:none}
-.header-actions{display:flex;gap:22px}
-.icon-button{background:transparent;border:0;padding:4px;display:grid;place-items:center}
-.icon-button svg{width:25px;height:25px;fill:none;stroke:#fff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
-.side{position:absolute;z-index:4;right:14px;bottom:calc(130px + env(safe-area-inset-bottom));display:flex;flex-direction:column;align-items:center;gap:20px}
-.side-button{display:flex;flex-direction:column;align-items:center;gap:6px;background:transparent;border:0;padding:0;color:#fff;font-size:14px;font-weight:bold;text-shadow:0 1px 3px #000}
-.side-button svg{width:34px;height:34px;fill:#fff;filter:drop-shadow(0 1px 2px #333)}
-.side-button .outline{fill:none;stroke:#fff;stroke-width:1.8}
-.side-button.liked svg{fill:var(--red)}
-.avatar{width:58px;height:58px;border-radius:50%;border:3px solid #fff;background:linear-gradient(135deg,#ff2c75,#a52cff);display:grid;place-items:center;font-size:25px;font-weight:bold;position:relative}
-.follow-plus{position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);width:23px;height:23px;border-radius:50%;display:grid;place-items:center;background:var(--red);font-size:21px;line-height:1;border:1px solid #111}
-.video-info{position:absolute;z-index:3;left:20px;bottom:calc(104px + env(safe-area-inset-bottom));width:calc(100% - 112px);text-shadow:0 1px 4px #000}
-.author{font-size:19px;font-weight:800;margin-bottom:12px}
-.description{font-size:16px;line-height:1.45;margin-bottom:13px}
-.music-line{font-size:14px;display:flex;gap:9px;align-items:center}
-.music-line svg{width:19px;height:19px;fill:#fff}
-.bottom-nav{position:absolute;z-index:8;bottom:0;left:0;right:0;height:calc(83px + env(safe-area-inset-bottom));padding:9px 3px calc(12px + env(safe-area-inset-bottom));display:flex;align-items:center;justify-content:space-around;background:rgba(0,0,0,.95)}
-.nav-item{min-width:0;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-decoration:none;color:#aaa;font-size:12px;background:transparent;border:0}
-.nav-item.active{color:#fff;font-weight:bold}
-.nav-item svg{width:25px;height:25px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.publish{width:48px;height:32px;border-radius:10px;background:#fff;color:#000;font-size:29px;font-weight:bold;border:0;box-shadow:-5px 0 var(--red),5px 0 var(--cyan);display:grid;place-items:center;line-height:1}
-.toast{display:none;position:absolute;z-index:20;top:43%;left:50%;transform:translate(-50%,-50%);background:rgba(25,25,25,.97);padding:14px 18px;border:1px solid #444;border-radius:12px;font-size:14px;max-width:85%;text-align:center;overflow-wrap:anywhere}
-.toast.show{display:block}
-.comment-box{position:absolute;z-index:10;bottom:90px;left:12px;right:12px;display:flex;gap:8px}
-.comment-box input{min-width:0;flex:1;padding:12px;border-radius:20px;border:1px solid #666;background:#222;color:#fff}
-.comment-box button{border:0;border-radius:18px;padding:0 15px;background:var(--red);color:#fff;font-weight:bold}
-@media(min-width:600px){body{background:#191919}.app{box-shadow:0 0 35px #000}}
+button, input {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+header {
+    height: 68px;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    border-bottom: 1px solid #ddd;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.logo {
+    color: #1877f2;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.header-links {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.header-links button {
+    border: none;
+    background: transparent;
+}
+
+main {
+    width: 100%;
+    max-width: 580px;
+    margin: 20px auto;
+}
+
+.card {
+    background: white;
+    margin-bottom: 16px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px #00000010;
+}
+
+/* Inscription */
+
+#signupScreen {
+    min-height: 100vh;
+    background: linear-gradient(145deg, #1877f2, #0754ad);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.signup-box {
+    width: 100%;
+    max-width: 400px;
+    background: white;
+    padding: 25px 20px;
+    border-radius: 15px;
+    text-align: center;
+}
+
+.signup-box h1 {
+    color: #1877f2;
+    margin: 0 0 5px;
+    font-size: 30px;
+}
+
+.signup-box p {
+    color: #777;
+    margin-bottom: 22px;
+}
+
+.signup-box input {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #d0d4da;
+    border-radius: 8px;
+    margin-bottom: 11px;
+    outline-color: #1877f2;
+}
+
+.password-box {
+    display: flex;
+    margin-bottom: 12px;
+    border: 1px solid #d0d4da;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.password-box input {
+    border: none;
+    margin: 0;
+}
+
+.password-box button {
+    border: none;
+    background: white;
+    padding: 0 12px;
+}
+
+.signup-button {
+    width: 100%;
+    padding: 13px;
+    background: #36b52b;
+    border: none;
+    color: white;
+    font-weight: bold;
+    border-radius: 7px;
+}
+
+.switch-account {
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid #ddd;
+    color: #1877f2;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Fil d'actualité */
+
+.post-video {
+    background: #101010;
+    color: white;
+}
+
+.youtube-title {
+    padding: 20px;
+    font-size: 23px;
+    font-weight: bold;
+}
+
+.youtube-title span {
+    color: #ff0033;
+}
+
+.video-frame {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: 0;
+    display: block;
+    background: #111;
+}
+
+.post-info {
+    padding: 18px 20px 10px;
+}
+
+.author {
+    font-size: 19px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.caption {
+    line-height: 1.5;
+}
+
+.stats {
+    display: flex;
+    justify-content: space-between;
+    padding: 14px 20px;
+    color: #666;
+    border-bottom: 1px solid #eee;
+}
+
+.actions {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    padding: 10px;
+}
+
+.action-button {
+    border: none;
+    background: white;
+    color: #626262;
+    border-radius: 7px;
+    padding: 12px 3px;
+    font-weight: bold;
+}
+
+.action-button:hover {
+    background: #f0f2f5;
+}
+
+.action-button.active {
+    color: #1877f2;
+    background: #e8f1ff;
+}
+
+/* Commentaires */
+
+.comments {
+    padding: 15px 20px 20px;
+}
+
+.comments h3 {
+    margin-top: 0;
+}
+
+.comment {
+    margin: 12px 0;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.comment strong {
+    margin-right: 5px;
+}
+
+.comment-form {
+    display: flex;
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.comment-form input {
+    min-width: 0;
+    flex: 1;
+    padding: 12px 14px;
+    border: 1px solid #d0d4da;
+    border-radius: 25px;
+    outline-color: #1877f2;
+}
+
+.publish-button {
+    background: #1877f2;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 25px;
+    padding: 0 18px;
+}
+
+/* Favoris */
+
+.favorites-section {
+    padding: 0 20px 18px;
+}
+
+.favorite-button {
+    width: 100%;
+    padding: 14px;
+    background: #fff8dc;
+    color: #8a6500;
+    border: 1px solid #f0d777;
+    border-radius: 9px;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.favorite-button.active {
+    background: #ffe89a;
+    color: #664900;
+}
+
+.favorite-button:hover {
+    filter: brightness(0.97);
+}
+
+.advertisement {
+    text-align: center;
+    color: #777;
+    padding: 18px;
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.notice {
+    padding: 12px;
+    border-radius: 8px;
+    background: #e8f5e9;
+    color: #176b25;
+    margin-bottom: 12px;
+    display: none;
+}
+
+@media (max-width: 600px) {
+    header {
+        padding: 0 14px;
+    }
+
+    main {
+        margin: 12px auto;
+    }
+
+    .card {
+        border-radius: 0;
+    }
+
+    .action-button {
+        font-size: 12px;
+    }
+}
 </style>
 </head>
+
 <body>
 
-<section class="auth-screen" id="authScreen">
-  <div class="auth-box">
-    <div class="auth-logo">Chat<span>Book</span></div>
-    <p class="auth-subtitle">Connecte-toi au monde<br>Partage tes meilleurs moments</p>
-    <div class="auth-tabs">
-      <button type="button" class="auth-tab active" id="loginTab">Connexion</button>
-      <button type="button" class="auth-tab" id="signupTab">Inscription</button>
-    </div>
-    <form id="authForm">
-      <div class="field" id="nameField" hidden>
-        <label for="fullName">Nom complet</label>
-        <input id="fullName" type="text" autocomplete="name" maxlength="80" placeholder="Ton nom">
-      </div>
-      <div class="field">
-        <label for="email">Adresse e-mail</label>
-        <input id="email" type="email" autocomplete="email" required placeholder="exemple@email.com">
-      </div>
-      <div class="field">
-        <label for="password">Mot de passe</label>
-        <div class="password-wrap">
-          <input id="password" type="password" autocomplete="current-password" required minlength="6" placeholder="6 caractères minimum">
-          <button type="button" id="togglePassword" class="password-toggle" aria-label="Afficher le mot de passe" aria-pressed="false">👁️</button>
+<!-- PAGE D'INSCRIPTION -->
+
+<section id="signupScreen">
+    <div class="signup-box">
+        <h1>ChatBook</h1>
+        <p>C'est rapide et facile.</p>
+
+        <div id="notice" class="notice"></div>
+
+        <form id="signupForm">
+            <input id="firstName" type="text"
+                   placeholder="Prénom" required>
+
+            <input id="lastName" type="text"
+                   placeholder="Nom de famille" required>
+
+            <input id="contact" type="text"
+                   placeholder="Numéro de mobile ou e-mail" required>
+
+            <div class="password-box">
+                <input id="password" type="password"
+                       placeholder="Mot de passe" minlength="6" required>
+                <button type="button" id="togglePassword"
+                        aria-label="Afficher le mot de passe">👁️</button>
+            </div>
+
+            <button class="signup-button" type="submit">
+                S'inscrire
+            </button>
+        </form>
+
+        <div class="switch-account" id="loginButton">
+            Vous avez déjà un compte ?
         </div>
-      </div>
-      <button class="auth-submit" id="submitBtn" type="submit">Se connecter</button>
-    </form>
-    <p class="auth-message" id="authMessage" role="status" aria-live="polite"></p>
-    <p class="auth-terms">En continuant tu acceptes de respecter les règles de ChatBook</p>
-  </div>
+    </div>
 </section>
 
-<div class="app" id="mainApp" hidden>
-  <main class="feed" id="feed">
-    <section class="video-card">
-      <video class="video" loop muted autoplay playsinline preload="metadata" poster="https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=900&q=85">
-        <source src="https://assets.mixkit.co/videos/preview/mixkit-bright-red-tulip-in-the-garden-4422-large.mp4" type="video/mp4">
-      </video>
-      <header class="header">
-        <a class="logo" href="#" aria-label="ChatBook">Chat<span>Book</span></a>
-        <div class="header-actions">
-          <button class="icon-button" id="searchBtn" aria-label="Rechercher">
-            <svg viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.5"/><path d="m16 16 5 5"/></svg>
-          </button>
-          <button class="icon-button" id="soundBtn" aria-label="Activer le son">
-            <svg viewBox="0 0 24 24"><path d="M4 10v4h4l5 4V6l-5 4H4z"/><path d="M17 9a5 5 0 0 1 0 6"/><path d="m3 3 18 18"/></svg>
-          </button>
-        </div>
-      </header>
-      <aside class="side">
-        <button class="side-button" id="followBtn" aria-label="Suivre le créateur">
-          <span class="avatar">C<span class="follow-plus" id="followPlus">+</span></span>
-          <span id="followText">Suivre</span>
-        </button>
-        <button class="side-button" id="likeBtn" aria-label="J’aime">
-          <svg viewBox="0 0 24 24"><path d="M12 21s-9-5.8-9-12a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 6.2-9 12-9 12z"/></svg>
-          <span id="likes">0 J’aime</span>
-        </button>
-        <button class="side-button" id="commentBtn" aria-label="Commenter">
-          <svg class="outline" viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8A8.5 8.5 0 0 1 8.7 3.9a8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5z"/></svg>
-          <span id="commentCount">Commenter</span>
-        </button>
-        <button class="side-button" id="shareBtn" aria-label="Partager">
-          <svg viewBox="0 0 24 24"><path d="M14 9V4l8 8-8 8v-5C7 15 4 18 2 21c1-7 4-12 12-12z"/></svg>
-          <span>Partager</span>
-        </button>
-        <button class="side-button" id="discBtn" aria-label="Activer le son">
-          <svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><ellipse cx="6" cy="18" rx="3" ry="2.5"/><ellipse cx="18" cy="16" rx="3" ry="2.5"/></svg>
-          <span>Son</span>
-        </button>
-      </aside>
-      <div class="video-info">
-        <div class="author" id="feedAuthor">@chatbook_officiel</div>
-        <div class="description">Bienvenue sur ChatBook 🌍 Découvre les vidéos et partage tes meilleurs moments</div>
-        <div class="music-line">
-          <svg viewBox="0 0 24 24"><path d="M12 3v12a4 4 0 1 1-2-3.46V6l12-3v12a4 4 0 1 1-2-3.46V3z"/></svg>
-          <span>Son original · ChatBook</span>
-        </div>
-      </div>
-    </section>
-  </main>
+<!-- APPLICATION -->
 
-  <input type="file" id="videoPicker" accept="video/*" hidden>
-  <nav class="bottom-nav">
-    <button class="nav-item active" data-nav="Accueil">
-      <svg viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10h-6v-6H9v6H3z"/></svg><span>Accueil</span>
-    </button>
-    <button class="nav-item" data-nav="Découvrir">
-      <svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><span>Découvrir</span>
-    </button>
-    <button class="nav-item" id="publishBtn">
-      <span class="publish">+</span><span>Publier</span>
-    </button>
-    <button class="nav-item" data-nav="Messages">
-      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 8h10M7 12h10M7 16h6"/></svg><span>Messages</span>
-    </button>
-    <button class="nav-item" id="profileNav">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2z"/></svg><span>Profil</span>
-    </button>
-  </nav>
-  <div class="toast" id="toast" role="status"></div>
+<div id="app" class="hidden">
+
+    <header>
+        <div class="logo">ChatBook</div>
+
+        <div class="header-links">
+            <button id="favoritesLink">⭐ Favoris</button>
+            <button id="logoutButton">Déconnexion</button>
+        </div>
+    </header>
+
+    <main id="feed">
+
+        <article class="card">
+
+            <div class="post-video">
+                <div class="youtube-title">
+                    <span>▶</span> YouTube
+                </div>
+
+                <!-- Remplace VIDEO_ID par l'identifiant d'une vidéo YouTube -->
+                <iframe
+                    class="video-frame"
+                    src="https://www.youtube.com/embed/VIDEO_ID"
+                    title="Vidéo ChatBook"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen>
+                </iframe>
+            </div>
+
+            <div class="post-info">
+                <div class="author">@NagnoumaDeveloper</div>
+
+                <div class="caption">
+                    Bienvenue sur le flux vidéo officiel de ChatBook ! 🚀 🔥 #tech
+                </div>
+            </div>
+
+            <div class="stats">
+                <span id="likeCount">🤍 12.5K</span>
+                <span id="commentCount">💬 2 commentaires</span>
+                <span id="favoriteCount">⭐ 0 favoris</span>
+            </div>
+
+            <div class="actions">
+                <button id="likeButton" class="action-button">
+                    🤍 J'aime
+                </button>
+
+                <button id="commentButton" class="action-button">
+                    💬 Commenter
+                </button>
+
+                <button id="shareButton" class="action-button">
+                    🔗 Partager
+                </button>
+
+                <button id="saveButton" class="action-button">
+                    ⭐ Favoris
+                </button>
+            </div>
+
+            <section class="comments" id="commentsSection">
+                <h3>Commentaires</h3>
+
+                <div id="commentList">
+                    <div class="comment">
+                        <strong>@Utilisateur1:</strong>
+                        Super application !
+                    </div>
+
+                    <div class="comment">
+                        <strong>@Utilisateur2:</strong>
+                        J'aime beaucoup le concept.
+                    </div>
+                </div>
+
+                <form class="comment-form" id="commentForm">
+                    <input id="commentInput"
+                           type="text"
+                           placeholder="Ajouter un commentaire..."
+                           maxlength="500"
+                           required>
+
+                    <button class="publish-button" type="submit">
+                        Publier
+                    </button>
+                </form>
+            </section>
+
+            <!-- BOUTON FAVORIS AGRANDI APRÈS LES COMMENTAIRES -->
+
+            <section class="favorites-section">
+                <button id="bigFavoriteButton" class="favorite-button">
+                    ☆ Ajouter cette publication aux favoris
+                </button>
+            </section>
+
+        </article>
+
+        <div class="advertisement">
+            ANNONCE PUBLICITAIRE • ESPACE PUBLICITAIRE
+        </div>
+
+        <section id="favoritesPage" class="card hidden">
+            <div class="post-info">
+                <h2>⭐ Mes favoris</h2>
+                <p id="favoritesMessage">
+                    Vous n'avez pas encore de favoris.
+                </p>
+                <button id="backToFeed"
+                        class="publish-button"
+                        style="padding:12px 18px">
+                    Retour au fil d'actualité
+                </button>
+            </div>
+        </section>
+
+    </main>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-(() => {
-  "use strict";
+const $ = id => document.getElementById(id);
 
-  const SUPABASE_URL = "https://dnpqvtltpmfzbvqntfin.supabase.co";
-  const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_xMNIpOVRCR5QZ58QQGUsbw_eXryZbc2";
+let currentUser = null;
+let liked = false;
+let favorited = false;
+let likes = 12500;
 
-  const $ = id => document.getElementById(id);
-  const authScreen = $("authScreen");
-  const mainApp = $("mainApp");
-  const authForm = $("authForm");
-  const authMessage = $("authMessage");
-  const submitBtn = $("submitBtn");
-  const loginTab = $("loginTab");
-  const signupTab = $("signupTab");
-  const nameField = $("nameField");
-  const fullName = $("fullName");
-  const emailInput = $("email");
-  const passwordInput = $("password");
-  const togglePassword = $("togglePassword");
-  const feed = $("feed");
-  const videoPicker = $("videoPicker");
+const initialComments = 2;
+let commentTotal = initialComments;
 
-  let supabaseClient = null;
-  let mode = "login";
-  let currentUser = null;
-  let liked = false;
-  let followed = false;
-  let likeCount = 0;
-  let commentCount = 0;
-  let toastTimer = null;
-  let localVideoUrls = [];
+function showNotice(message) {
+    const notice = $("notice");
+    notice.textContent = message;
+    notice.style.display = "block";
+}
 
-  function showMessage(message, type = "") {
-    authMessage.textContent = message;
-    authMessage.className = "auth-message" + (type ? " " + type : "");
-  }
+function updateLikeDisplay() {
+    $("likeCount").textContent =
+        "❤️ " + likes.toLocaleString("fr-FR");
+    $("likeButton").classList.toggle("active", liked);
+    $("likeButton").textContent = liked ? "❤️ Aimé" : "🤍 J'aime";
+}
 
-  function notify(message) {
-    const toast = $("toast");
-    toast.textContent = message;
-    toast.classList.add("show");
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toast.classList.remove("show"), 2600);
-  }
+function updateFavoriteDisplay() {
+    $("saveButton").classList.toggle("active", favorited);
+    $("saveButton").textContent =
+        favorited ? "⭐ En favoris" : "☆ Favoris";
 
-  function setMode(newMode) {
-    mode = newMode;
-    const signup = mode === "signup";
-    loginTab.classList.toggle("active", !signup);
-    signupTab.classList.toggle("active", signup);
-    nameField.hidden = !signup;
-    fullName.required = signup;
-    passwordInput.autocomplete = signup ? "new-password" : "current-password";
-    submitBtn.textContent = signup ? "Créer mon compte" : "Se connecter";
-    showMessage("");
-  }
+    $("bigFavoriteButton").classList.toggle("active", favorited);
 
-  loginTab.addEventListener("click", () => setMode("login"));
-  signupTab.addEventListener("click", () => setMode("signup"));
+    $("bigFavoriteButton").textContent = favorited
+        ? "⭐ Retirer des favoris"
+        : "☆ Ajouter cette publication aux favoris";
 
-  togglePassword.addEventListener("click", () => {
-    const showing = passwordInput.type === "password";
-    passwordInput.type = showing ? "text" : "password";
-    togglePassword.textContent = showing ? "🙈" : "👁️";
-    togglePassword.setAttribute("aria-label", showing ? "Masquer le mot de passe" : "Afficher le mot de passe");
-    togglePassword.setAttribute("aria-pressed", String(showing));
-  });
+    $("favoriteCount").textContent =
+        "⭐ " + (favorited ? 1 : 0) + " favoris";
 
-  function showHome(user) {
-    currentUser = user;
-    authScreen.hidden = true;
-    mainApp.hidden = false;
-    const name = user.user_metadata?.full_name;
-    const emailName = user.email ? user.email.split("@")[0] : "membre";
-    const username = (name || emailName).trim().replace(/\s+/g, "").replace(/[^a-zA-Z0-9.-]/g, "").slice(0, 30);
-    $("feedAuthor").textContent = "@" + (username || "membre");
-    const video = feed.querySelector(".video");
-    if (video) video.play().catch(() => {});
-  }
+    localStorage.setItem("chatbookFavorite", JSON.stringify(favorited));
+}
 
-  function showLogin() {
-    currentUser = null;
-    mainApp.hidden = true;
-    authScreen.hidden = false;
-    const video = feed.querySelector(".video");
-    if (video) video.pause();
-    setMode("login");
-  }
-
-  authForm.addEventListener("submit", async event => {
-    event.preventDefault();
-    if (!supabaseClient) {
-      showMessage("Le service de connexion n'est pas prêt. Réessaie.", "error");
-      return;
-    }
-
-    const email = emailInput.value.trim();
-    const password = passwordInput.value;
-    const name = fullName.value.trim();
-
-    if (mode === "signup" && name.length < 2) {
-      showMessage("Entre ton nom complet.", "error");
-      return;
-    }
-    if (password.length < 6) {
-      showMessage("Le mot de passe doit contenir au moins 6 caractères.", "error");
-      return;
-    }
-
-    submitBtn.disabled = true;
-    submitBtn.textContent = "Patiente...";
-    showMessage("");
-
-    try {
-      if (mode === "signup") {
-        const { data, error } = await supabaseClient.auth.signUp({
-          email,
-          password,
-          options: {
-            data: { full_name: name },
-            emailRedirectTo: location.origin + location.pathname
-          }
-        });
-        if (error) throw error;
-
-        if (data.session && data.user) {
-          showHome(data.user);
-          showMessage("");
-        } else {
-          setMode("login");
-          emailInput.value = email;
-          showMessage("Compte créé ! Confirme ton adresse avec le lien reçu par e-mail avant de te connecter.", "success");
-        }
-      } else {
-        const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-        if (error) throw error;
-        if (data.user) showHome(data.user);
-      }
-    } catch (error) {
-      console.error("Erreur d'authentification :", error);
-      let message = error.message || "Une erreur est survenue.";
-      if (/invalid login credentials/i.test(message)) message = "E-mail ou mot de passe incorrect.";
-      else if (/email not confirmed/i.test(message)) message = "Confirme d'abord ton adresse e-mail avec le lien reçu.";
-      else if (/user already registered/i.test(message)) message = "Cette adresse est déjà inscrite. Essaie de te connecter.";
-      else if (/rate limit/i.test(message)) message = "Trop de demandes d'e-mail. Attends avant de réessayer.";
-      showMessage(message, "error");
-    } finally {
-      submitBtn.disabled = false;
-      submitBtn.textContent = mode === "signup" ? "Créer mon compte" : "Se connecter";
-    }
-  });
-
-  async function startAuth() {
-    try {
-      if (!window.supabase) throw new Error("La bibliothèque Supabase n'a pas pu se charger.");
-      supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
-
-      const { data, error } = await supabaseClient.auth.getSession();
-      if (error) throw error;
-
-      if (data.session?.user) showHome(data.session.user);
-      else showLogin();
-
-      supabaseClient.auth.onAuthStateChange((event, session) => {
-        if (session?.user) showHome(session.user);
-        else if (event === "SIGNED_OUT") showLogin();
-      });
-    } catch (error) {
-      console.error("Initialisation Supabase :", error);
-      showMessage("Impossible de vérifier la connexion. Recharge la page et réessaie.", "error");
-    }
-  }
-
- function toggleVideoSound() {
-    const video = feed.querySelector(".video");
-    if (!video) return;
-
-    video.muted = !video.muted;
-
-    const soundButton = $("soundBtn");
-    const discButton = $("discBtn");
-
-    soundButton.setAttribute(
-      "aria-label",
-      video.muted ? "Activer le son" : "Couper le son"
-    );
-
-    discButton.setAttribute(
-      "aria-label",
-      video.muted ? "Activer le son" : "Couper le son"
-    );
-
-    discButton.querySelector("span").textContent =
-      video.muted ? "Son désactivé" : "Son activé";
-
-    if (!video.muted && video.paused) {
-      video.play().catch(() => {
-        notify("Appuie sur la vidéo pour démarrer la lecture");
-      });
-    }
-
-    notify(video.muted ? "Son désactivé" : "Son activé");
-  }
-
-  $("soundBtn").addEventListener("click", toggleVideoSound);
-  
-    const video = feed.querySelector(".video");
-    if (!video) return;
-    video.muted = !video.muted;
-    $("soundBtn").setAttribute("aria-label", video.muted ? "Activer le son" : "Couper le son");
-    notify(video.muted ? "Son désactivé" : "Son activé");
-    if (video.paused) video.play().catch(() => {});
-  });
-
-  $("discBtn").addEventListener("click", () => $("soundBtn").click());
-
-  $("likeBtn").addEventListener("click", () => {
+function toggleLike() {
     liked = !liked;
-    likeCount = Math.max(0, likeCount + (liked ? 1 : -1));
-    $("likeBtn").classList.toggle("liked", liked);
-    $("likes").textContent = likeCount + (likeCount === 1 ? " J’aime" : " J’aime");
-  });
+    likes += liked ? 1 : -1;
+    updateLikeDisplay();
+    localStorage.setItem("chatbookLiked", JSON.stringify(liked));
+    localStorage.setItem("chatbookLikes", String(likes));
+}
 
-  $("followBtn").addEventListener("click", () => {
-    followed = !followed;
-    $("followPlus").textContent = followed ? "✓" : "+";
-    $("followText").textContent = followed ? "Abonné" : "Suivre";
-    notify(followed ? "Tu suis maintenant ce créateur sur cet appareil" : "Tu ne suis plus ce créateur");
-  });
+function toggleFavorite() {
+    favorited = !favorited;
+    updateFavoriteDisplay();
+}
 
-  $("commentBtn").addEventListener("click", () => {
-    if (document.querySelector(".comment-box")) return;
-    const box = document.createElement("div");
-    box.className = "comment-box";
-    const input = document.createElement("input");
-    input.placeholder = "Écris un commentaire...";
-    input.maxLength = 300;
-    input.setAttribute("aria-label", "Commentaire");
-    const send = document.createElement("button");
-    send.textContent = "Envoyer";
-    send.type = "button";
-    send.addEventListener("click", () => {
-      if (!input.value.trim()) {
-        notify("Écris ton commentaire avant d'envoyer");
+function showApp(name) {
+    $("signupScreen").classList.add("hidden");
+    $("app").classList.remove("hidden");
+    $("favoritesPage").classList.add("hidden");
+    $("feed").querySelector(".card").classList.remove("hidden");
+    $("feed").querySelector(".advertisement").classList.remove("hidden");
+
+    $("firstName").value = name;
+}
+
+function showSignup() {
+    $("app").classList.add("hidden");
+    $("signupScreen").classList.remove("hidden");
+    $("password").value = "";
+}
+
+$("togglePassword").addEventListener("click", () => {
+    const password = $("password");
+    password.type = password.type === "password" ? "text" : "password";
+});
+
+$("signupForm").addEventListener("submit", event => {
+    event.preventDefault();
+
+    const firstName = $("firstName").value.trim();
+    const lastName = $("lastName").value.trim();
+    const contact = $("contact").value.trim();
+    const password = $("password").value;
+
+    if (!firstName || !lastName || !contact || password.length < 6) {
+        showNotice("Veuillez remplir tous les champs correctement.");
         return;
-      }
-      commentCount++;
-      $("commentCount").textContent = commentCount + " commentaire(s)";
-      box.remove();
-      notify("Commentaire affiché localement. La sauvegarde en ligne sera ajoutée ensuite.");
-    });
-    box.append(input, send);
-    mainApp.appendChild(box);
-    input.focus();
-  });
+    }
 
-  $("shareBtn").addEventListener("click", async () => {
+    // Démonstration locale uniquement : aucun vrai compte n'est créé.
+    currentUser = { firstName, lastName, contact };
+
+    localStorage.setItem("chatbookUser", JSON.stringify(currentUser));
+
+    showApp(firstName);
+});
+
+$("loginButton").addEventListener("click", () => {
+    const savedUser = localStorage.getItem("chatbookUser");
+
+    if (savedUser) {
+        currentUser = JSON.parse(savedUser);
+        showApp(currentUser.firstName);
+    } else {
+        showNotice("Aucun compte local trouvé. Remplissez le formulaire pour continuer.");
+    }
+});
+
+$("logoutButton").addEventListener("click", () => {
+    currentUser = null;
+    showSignup();
+});
+
+$("likeButton").addEventListener("click", toggleLike);
+
+$("commentButton").addEventListener("click", () => {
+    $("commentInput").focus();
+    $("commentsSection").scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+    });
+});
+
+$("shareButton").addEventListener("click", async () => {
+    const shareData = {
+        title: "ChatBook",
+        text: "Découvre cette publication sur ChatBook !",
+        url: window.location.href
+    };
+
     try {
-      if (navigator.share) {
-        await navigator.share({ title: "ChatBook", text: "Découvre ChatBook !", url: location.href });
-      } else if (navigator.clipboard && window.isSecureContext) {
-        await navigator.clipboard.writeText(location.href);
-        notify("Lien ChatBook copié !");
-      } else {
-        window.prompt("Copie le lien de ChatBook :", location.href);
-      }
+        if (navigator.share) {
+            await navigator.share(shareData);
+        } else if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(shareData.url);
+            alert("Lien copié !");
+        } else {
+            prompt("Copiez le lien de cette page :", shareData.url);
+        }
     } catch (error) {
-      if (error.name !== "AbortError") notify("Le partage n'a pas abouti");
+        if (error.name !== "AbortError") {
+            alert("Le partage n'a pas pu être effectué.");
+        }
     }
-  });
+});
 
-  $("searchBtn").addEventListener("click", () => {
-    const query = window.prompt("Recherche une vidéo ou un créateur :");
-    if (query === null) return;
-    const cards = [...feed.querySelectorAll(".video-card")];
-    const term = query.trim().toLowerCase();
-    let matches = 0;
-    cards.forEach(card => {
-      const found = !term || card.textContent.toLowerCase().includes(term);
-      card.hidden = !found;
-      if (found) matches++;
-    });
-    notify(matches ? matches + " vidéo(s) affichée(s)" : "Aucun résultat. Essaie un autre mot.");
-  });
+$("saveButton").addEventListener("click", toggleFavorite);
+$("bigFavoriteButton").addEventListener("click", toggleFavorite);
 
-  $("publishBtn").addEventListener("click", () => {
-    if (!currentUser) {
-      notify("Connecte-toi avant de publier");
-      return;
+$("commentForm").addEventListener("submit", event => {
+    event.preventDefault();
+
+    const input = $("commentInput");
+    const text = input.value.trim();
+
+    if (!text) return;
+
+    const comment = document.createElement("div");
+    comment.className = "comment";
+
+    const author = document.createElement("strong");
+    author.textContent = "@" +
+        (currentUser ? currentUser.firstName : "Visiteur") + ":";
+
+    comment.appendChild(author);
+    comment.appendChild(document.createTextNode(" " + text));
+
+    $("commentList").appendChild(comment);
+
+    commentTotal++;
+    $("commentCount").textContent =
+        "💬 " + commentTotal + " commentaires";
+
+    input.value = "";
+});
+
+$("favoritesLink").addEventListener("click", () => {
+    $("feed").querySelector(".card").classList.add("hidden");
+    $("feed").querySelector(".advertisement").classList.add("hidden");
+    $("favoritesPage").classList.remove("hidden");
+
+    $("favoritesMessage").textContent = favorited
+        ? "⭐ Vous avez enregistré cette publication dans vos favoris."
+        : "Vous n'avez pas encore de favoris.";
+});
+
+$("backToFeed").addEventListener("click", () => {
+    $("favoritesPage").classList.add("hidden");
+    $("feed").querySelector(".card").classList.remove("hidden");
+    $("feed").querySelector(".advertisement").classList.remove("hidden");
+});
+
+function initialize() {
+    liked = JSON.parse(localStorage.getItem("chatbookLiked") || "false");
+    likes = Number(localStorage.getItem("chatbookLikes")) || 12500;
+    favorited = JSON.parse(
+        localStorage.getItem("chatbookFavorite") || "false"
+    );
+
+    updateLikeDisplay();
+    updateFavoriteDisplay();
+
+    const savedUser = localStorage.getItem("chatbookUser");
+
+    if (savedUser) {
+        currentUser = JSON.parse(savedUser);
+        showApp(currentUser.firstName);
     }
-    videoPicker.click();
-  });
+}
 
-  videoPicker.addEventListener("change", () => {
-    const file = videoPicker.files && videoPicker.files[0];
-    if (!file) return;
-    if (!file.type.startsWith("video/")) {
-      notify("Choisis un fichier vidéo");
-      videoPicker.value = "";
-      return;
-    }
-    const url = URL.createObjectURL(file);
-    localVideoUrls.push(url);
-
-    const card = document.createElement("section");
-    card.className = "video-card";
-    const video = document.createElement("video");
-    video.className = "video";
-    video.src = url;
-    video.controls = true;
-    video.loop = true;
-    video.playsInline = true;
-    video.autoplay = true;
-    video.muted = true;
-
-    const info = document.createElement("div");
-    info.className = "video-info";
-    const author = document.createElement("div");
-    author.className = "author";
-    author.textContent = $("feedAuthor").textContent;
-    const description = document.createElement("div");
-    description.className = "description";
-    description.textContent = file.name;
-    info.append(author, description);
-
-    card.append(video, info);
-    feed.appendChild(card);
-    feed.scrollTo({ top: card.offsetTop, behavior: "smooth" });
-    notify("Vidéo ajoutée sur cet appareil. Elle n'est pas encore publiée en ligne.");
-    videoPicker.value = "";
-  });
-
-  document.querySelectorAll("[data-nav]").forEach(button => {
-    button.addEventListener("click", () => {
-      document.querySelectorAll(".nav-item").forEach(item => item.classList.remove("active"));
-      button.classList.add("active");
-      const name = button.dataset.nav;
-      if (name === "Accueil") {
-        feed.querySelectorAll(".video-card").forEach(card => card.hidden = false);
-        feed.scrollTo({ top: 0, behavior: "smooth" });
-      } else if (name === "Découvrir") {
-        const cards = feed.querySelectorAll(".video-card");
-        if (cards.length > 1) feed.scrollBy({ top: feed.clientHeight, behavior: "smooth" });
-        else notify("Ajoute des vidéos pour découvrir d'autres contenus.");
-      } else {
-        notify("La messagerie sera connectée à une base de données dans une prochaine étape.");
-      }
-    });
-  });
-
-  $("profileNav").addEventListener("click", async () => {
-    if (!currentUser || !supabaseClient) {
-      showLogin();
-      return;
-    }
-    const choice = window.confirm("Veux-tu te déconnecter de ChatBook ?");
-    if (!choice) return;
-    const { error } = await supabaseClient.auth.signOut();
-    if (error) notify("Déconnexion impossible. Réessaie.");
-  });
-
-  document.addEventListener("visibilitychange", () => {
-    const video = feed.querySelector(".video");
-    if (!video) return;
-    if (document.hidden) video.pause();
-    else if (currentUser && !mainApp.hidden) video.play().catch(() => {});
-  });
-
-  window.addEventListener("beforeunload", () => {
-    localVideoUrls.forEach(url => URL.revokeObjectURL(url));
-  });
-
-  startAuth();
-})();
+initialize();
 </script>
+
 </body>
 </html>
